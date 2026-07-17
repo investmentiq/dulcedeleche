@@ -28,6 +28,8 @@
             --muted: #aab1c9;
             --accent: #a991ff;
             --accent-soft: rgba(169, 145, 255, 0.18);
+            --live: #6cf2ad;
+            --live-soft: rgba(108, 242, 173, 0.12);
         }
 
         * {
@@ -128,7 +130,7 @@
             height: 8px;
             border-radius: 50%;
 
-            background: #6cf2ad;
+            background: var(--live);
             box-shadow: 0 0 12px rgba(108, 242, 173, 0.8);
         }
 
@@ -199,13 +201,18 @@
             transition:
                 transform 180ms ease,
                 background 180ms ease,
-                border-color 180ms ease;
+                border-color 180ms ease,
+                box-shadow 180ms ease;
         }
 
         .game-card:hover {
             transform: translateY(-4px);
             background: var(--panel-hover);
             border-color: rgba(169, 145, 255, 0.55);
+        }
+
+        .game-card.live:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.24);
         }
 
         .game-card::after {
@@ -280,6 +287,12 @@
             text-transform: uppercase;
         }
 
+        .tag.live {
+            color: var(--live);
+            border-color: rgba(108, 242, 173, 0.35);
+            background: var(--live-soft);
+        }
+
         footer {
             display: flex;
             justify-content: space-between;
@@ -345,15 +358,13 @@
             </div>
 
             <div class="games">
-                <!-- We will activate this link when the game is added. -->
                 <a
-                    class="game-card disabled"
-                    href="#"
-                    aria-disabled="true"
-                    onclick="return false;"
+                    class="game-card live"
+                    href="./games/number-pulse/"
+                    aria-label="Launch Number Pulse"
                 >
                     <span class="game-number">Experiment 001</span>
-                    <span class="tag">Preparing</span>
+                    <span class="tag live">Live</span>
 
                     <h3>Number Pulse</h3>
 
