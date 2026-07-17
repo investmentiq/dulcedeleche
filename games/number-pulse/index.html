@@ -38,6 +38,51 @@
       overflow-x:hidden;
     }
 
+    .home-button{
+      position:fixed;
+      top:16px;
+      left:16px;
+      z-index:1000;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+
+      min-height:42px;
+      padding:0 14px;
+
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:999px;
+
+      background:rgba(255,255,255,.09);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+
+      color:var(--text);
+      text-decoration:none;
+      font-size:.82rem;
+      font-weight:800;
+      letter-spacing:.02em;
+
+      box-shadow:0 10px 30px rgba(0,0,0,.22);
+
+      transition:
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+    }
+
+    .home-button:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.14);
+      border-color:rgba(34,211,238,.55);
+    }
+
+    .home-button:active{
+      transform:scale(.98);
+    }
+
     .shell{
       width:min(920px,100%);
       display:grid;
@@ -344,6 +389,18 @@
     }
 
     @media (max-width:640px){
+      body{
+        padding:72px 14px 20px;
+      }
+
+      .home-button{
+        top:12px;
+        left:12px;
+        min-height:40px;
+        padding:0 12px;
+        font-size:.78rem;
+      }
+
       .main{padding:22px 16px}
       .stats{grid-template-columns:1fr 1fr}
       .stats .stat:last-child{grid-column:1/-1}
@@ -355,6 +412,14 @@
   </style>
 </head>
 <body>
+  <a
+    class="home-button"
+    href="https://gamelab.investilogiusa.com/"
+    aria-label="Return to GameLab"
+  >
+    ← GameLab
+  </a>
+
   <main class="shell">
     <div class="topbar">
       <div class="brand">MartianGalactic Labs</div>
