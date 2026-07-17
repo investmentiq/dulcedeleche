@@ -1,2 +1,2 @@
 # dulcedeleche
-ulce de Leche GameLab — small, playful experiments by MartianGalactic
+Dulce de Leche GameLab — small, playful experiments by MartianGalactic
