@@ -260,17 +260,6 @@
             line-height: 1.6;
         }
 
-        .game-card.disabled {
-            cursor: default;
-            opacity: 0.68;
-        }
-
-        .game-card.disabled:hover {
-            transform: none;
-            border-color: var(--border);
-            background: var(--panel);
-        }
-
         .tag {
             position: absolute;
             top: 22px;
@@ -354,7 +343,7 @@
         <section aria-labelledby="experiments-title">
             <div class="section-heading">
                 <h2 id="experiments-title">Experiments</h2>
-                <span>GameLab v0.1</span>
+                <span>GameLab v0.2</span>
             </div>
 
             <div class="games">
@@ -374,17 +363,21 @@
                     </p>
                 </a>
 
-                <article class="game-card disabled">
-                    <span class="game-number">Next transmission</span>
-                    <span class="tag">Unknown</span>
+                <a
+                    class="game-card live"
+                    href="./games/threadshot/"
+                    aria-label="Launch Threadshot"
+                >
+                    <span class="game-number">Experiment 002</span>
+                    <span class="tag live">Live</span>
 
-                    <h3>Something is brewing</h3>
+                    <h3>Threadshot</h3>
 
                     <p>
-                        New experiments will appear here whenever
-                        curiosity produces another strange idea.
+                        Launch, bank, and thread a shot through
+                        a shifting field of floating obstacles.
                     </p>
-                </article>
+                </a>
             </div>
         </section>
 
