@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vahit V2.4 — Number Pulse</title>
+  <style>
+    :root{
+      --bg1:#111827;
+      --bg2:#312e81;
+      --card:rgba(255,255,255,.12);
+      --card-border:rgba(255,255,255,.18);
+      --text:#f9fafb;
+      --muted:#cbd5e1;
+      --accent:#22d3ee;
+      --accent2:#a78bfa;
+      --good:#34d399;
+      --bad:#fb7185;
+      --warn:#fbbf24;
+      --shadow:0 24px 70px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(34,211,238,.22), transparent 25%),
+        radial-gradient(circle at 85% 25%, rgba(167,139,250,.25), transparent 28%),
+        radial-gradient(circle at 50% 85%, rgba(251,191,36,.16), transparent 25%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+      padding:24px;
+      overflow-x:hidden;
+    }
+
+    .shell{
+      width:min(920px,100%);
+      display:grid;
+      gap:18px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:.85rem;
+      color:var(--accent);
+    }
+
+    .mode{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .sound-toggle{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.09);
+      color:white;
+      min-width:112px;
+      padding:9px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:800;
+      transition:.18s transform,.18s background,.18s border-color;
+    }
+
+    .sound-toggle:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.14);
+      border-color:rgba(34,211,238,.55);
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--card-border);
+      border-radius:28px;
+      backdrop-filter:blur(18px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .main{
+      padding:30px;
+      display:grid;
+      gap:24px;
+    }
+
+    .hero{
+      text-align:center;
+      display:grid;
+      gap:8px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(2rem,6vw,4rem);
+      line-height:1;
+      letter-spacing:-.06em;
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .stat{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:20px;
+      padding:16px;
+      text-align:center;
+    }
+
+    .stat b{
+      display:block;
+      font-size:1.55rem;
+      margin-top:3px;
+    }
+
+    .stat span{
+      color:var(--muted);
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .arena{
+      display:grid;
+      gap:20px;
+      place-items:center;
+      padding:8px 0 4px;
+    }
+
+    .round{
+      color:var(--warn);
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:.85rem;
+    }
+
+    .prompt{
+      font-size:1.1rem;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .digits{
+      display:grid;
+      grid-template-columns:repeat(5, minmax(52px,78px));
+      gap:12px;
+      justify-content:center;
+    }
+
+    .digit{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      min-height:70px;
+      border-radius:20px;
+      font-size:1.65rem;
+      font-weight:900;
+      color:white;
+      background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.08));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+      transition:.18s transform,.18s background,.18s border-color;
+    }
+
+    .digit:hover{
+      transform:translateY(-3px) scale(1.03);
+      border-color:rgba(34,211,238,.7);
+      background:linear-gradient(145deg,rgba(34,211,238,.35),rgba(167,139,250,.2));
+    }
+
+    .digit:active{transform:scale(.97)}
+    .digit:disabled{cursor:not-allowed;opacity:.55;transform:none}
+
+    .feedback{
+      min-height:104px;
+      width:min(560px,100%);
+      border-radius:22px;
+      padding:18px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .feedback strong{
+      display:block;
+      font-size:1.4rem;
+      margin-bottom:4px;
+    }
+
+    .feedback.good{
+      background:rgba(52,211,153,.14);
+      border-color:rgba(52,211,153,.5);
+    }
+
+    .feedback.bad{
+      background:rgba(251,113,133,.14);
+      border-color:rgba(251,113,133,.5);
+    }
+
+    .progress-wrap{
+      display:grid;
+      gap:8px;
+    }
+
+    .progress-label{
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:.86rem;
+    }
+
+    .progress{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+
+    .progress > div{
+      height:100%;
+      width:0%;
+      border-radius:inherit;
+      background:linear-gradient(90deg,var(--accent),var(--accent2),var(--warn));
+      transition:width .35s ease;
+    }
+
+    .actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:13px 22px;
+      font-weight:800;
+      font-size:.95rem;
+      transition:.18s transform,.18s opacity;
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+    .btn:active{transform:scale(.98)}
+    .primary{
+      color:#0f172a;
+      background:linear-gradient(90deg,var(--accent),#67e8f9);
+    }
+
+    .secondary{
+      color:white;
+      background:rgba(255,255,255,.11);
+      border:1px solid rgba(255,255,255,.15);
+    }
+
+    .history{
+      padding:20px 24px 24px;
+    }
+
+    .history h2{
+      font-size:1rem;
+      margin:0 0 12px;
+    }
+
+    .history-grid{
+      display:grid;
+      grid-template-columns:repeat(10,1fr);
+      gap:8px;
+    }
+
+    .history-item{
+      aspect-ratio:1;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      background:rgba(255,255,255,.07);
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.08);
+      font-weight:800;
+      font-size:.84rem;
+    }
+
+    .history-item.correct{
+      background:rgba(52,211,153,.2);
+      border-color:rgba(52,211,153,.5);
+      color:#d1fae5;
+    }
+
+    .history-item.wrong{
+      background:rgba(251,113,133,.18);
+      border-color:rgba(251,113,133,.45);
+      color:#ffe4e6;
+    }
+
+    .footer{
+      text-align:center;
+      color:rgba(255,255,255,.52);
+      font-size:.8rem;
+    }
+
+    .flash{
+      animation:flash .45s ease;
+    }
+
+    @keyframes flash{
+      0%{transform:scale(.98);opacity:.7}
+      55%{transform:scale(1.02);opacity:1}
+      100%{transform:scale(1);opacity:1}
+    }
+
+    @media (max-width:640px){
+      .main{padding:22px 16px}
+      .stats{grid-template-columns:1fr 1fr}
+      .stats .stat:last-child{grid-column:1/-1}
+      .digits{grid-template-columns:repeat(5,1fr);width:100%;gap:8px}
+      .digit{min-height:58px;border-radius:16px;font-size:1.35rem}
+      .history{padding:18px 14px 20px}
+      .history-grid{grid-template-columns:repeat(5,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar">
+      <div class="brand">Vahit V2.5</div>
+      <div class="top-actions">
+        <div class="mode">Experimental micro-game</div>
+        <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button>
+      </div>
+    </div>
+
+    <section class="card main">
+      <div class="hero">
+        <h1>Number Pulse</h1>
+        <p class="subtitle">The system picks a digit from 0–9. You get 10 rounds.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span>Round</span><b id="roundStat">1 / 10</b></div>
+        <div class="stat"><span>Correct</span><b id="correctStat">0</b></div>
+        <div class="stat"><span>Accuracy</span><b id="accuracyStat">0%</b></div>
+      </div>
+
+      <div class="arena">
+        <div class="round" id="roundLabel">Round 1</div>
+        <div class="prompt" id="prompt">Pick the hidden number.</div>
+
+        <div class="digits" id="digits"></div>
+
+        <div class="feedback" id="feedback">
+          <div>
+            <strong>Ready?</strong>
+            Choose your first number.
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Run progress</span>
+          <span id="progressText">0 / 10 complete</span>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="nextBtn" hidden>Next round</button>
+        <button class="btn secondary" id="resetBtn">Reset game</button>
+      </div>
+    </section>
+
+    <section class="card history">
+      <h2>Round history</h2>
+      <div class="history-grid" id="historyGrid"></div>
+    </section>
+
+    <div class="footer">One guess per round. Pure luck. Zero pressure.</div>
+  </main>
+
+  <script>
+    const TOTAL_ROUNDS = 10;
+
+    let round = 1;
+    let correct = 0;
+    let hiddenNumber = randomDigit();
+    let locked = false;
+    let gameFinished = false;
+    let history = [];
+
+    const digitsEl = document.getElementById('digits');
+    const feedbackEl = document.getElementById('feedback');
+    const roundStatEl = document.getElementById('roundStat');
+    const correctStatEl = document.getElementById('correctStat');
+    const accuracyStatEl = document.getElementById('accuracyStat');
+    const roundLabelEl = document.getElementById('roundLabel');
+    const promptEl = document.getElementById('prompt');
+    const nextBtn = document.getElementById('nextBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const historyGrid = document.getElementById('historyGrid');
+    const soundToggle = document.getElementById('soundToggle');
+
+    let soundEnabled = true;
+    let audioContext = null;
+
+    function getAudioContext() {
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return null;
+        audioContext = new AudioContextClass();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      return audioContext;
+    }
+
+    function tone(frequency, duration = 0.12, type = 'sine', volume = 0.08, delay = 0) {
+      if (!soundEnabled) return;
+
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      const start = ctx.currentTime + delay;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, start);
+
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+
+      oscillator.start(start);
+      oscillator.stop(start + duration + 0.03);
+    }
+
+    function playTap() {
+      tone(360, 0.07, 'sine', 0.045);
+    }
+
+    function playCorrect() {
+      tone(523.25, 0.13, 'sine', 0.08);
+      tone(659.25, 0.15, 'sine', 0.08, 0.10);
+      tone(783.99, 0.20, 'sine', 0.075, 0.20);
+    }
+
+    function playWrong() {
+      tone(220, 0.16, 'triangle', 0.065);
+      tone(165, 0.22, 'triangle', 0.055, 0.11);
+    }
+
+    function playNext() {
+      tone(440, 0.08, 'sine', 0.045);
+      tone(554.37, 0.10, 'sine', 0.045, 0.07);
+    }
+
+    function playFinish() {
+      tone(392, 0.13, 'sine', 0.065);
+      tone(523.25, 0.15, 'sine', 0.07, 0.10);
+      tone(659.25, 0.16, 'sine', 0.07, 0.20);
+      tone(783.99, 0.28, 'sine', 0.075, 0.31);
+    }
+
+    function updateSoundButton() {
+      soundToggle.textContent = soundEnabled ? '🔊 Sound on' : '🔇 Sound off';
+      soundToggle.setAttribute('aria-pressed', String(soundEnabled));
+    }
+
+    function randomDigit() {
+      return Math.floor(Math.random() * 10);
+    }
+
+    function buildDigits() {
+      digitsEl.innerHTML = '';
+      for (let i = 0; i <= 9; i++) {
+        const button = document.createElement('button');
+        button.className = 'digit';
+        button.textContent = i;
+        button.setAttribute('aria-label', `Guess ${i}`);
+        button.addEventListener('click', () => makeGuess(i));
+        digitsEl.appendChild(button);
+      }
+    }
+
+    function buildHistory() {
+      historyGrid.innerHTML = '';
+      for (let i = 0; i < TOTAL_ROUNDS; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'history-item';
+        const item = history[i];
+        if (!item) {
+          cell.textContent = i + 1;
+        } else {
+          cell.classList.add(item.correct ? 'correct' : 'wrong');
+          cell.textContent = `${item.guess}→${item.hidden}`;
+          cell.title = `Round ${i + 1}: guessed ${item.guess}, hidden number ${item.hidden}`;
+        }
+        historyGrid.appendChild(cell);
+      }
+    }
+
+    function setDigitsDisabled(disabled) {
+      [...digitsEl.children].forEach(btn => btn.disabled = disabled);
+    }
+
+    function makeGuess(guess) {
+      if (locked) return;
+      locked = true;
+      setDigitsDisabled(true);
+
+      playTap();
+
+      const isCorrect = guess === hiddenNumber;
+      if (isCorrect) {
+        correct++;
+        window.setTimeout(playCorrect, 55);
+      } else {
+        window.setTimeout(playWrong, 55);
+      }
+
+      history.push({
+        guess,
+        hidden: hiddenNumber,
+        correct: isCorrect
+      });
+
+      feedbackEl.className = `feedback ${isCorrect ? 'good' : 'bad'} flash`;
+      feedbackEl.innerHTML = isCorrect
+        ? `<div><strong>Correct. Nice hit.</strong>You picked ${guess}, and the system picked ${hiddenNumber}.</div>`
+        : `<div><strong>Not this time.</strong>You picked ${guess}. The system picked ${hiddenNumber}.</div>`;
+
+      updateStats();
+      buildHistory();
+
+      if (round >= TOTAL_ROUNDS) {
+        finishGame();
+      } else {
+        nextBtn.hidden = false;
+        nextBtn.textContent = 'Next round';
+      }
+    }
+
+    function nextRound() {
+      playNext();
+      round++;
+      hiddenNumber = randomDigit();
+      locked = false;
+      setDigitsDisabled(false);
+      nextBtn.hidden = true;
+      feedbackEl.className = 'feedback';
+      feedbackEl.innerHTML = `<div><strong>Round ${round}</strong>Choose your next number.</div>`;
+      promptEl.textContent = 'Pick the hidden number.';
+      updateStats();
+    }
+
+    function finishGame() {
+      const accuracy = Math.round((correct / TOTAL_ROUNDS) * 100);
+      gameFinished = true;
+      nextBtn.hidden = false;
+      nextBtn.textContent = 'Play again';
+
+      let verdict = 'Probability did what probability does.';
+      if (correct >= 5) verdict = 'Statistically suspicious. Very strong run.';
+      else if (correct >= 3) verdict = 'Excellent luck.';
+      else if (correct === 2) verdict = 'Solid result.';
+      else if (correct === 1) verdict = 'Exactly one clean hit.';
+      else verdict = 'A perfect zero. Weirdly elegant.';
+
+      roundLabelEl.textContent = 'Run complete';
+      promptEl.textContent = verdict;
+      feedbackEl.className = 'feedback good flash';
+      feedbackEl.innerHTML =
+        `<div><strong>${correct} / ${TOTAL_ROUNDS} correct — ${accuracy}%</strong>${verdict}</div>`;
+
+      window.setTimeout(playFinish, 120);
+    }
+
+    function updateStats() {
+      const completed = history.length;
+      const accuracy = completed === 0 ? 0 : Math.round((correct / completed) * 100);
+
+      roundStatEl.textContent = `${Math.min(round, TOTAL_ROUNDS)} / ${TOTAL_ROUNDS}`;
+      correctStatEl.textContent = correct;
+      accuracyStatEl.textContent = `${accuracy}%`;
+      roundLabelEl.textContent = round <= TOTAL_ROUNDS ? `Round ${round}` : 'Run complete';
+      progressText.textContent = `${completed} / ${TOTAL_ROUNDS} complete`;
+      progressBar.style.width = `${(completed / TOTAL_ROUNDS) * 100}%`;
+    }
+
+    function resetGame() {
+      playTap();
+      round = 1;
+      correct = 0;
+      hiddenNumber = randomDigit();
+      locked = false;
+      gameFinished = false;
+      history = [];
+
+      setDigitsDisabled(false);
+      nextBtn.hidden = true;
+      nextBtn.textContent = 'Next round';
+
+      feedbackEl.className = 'feedback';
+      feedbackEl.innerHTML = `<div><strong>Ready?</strong>Choose your first number.</div>`;
+      roundLabelEl.textContent = 'Round 1';
+      promptEl.textContent = 'Pick the hidden number.';
+      updateStats();
+      buildHistory();
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (gameFinished) {
+        resetGame();
+      } else {
+        nextRound();
+      }
+    });
+
+    resetBtn.addEventListener('click', resetGame);
+
+    soundToggle.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      updateSoundButton();
+      if (soundEnabled) {
+        playNext();
+      }
+    });
+
+    updateSoundButton();
+    buildDigits();
+    buildHistory();
+    updateStats();
+  </script>
+</body>
+</html>
