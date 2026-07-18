@@ -517,6 +517,115 @@
       background:#5bd8b8;
     }
 
+
+    .pocket-orchestra::after{
+      background:radial-gradient(circle,rgba(255,125,200,.34),rgba(123,124,255,.14) 48%,transparent 72%);
+    }
+
+    .orchestra-icon{
+      position:relative;
+      width:84px;
+      height:84px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:radial-gradient(circle at 35% 30%,#fff 0 4%,#ffdf7c 8%,#ff7fc7 37%,#7f78ff 68%,#26104d 100%);
+      box-shadow:0 0 24px rgba(255,125,200,.5),0 0 40px rgba(123,124,255,.3);
+      font-size:2.2rem;
+    }
+
+    .orchestra-icon::before,
+    .orchestra-icon::after{
+      position:absolute;
+      color:#8ef4ff;
+      text-shadow:0 0 10px rgba(142,244,255,.75);
+      font-weight:900;
+    }
+
+    .orchestra-icon::before{
+      content:"♪";
+      left:-8px;
+      top:3px;
+      transform:rotate(-12deg);
+      font-size:1.7rem;
+    }
+
+    .orchestra-icon::after{
+      content:"♫";
+      right:-10px;
+      bottom:1px;
+      transform:rotate(10deg);
+      font-size:1.5rem;
+    }
+
+    .creature-chorus::after{
+      background:radial-gradient(circle,rgba(111,240,174,.32),rgba(255,125,200,.14) 48%,transparent 72%);
+    }
+
+    .chorus-icon{
+      position:relative;
+      width:92px;
+      height:78px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      gap:2px;
+      font-size:2.25rem;
+      filter:drop-shadow(0 0 14px rgba(111,240,174,.25));
+    }
+
+    .chorus-icon span:nth-child(2){
+      transform:translateY(-12px);
+    }
+
+    .chorus-icon::after{
+      content:"♪";
+      position:absolute;
+      right:-2px;
+      top:-10px;
+      color:#ffd76c;
+      font-size:1.45rem;
+      text-shadow:0 0 10px rgba(255,215,108,.65);
+    }
+
+    .neon-bounce::after{
+      background:radial-gradient(circle,rgba(76,232,223,.34),rgba(192,86,255,.15) 48%,transparent 72%);
+    }
+
+    .neon-room-icon{
+      position:relative;
+      width:86px;
+      height:72px;
+      border:3px solid rgba(123,232,255,.78);
+      border-top-color:rgba(192,86,255,.78);
+      border-radius:9px 9px 18px 18px;
+      transform:perspective(120px) rotateX(8deg);
+      box-shadow:0 0 16px rgba(123,232,255,.28),inset 0 0 18px rgba(126,66,255,.14);
+    }
+
+    .neon-room-icon::before{
+      content:"";
+      position:absolute;
+      width:30px;
+      height:30px;
+      left:26px;
+      top:18px;
+      border-radius:50%;
+      background:radial-gradient(circle at 35% 30%,#fff 0 7%,#8ef4ff 15%,#7b7cff 48%,#d053ff 78%,#26104d 100%);
+      box-shadow:0 0 18px rgba(123,124,255,.8),0 0 30px rgba(208,83,255,.45);
+    }
+
+    .neon-room-icon::after{
+      content:"";
+      position:absolute;
+      left:10px;
+      right:10px;
+      bottom:7px;
+      height:2px;
+      background:linear-gradient(90deg,transparent,#4ce8df,#c056ff,transparent);
+      box-shadow:0 0 8px rgba(76,232,223,.65);
+    }
+
     .game-content{
       position:relative;
       z-index:1;
@@ -687,7 +796,7 @@
           <h2 id="experiments-title">Experiments</h2>
         </div>
 
-        <span class="version">MGL v0.4</span>
+        <span class="version">MGL v0.7</span>
       </div>
 
       <div class="games">
@@ -784,6 +893,59 @@
             </p>
           </div>
         </a>
+
+        <a class="game-card pocket-orchestra" href="./games/pocket-orchestra/" aria-label="Launch Pocket Orchestra">
+          <div class="game-icon" aria-hidden="true">
+            <div class="orchestra-icon">🎼</div>
+          </div>
+
+          <div class="game-content">
+            <span class="game-number">Experiment 005</span>
+            <span class="tag">Live</span>
+            <h3>Pocket Orchestra</h3>
+            <p>
+              Wake the instruments, build a tiny looping song,
+              and let Maestro Snail conduct the whole delightful operation.
+            </p>
+          </div>
+        </a>
+
+        <a class="game-card creature-chorus" href="./games/creature-chorus/" aria-label="Launch Creature Chorus">
+          <div class="game-icon" aria-hidden="true">
+            <div class="chorus-icon">
+              <span>🐶</span>
+              <span>🐱</span>
+              <span>🐺</span>
+            </div>
+          </div>
+
+          <div class="game-content">
+            <span class="game-number">Experiment 006</span>
+            <span class="tag">Live</span>
+            <h3>Creature Chorus</h3>
+            <p>
+              Wake a peculiar animal choir, layer their synthesized voices,
+              and let Maestro Snail conduct the most unnecessary concert online.
+            </p>
+          </div>
+        </a>
+
+        <a class="game-card neon-bounce" href="./games/neon-bounce-room/" aria-label="Launch Neon Bounce Room">
+          <div class="game-icon" aria-hidden="true">
+            <div class="neon-room-icon"></div>
+          </div>
+
+          <div class="game-content">
+            <span class="game-number">Experiment 007</span>
+            <span class="tag">Live</span>
+            <h3>Neon Bounce Room</h3>
+            <p>
+              Watch a colorful ball ricochet through a futuristic neon chamber
+              filled with glowing surfaces and smooth motion.
+            </p>
+          </div>
+        </a>
+
       </div>
     </section>
 
