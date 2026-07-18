@@ -626,6 +626,92 @@
       box-shadow:0 0 8px rgba(76,232,223,.65);
     }
 
+    .wheel-awesomeness::after{
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,118,200,.34),
+      rgba(94,232,255,.15) 48%,
+      transparent 72%
+    );
+}
+
+.awesome-wheel-icon{
+  position:relative;
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  background:
+    conic-gradient(
+      from -30deg,
+      #5ee8ff 0deg 60deg,
+      #9b7bff 60deg 120deg,
+      #ff76c8 120deg 180deg,
+      #7bf2bd 180deg 240deg,
+      #ffb56b 240deg 300deg,
+      #ffe37a 300deg 360deg
+    );
+  border:5px solid rgba(255,255,255,.75);
+  box-shadow:
+    0 0 22px rgba(94,232,255,.42),
+    0 0 38px rgba(155,123,255,.24),
+    inset 0 0 18px rgba(255,255,255,.18);
+}
+
+.awesome-wheel-icon::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:27px;
+  height:27px;
+  border-radius:50%;
+  background:
+    linear-gradient(
+      145deg,
+      #15213d,
+      #080f21
+    );
+  border:2px solid rgba(255,255,255,.68);
+  box-shadow:
+    0 0 13px rgba(94,232,255,.58);
+  transform:translate(-50%,-50%);
+}
+
+.awesome-wheel-icon::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-15px;
+  width:24px;
+  height:24px;
+  background:#fff;
+  clip-path:
+    polygon(
+      0 0,
+      100% 0,
+      50% 100%
+    );
+  transform:translateX(-50%);
+  filter:
+    drop-shadow(
+      0 4px 7px
+      rgba(0,0,0,.38)
+    );
+}
+
+.awesome-wheel-spark{
+  position:absolute;
+  right:-9px;
+  bottom:-5px;
+  color:#ffe37a;
+  font-size:1.65rem;
+  line-height:1;
+  text-shadow:
+    0 0 12px rgba(255,227,122,.8);
+  transform:rotate(12deg);
+}
+
     .game-content{
       position:relative;
       z-index:1;
@@ -796,7 +882,7 @@
           <h2 id="experiments-title">Experiments</h2>
         </div>
 
-        <span class="version">MGL v0.7</span>
+        <span class="version">MGL v0.8</span>
       </div>
 
       <div class="games">
@@ -945,7 +1031,30 @@
             </p>
           </div>
         </a>
+<a
+          class="game-card wheel-awesomeness"
+          href="./games/wheel-of-awesomeness/"
+          aria-label="Launch Wheel of Awesomeness"
+        >
+          <div class="game-icon" aria-hidden="true">
+            <div class="awesome-wheel-icon">
+              <span class="awesome-wheel-spark">✦</span>
+            </div>
+          </div>
 
+          <div class="game-content">
+            <span class="game-number">Experiment 008</span>
+            <span class="tag">Live</span>
+
+            <h3>Wheel of Awesomeness</h3>
+
+            <p>
+              Spin a luminous cosmic wheel and receive one completely
+              unnecessary but scientifically uplifting message from the universe.
+            </p>
+          </div>
+        </a>
+        
       </div>
     </section>
 
