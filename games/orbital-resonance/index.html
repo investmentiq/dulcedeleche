@@ -1,0 +1,4332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#060916"
+  >
+
+  <meta
+    name="description"
+    content="Orbital Resonance — a hypnotic kinetic soundscape by MartianGalactic Labs."
+  >
+
+  <title>
+    Orbital Resonance v0.10 — MartianGalactic Labs
+  </title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --bg-1: #050814;
+      --bg-2: #0b1530;
+      --bg-3: #210b3f;
+
+      --panel:
+        rgba(255, 255, 255, 0.07);
+
+      --panel-hover:
+        rgba(255, 255, 255, 0.11);
+
+      --border:
+        rgba(166, 184, 255, 0.22);
+
+      --text: #f7f8ff;
+      --muted: #b9c2db;
+
+      --cyan: #63f0ee;
+      --blue: #6f9cff;
+      --violet: #a679ff;
+      --pink: #ff75c8;
+      --mint: #71f1b0;
+      --gold: #ffd878;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+
+      background: var(--bg-1);
+    }
+
+    body {
+      overflow-x: hidden;
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at 15% 18%,
+          rgba(77, 196, 255, 0.14),
+          transparent 28rem
+        ),
+        radial-gradient(
+          circle at 84% 12%,
+          rgba(174, 86, 255, 0.18),
+          transparent 30rem
+        ),
+        radial-gradient(
+          circle at 50% 115%,
+          rgba(255, 85, 179, 0.11),
+          transparent 38rem
+        ),
+        linear-gradient(
+          145deg,
+          var(--bg-1),
+          var(--bg-2) 56%,
+          var(--bg-3)
+        );
+    }
+
+    body::before {
+      content: "";
+
+      position: fixed;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0.72;
+
+      background-image:
+        linear-gradient(
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.29) 0 1px,
+          transparent 1.7px
+        );
+
+      background-size:
+        52px 52px,
+        52px 52px,
+        118px 118px;
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          transparent 96%
+        );
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .page {
+      position: relative;
+
+      width:
+        min(
+          1180px,
+          calc(100% - 28px)
+        );
+
+      margin: 0 auto;
+      padding: 22px 0 34px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 18px;
+
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+    }
+
+    .flask {
+      position: relative;
+
+      width: 42px;
+      height: 42px;
+
+      flex: 0 0 auto;
+    }
+
+    .flask::before {
+      content: "";
+
+      position: absolute;
+
+      left: 13px;
+      top: 2px;
+
+      width: 13px;
+      height: 15px;
+
+      border:
+        3px solid var(--violet);
+
+      border-bottom: 0;
+
+      border-radius:
+        5px 5px 0 0;
+    }
+
+    .flask::after {
+      content: "";
+
+      position: absolute;
+
+      left: 5px;
+      bottom: 2px;
+
+      width: 30px;
+      height: 26px;
+
+      border:
+        3px solid var(--cyan);
+
+      border-radius:
+        7px 7px 11px 11px;
+
+      background:
+        linear-gradient(
+          to top,
+          rgba(99, 240, 238, 0.32) 0 42%,
+          transparent 42%
+        );
+
+      box-shadow:
+        0 0 18px
+        rgba(99, 240, 238, 0.27),
+
+        inset 0 0 13px
+        rgba(166, 121, 255, 0.18);
+    }
+
+    .brand-copy {
+      display: grid;
+      gap: 2px;
+
+      line-height: 1;
+    }
+
+    .brand-copy strong {
+      font-size: 0.83rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .brand-copy span {
+      font-size: 0.76rem;
+      font-weight: 800;
+
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--cyan),
+          var(--blue),
+          var(--violet)
+        );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      color: transparent;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+    }
+
+    .icon-button {
+      display: grid;
+      place-items: center;
+
+      min-width: 44px;
+      height: 44px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 15px;
+
+      color: var(--text);
+
+      background:
+        rgba(255, 255, 255, 0.06);
+
+      backdrop-filter:
+        blur(15px);
+
+      -webkit-backdrop-filter:
+        blur(15px);
+
+      text-decoration: none;
+      cursor: pointer;
+
+      transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .icon-button:hover {
+      transform:
+        translateY(-2px);
+
+      background:
+        rgba(255, 255, 255, 0.1);
+
+      border-color:
+        rgba(166, 121, 255, 0.5);
+    }
+
+    .hero {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr) auto;
+
+      align-items: end;
+
+      gap: 22px;
+
+      margin:
+        10px 0 18px;
+    }
+
+    .experiment {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      color: #9df6e3;
+
+      font-size: 0.72rem;
+      font-weight: 900;
+
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .experiment::before {
+      content: "";
+
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--mint);
+
+      box-shadow:
+        0 0 14px
+        rgba(113, 241, 176, 0.9);
+    }
+
+    h1 {
+      margin:
+        10px 0 0;
+
+      font-size:
+        clamp(
+          2.6rem,
+          7vw,
+          5.8rem
+        );
+
+      line-height: 0.94;
+
+      letter-spacing:
+        -0.06em;
+    }
+
+    .gradient {
+      display: block;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--cyan),
+          var(--blue) 42%,
+          var(--pink)
+        );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      color: transparent;
+    }
+
+    .subtitle {
+      max-width: 730px;
+
+      margin:
+        18px 0 0;
+
+      color: var(--muted);
+
+      font-size:
+        clamp(
+          0.98rem,
+          2vw,
+          1.1rem
+        );
+
+      line-height: 1.72;
+    }
+
+    .version-pill {
+      align-self: start;
+
+      padding:
+        9px 13px;
+
+      border:
+        1px solid
+        rgba(166, 121, 255, 0.36);
+
+      border-radius: 999px;
+
+      background:
+        rgba(166, 121, 255, 0.09);
+
+      color: #d9ceff;
+
+      font-size: 0.8rem;
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+    .stage-shell {
+      position: relative;
+
+      overflow: hidden;
+
+      min-height:
+        clamp(
+          470px,
+          68vh,
+          740px
+        );
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 30px;
+
+      background:
+        radial-gradient(
+          circle at 50% 36%,
+          rgba(96, 118, 255, 0.11),
+          transparent 34%
+        ),
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.075),
+          rgba(255, 255, 255, 0.035)
+        );
+
+      box-shadow:
+        0 24px 80px
+        rgba(0, 0, 0, 0.34),
+
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.04);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+    }
+
+    .stage-shell::before {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle at 15% 25%,
+          rgba(99, 240, 238, 0.13),
+          transparent 18rem
+        ),
+        radial-gradient(
+          circle at 88% 70%,
+          rgba(255, 117, 200, 0.11),
+          transparent 18rem
+        );
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      touch-action: none;
+    }
+
+    .stage-overlay {
+      position: absolute;
+      inset: 0;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+
+      padding: 18px;
+
+      pointer-events: none;
+    }
+
+    .quiet-note {
+      max-width: 680px;
+
+      padding:
+        10px 14px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.1);
+
+      border-radius: 999px;
+
+      background:
+        rgba(3, 8, 21, 0.34);
+
+      color:
+        rgba(236, 240, 255, 0.72);
+
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+
+      text-align: center;
+
+      backdrop-filter:
+        blur(13px);
+
+      -webkit-backdrop-filter:
+        blur(13px);
+    }
+
+    .controls {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          5,
+          minmax(0, 1fr)
+        );
+
+      gap: 12px;
+
+      margin-top: 14px;
+    }
+
+    .control-group {
+      min-width: 0;
+
+      padding: 14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 20px;
+
+      background:
+        rgba(255, 255, 255, 0.055);
+
+      box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.035);
+
+      backdrop-filter:
+        blur(14px);
+
+      -webkit-backdrop-filter:
+        blur(14px);
+    }
+
+    .control-label {
+      display: block;
+
+      margin-bottom: 9px;
+
+      color: #dce2f7;
+
+      font-size: 0.7rem;
+      font-weight: 900;
+
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .segmented {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 6px;
+    }
+
+    .segmented.sound {
+      grid-template-columns:
+        repeat(4, 1fr);
+    }
+
+    .segmented button,
+    .control-button {
+      min-height: 42px;
+
+      padding:
+        9px 10px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+      border-radius: 13px;
+
+      color: var(--muted);
+
+      background:
+        rgba(255, 255, 255, 0.045);
+
+      cursor: pointer;
+
+      transition:
+        color 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+    }
+
+    .segmented button:hover,
+    .control-button:hover {
+      transform:
+        translateY(-1px);
+
+      color: var(--text);
+
+      background:
+        rgba(255, 255, 255, 0.08);
+    }
+
+    .segmented button.active {
+      color: #071421;
+
+      border-color: transparent;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--cyan),
+          #a6fff3
+        );
+
+      box-shadow:
+        0 0 18px
+        rgba(99, 240, 238, 0.22);
+
+      font-weight: 900;
+    }
+
+    .sound button.active {
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(111, 156, 255, 0.85),
+          rgba(166, 121, 255, 0.9)
+        );
+
+      box-shadow:
+        0 0 18px
+        rgba(166, 121, 255, 0.22);
+    }
+
+    .transport {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 7px;
+    }
+
+    .control-button.primary {
+      color: #071421;
+
+      border-color: transparent;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--cyan),
+          #b3fff2
+        );
+
+      font-weight: 950;
+    }
+
+    .volume-wrap {
+      display: grid;
+      gap: 7px;
+    }
+
+    .volume-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      color: var(--muted);
+
+      font-size: 0.78rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+
+      accent-color: var(--cyan);
+
+      cursor: pointer;
+    }
+
+    .status-card {
+      display: grid;
+      align-content: center;
+
+      gap: 4px;
+
+      min-height: 100%;
+    }
+
+    .status-main {
+      color: var(--text);
+
+      font-size: 0.95rem;
+      font-weight: 900;
+    }
+
+    .status-sub {
+      color: var(--muted);
+
+      font-size: 0.76rem;
+      line-height: 1.4;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      margin-top: 18px;
+
+      color:
+        rgba(217, 224, 244, 0.66);
+
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    footer::before,
+    footer::after {
+      content: "✦";
+
+      color: var(--cyan);
+
+      text-shadow:
+        0 0 10px
+        rgba(99, 240, 238, 0.6);
+    }
+
+    .toast {
+      position: fixed;
+
+      left: 50%;
+      bottom: 22px;
+
+      z-index: 20;
+
+      max-width:
+        min(
+          420px,
+          calc(100% - 28px)
+        );
+
+      padding:
+        11px 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 999px;
+
+      color: var(--text);
+
+      background:
+        rgba(7, 12, 30, 0.84);
+
+      box-shadow:
+        0 16px 40px
+        rgba(0, 0, 0, 0.35);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
+
+      transform:
+        translate(
+          -50%,
+          18px
+        );
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.22s ease,
+        transform 0.22s ease;
+
+      text-align: center;
+      font-size: 0.82rem;
+    }
+
+    .toast.show {
+      opacity: 1;
+
+      transform:
+        translate(
+          -50%,
+          0
+        );
+    }
+
+    @media (max-width: 1000px) {
+      .controls {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+      }
+
+      .control-group:last-child {
+        grid-column:
+          1 / -1;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        width:
+          min(
+            100% - 18px,
+            1180px
+          );
+
+        padding-top: 12px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .brand-copy strong {
+        font-size: 0.73rem;
+      }
+
+      .brand-copy span {
+        font-size: 0.68rem;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .version-pill {
+        justify-self: start;
+      }
+
+      .stage-shell {
+        min-height: 58vh;
+
+        border-radius: 24px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .control-group:last-child {
+        grid-column: auto;
+      }
+
+      .segmented.sound {
+        grid-template-columns:
+          repeat(
+            2,
+            1fr
+          );
+      }
+
+      .quiet-note {
+        border-radius: 16px;
+
+        font-size: 0.72rem;
+      }
+    }
+
+    @media (
+      prefers-reduced-motion:
+      reduce
+    ) {
+      * {
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div
+        class="brand"
+        aria-label="MartianGalactic Labs"
+      >
+        <div
+          class="flask"
+          aria-hidden="true"
+        ></div>
+
+        <div class="brand-copy">
+          <strong>
+            MartianGalactic
+          </strong>
+
+          <span>
+            Labs
+          </span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button
+          class="icon-button"
+          id="fullscreenBtn"
+          type="button"
+          aria-label="Toggle fullscreen"
+          title="Fullscreen"
+        >
+          ⛶
+        </button>
+
+        <a
+          class="icon-button"
+          href="../../"
+          aria-label="Back to MartianGalactic Labs"
+          title="Back to Labs"
+        >
+          ⌂
+        </a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="experiment">
+          Experiment 009
+        </div>
+
+        <h1>
+          Orbital
+
+          <span class="gradient">
+            Resonance
+          </span>
+        </h1>
+
+        <p class="subtitle">
+          A hypnotic kinetic sculpture of luminous worlds,
+          quiet collisions, and slow cosmic motion. Tap or
+          drag a planet to disturb the system, then watch the
+          universe find its rhythm again.
+        </p>
+      </div>
+
+      <div class="version-pill">
+        Orbital Resonance v0.10
+      </div>
+    </section>
+
+    <section
+      class="stage-shell"
+      id="stageShell"
+      aria-label="Interactive orbital resonance kinetic sculpture"
+    >
+      <canvas id="stage"></canvas>
+
+      <div class="stage-overlay">
+        <div class="quiet-note">
+          Capture the eyes. Quiet the noise.
+          Let the cosmos move for a while.
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="controls"
+      aria-label="Orbital Resonance controls"
+    >
+      <div class="control-group">
+        <span class="control-label">
+          Motion
+        </span>
+
+        <div
+          class="segmented"
+          id="motionControls"
+        >
+          <button
+            type="button"
+            data-mode="resonance"
+            class="active"
+          >
+            Resonance
+          </button>
+
+          <button
+            type="button"
+            data-mode="orbit"
+          >
+            Orbit
+          </button>
+
+          <button
+            type="button"
+            data-mode="tide"
+          >
+            Cosmic Tide
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">
+          Soundscape
+        </span>
+
+        <div
+          class="segmented sound"
+          id="soundControls"
+        >
+          <button
+            type="button"
+            data-sound="off"
+            class="active"
+          >
+            Off
+          </button>
+
+          <button
+            type="button"
+            data-sound="rain"
+          >
+            Rain
+          </button>
+
+          <button
+            type="button"
+            data-sound="waves"
+          >
+            Waves
+          </button>
+
+          <button
+            type="button"
+            data-sound="wind"
+          >
+            Wind
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">
+          Transport
+        </span>
+
+        <div class="transport">
+          <button
+            class="control-button primary"
+            type="button"
+            id="pauseBtn"
+          >
+            Pause
+          </button>
+
+          <button
+            class="control-button"
+            type="button"
+            id="randomizeBtn"
+          >
+            Randomize
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">
+          Volume
+        </span>
+
+        <div class="volume-wrap">
+          <input
+            id="volumeSlider"
+            type="range"
+            min="0"
+            max="100"
+            value="42"
+            aria-label="Sound volume"
+          >
+
+          <div class="volume-row">
+            <span>
+              Quiet cosmos
+            </span>
+
+            <strong id="volumeValue">
+              42%
+            </strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">
+          System
+        </span>
+
+        <div class="status-card">
+          <div
+            class="status-main"
+            id="statusMain"
+          >
+            Resonance stable
+          </div>
+
+          <div
+            class="status-sub"
+            id="statusSub"
+          >
+            Tap or drag a world to send a ripple
+            through the system.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      MartianGalactic Labs · Browser powered,
+      cosmos approved.
+    </footer>
+  </main>
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas =
+        document.getElementById(
+          "stage"
+        );
+
+      const context =
+        canvas.getContext(
+          "2d",
+          {
+            alpha: true
+          }
+        );
+
+      const shell =
+        document.getElementById(
+          "stageShell"
+        );
+
+      const pauseButton =
+        document.getElementById(
+          "pauseBtn"
+        );
+
+      const randomizeButton =
+        document.getElementById(
+          "randomizeBtn"
+        );
+
+      const fullscreenButton =
+        document.getElementById(
+          "fullscreenBtn"
+        );
+
+      const volumeSlider =
+        document.getElementById(
+          "volumeSlider"
+        );
+
+      const volumeValue =
+        document.getElementById(
+          "volumeValue"
+        );
+
+      const motionControls =
+        document.getElementById(
+          "motionControls"
+        );
+
+      const soundControls =
+        document.getElementById(
+          "soundControls"
+        );
+
+      const statusMain =
+        document.getElementById(
+          "statusMain"
+        );
+
+      const statusSub =
+        document.getElementById(
+          "statusSub"
+        );
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+      const reducedMotion =
+        window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+      const state = {
+        width: 0,
+        height: 0,
+        dpr: 1,
+
+        running: true,
+
+        mode: "resonance",
+        sound: "off",
+
+        volume: 0.42,
+
+        time: 0,
+        lastFrame:
+          performance.now(),
+
+        worlds: [],
+        stars: [],
+        pulses: [],
+
+        pointer: {
+          active: false,
+          x: 0,
+          y: 0,
+          grabbed: null
+        },
+
+        drifter: {
+          active: false,
+          x: -100,
+          y: 0,
+          timer: 0,
+
+          nextAt:
+            35 +
+            Math.random() * 20
+        }
+      };
+
+      const palettes = [
+        [
+          "#ffffff",
+          "#70f1ef",
+          "#4783ff",
+          "#25175c"
+        ],
+
+        [
+          "#ffffff",
+          "#ffcf7a",
+          "#ff7fbd",
+          "#5a235f"
+        ],
+
+        [
+          "#ffffff",
+          "#a9ffbd",
+          "#4bd6a5",
+          "#164a4e"
+        ],
+
+        [
+          "#ffffff",
+          "#d9b8ff",
+          "#9467ff",
+          "#2b1a57"
+        ],
+
+        [
+          "#ffffff",
+          "#ffe27d",
+          "#ff9a68",
+          "#5b293b"
+        ],
+
+        [
+          "#ffffff",
+          "#9de6ff",
+          "#6c92ff",
+          "#2c1f68"
+        ]
+      ];
+
+      function clamp(
+        value,
+        minimum,
+        maximum
+      ) {
+        return Math.max(
+          minimum,
+          Math.min(
+            maximum,
+            value
+          )
+        );
+      }
+
+      function lerp(
+        start,
+        end,
+        amount
+      ) {
+        return (
+          start +
+          (end - start) *
+          amount
+        );
+      }
+
+      function showToast(
+        message
+      ) {
+        toast.textContent =
+          message;
+
+        toast.classList.add(
+          "show"
+        );
+
+        clearTimeout(
+          showToast.timer
+        );
+
+        showToast.timer =
+          setTimeout(
+            () => {
+              toast.classList.remove(
+                "show"
+              );
+            },
+            1800
+          );
+      }
+
+      function resizeCanvas() {
+        const rectangle =
+          shell.getBoundingClientRect();
+
+        state.dpr =
+          Math.min(
+            window.devicePixelRatio ||
+            1,
+            2
+          );
+
+        state.width =
+          Math.max(
+            1,
+            rectangle.width
+          );
+
+        state.height =
+          Math.max(
+            1,
+            rectangle.height
+          );
+
+        canvas.width =
+          Math.floor(
+            state.width *
+            state.dpr
+          );
+
+        canvas.height =
+          Math.floor(
+            state.height *
+            state.dpr
+          );
+
+        canvas.style.width =
+          state.width +
+          "px";
+
+        canvas.style.height =
+          state.height +
+          "px";
+
+        context.setTransform(
+          state.dpr,
+          0,
+          0,
+          state.dpr,
+          0,
+          0
+        );
+
+        createStars();
+
+        if (
+          state.worlds.length === 0
+        ) {
+          createWorlds();
+        } else {
+          normalizeWorldPositions();
+        }
+      }
+
+      function createStars() {
+        const count =
+          Math.floor(
+            (
+              state.width *
+              state.height
+            ) /
+            9000
+          );
+
+        state.stars =
+          Array.from(
+            {
+              length: count
+            },
+            () => ({
+              x:
+                Math.random() *
+                state.width,
+
+              y:
+                Math.random() *
+                state.height,
+
+              radius:
+                Math.random() *
+                1.4 +
+                0.25,
+
+              alpha:
+                Math.random() *
+                0.65 +
+                0.16,
+
+              twinkle:
+                Math.random() *
+                Math.PI *
+                2,
+
+              speed:
+                Math.random() *
+                0.8 +
+                0.25
+            })
+          );
+      }
+
+      function createWorlds() {
+        const count =
+          state.width < 620
+            ? 6
+            : 8;
+
+        state.worlds = [];
+
+        for (
+          let index = 0;
+          index < count;
+          index += 1
+        ) {
+          const colors =
+            palettes[
+              index %
+              palettes.length
+            ];
+
+          const radius =
+            state.width < 620
+              ? 20 +
+                Math.random() *
+                10
+              : 28 +
+                Math.random() *
+                13;
+
+          state.worlds.push({
+            index,
+
+            x:
+              state.width /
+              2,
+
+            y:
+              state.height /
+              2,
+
+            vx: 0,
+            vy: 0,
+
+            radius,
+            baseRadius: radius,
+
+            phase:
+              (
+                index /
+                count
+              ) *
+              Math.PI *
+              2,
+
+            colors,
+
+            energy: 0,
+
+            rotation:
+              Math.random() *
+              Math.PI *
+              2,
+
+            angularSpeed:
+              (
+                Math.random() -
+                0.5
+              ) *
+              0.008,
+
+            ring:
+              Math.random() >
+              0.62,
+
+            moon:
+              Math.random() >
+              0.72,
+
+            tilt:
+              (
+                Math.random() -
+                0.5
+              ) *
+              0.55
+          });
+        }
+
+        normalizeWorldPositions();
+      }
+
+      function normalizeWorldPositions() {
+        const count =
+          state.worlds.length;
+
+        state.worlds.forEach(
+          (
+            world,
+            index
+          ) => {
+            const ratio =
+              count <= 1
+                ? 0.5
+                : index /
+                  (
+                    count -
+                    1
+                  );
+
+            world.x =
+              lerp(
+                state.width *
+                0.16,
+
+                state.width *
+                0.84,
+
+                ratio
+              );
+
+            world.y =
+              state.height *
+              0.47;
+
+            world.vx *= 0.2;
+            world.vy *= 0.2;
+          }
+        );
+      }
+
+      function randomizeWorlds() {
+        state.worlds.forEach(
+          (
+            world,
+            index
+          ) => {
+            world.radius =
+              clamp(
+                world.baseRadius *
+                (
+                  0.82 +
+                  Math.random() *
+                  0.35
+                ),
+                18,
+                45
+              );
+
+            world.rotation =
+              Math.random() *
+              Math.PI *
+              2;
+
+            world.angularSpeed =
+              (
+                Math.random() -
+                0.5
+              ) *
+              0.012;
+
+            world.ring =
+              Math.random() >
+              0.55;
+
+            world.moon =
+              Math.random() >
+              0.7;
+
+            world.tilt =
+              (
+                Math.random() -
+                0.5
+              ) *
+              0.7;
+
+            world.colors =
+              palettes[
+                (
+                  index +
+                  Math.floor(
+                    Math.random() *
+                    palettes.length
+                  )
+                ) %
+                palettes.length
+              ];
+
+            world.energy =
+              0.25 +
+              Math.random() *
+              0.4;
+          }
+        );
+
+        state.pulses.push({
+          x:
+            state.width /
+            2,
+
+          y:
+            state.height /
+            2,
+
+          radius: 20,
+          alpha: 0.8,
+          color: "#8efcff"
+        });
+
+        playChime(
+          360,
+          0.12,
+          0.08
+        );
+
+        showToast(
+          "Cosmic arrangement randomized."
+        );
+      }
+
+      function setMotionMode(
+        mode
+      ) {
+        state.mode =
+          mode;
+
+        motionControls
+          .querySelectorAll(
+            "button"
+          )
+          .forEach(
+            button => {
+              button.classList.toggle(
+                "active",
+                button.dataset.mode ===
+                  mode
+              );
+            }
+          );
+
+        if (
+          mode ===
+          "resonance"
+        ) {
+          statusMain.textContent =
+            "Resonance stable";
+
+          statusSub.textContent =
+            "Motion travels through the formation like a luminous pulse.";
+        }
+
+        if (
+          mode ===
+          "orbit"
+        ) {
+          statusMain.textContent =
+            "Orbital field active";
+
+          statusSub.textContent =
+            "Worlds circle a quiet center and exchange energy.";
+        }
+
+        if (
+          mode ===
+          "tide"
+        ) {
+          statusMain.textContent =
+            "Cosmic tide flowing";
+
+          statusSub.textContent =
+            "A delayed wave carries every world through the same invisible current.";
+        }
+
+        const labels = {
+          resonance:
+            "Resonance mode",
+
+          orbit:
+            "Orbit mode",
+
+          tide:
+            "Cosmic Tide mode"
+        };
+
+        showToast(
+          labels[mode]
+        );
+      }
+
+      motionControls.addEventListener(
+        "click",
+        event => {
+          const button =
+            event.target.closest(
+              "button[data-mode]"
+            );
+
+          if (!button) {
+            return;
+          }
+
+          setMotionMode(
+            button.dataset.mode
+          );
+        }
+      );
+
+      function updateWorlds(
+        deltaTime
+      ) {
+        const time =
+          state.time;
+
+        const count =
+          state.worlds.length;
+
+        state.worlds.forEach(
+          (
+            world,
+            index
+          ) => {
+            let targetX =
+              world.x;
+
+            let targetY =
+              world.y;
+
+            if (
+              state.mode ===
+              "resonance"
+            ) {
+              const spacing =
+                (
+                  state.width *
+                  0.68
+                ) /
+                Math.max(
+                  1,
+                  count - 1
+                );
+
+              targetX =
+                state.width *
+                0.16 +
+                spacing *
+                index;
+
+              const edgeSwing =
+                (
+                  index === 0
+                    ? Math.sin(
+                        time *
+                        1.18
+                      ) *
+                      72
+                    : 0
+                ) +
+                (
+                  index ===
+                  count - 1
+                    ? Math.sin(
+                        time *
+                        1.18 +
+                        Math.PI
+                      ) *
+                      72
+                    : 0
+                );
+
+              const transferPosition =
+                Math.sin(
+                  time *
+                  0.52
+                ) *
+                0.5 +
+                0.5;
+
+              const normalizedIndex =
+                index /
+                Math.max(
+                  1,
+                  count - 1
+                );
+
+              const transferWave =
+                Math.sin(
+                  time *
+                  2.1 -
+                  index *
+                  0.72
+                ) *
+                Math.exp(
+                  -Math.pow(
+                    transferPosition -
+                    normalizedIndex,
+                    2
+                  ) *
+                  12
+                ) *
+                46;
+
+              targetY =
+                state.height *
+                0.46 +
+                edgeSwing +
+                transferWave;
+            }
+
+            if (
+              state.mode ===
+              "orbit"
+            ) {
+              const radiusX =
+                state.width *
+                (
+                  0.18 +
+                  (
+                    index %
+                    3
+                  ) *
+                  0.035
+                );
+
+              const radiusY =
+                state.height *
+                (
+                  0.16 +
+                  (
+                    index %
+                    2
+                  ) *
+                  0.03
+                );
+
+              const angle =
+                time *
+                (
+                  0.34 +
+                  index *
+                  0.015
+                ) +
+                world.phase;
+
+              targetX =
+                state.width /
+                2 +
+                Math.cos(
+                  angle
+                ) *
+                radiusX;
+
+              targetY =
+                state.height *
+                0.46 +
+                Math.sin(
+                  angle
+                ) *
+                radiusY;
+            }
+
+            if (
+              state.mode ===
+              "tide"
+            ) {
+              const spacing =
+                (
+                  state.width *
+                  0.72
+                ) /
+                Math.max(
+                  1,
+                  count - 1
+                );
+
+              targetX =
+                state.width *
+                0.14 +
+                spacing *
+                index;
+
+              targetY =
+                state.height *
+                0.47 +
+                Math.sin(
+                  time *
+                  1.0 -
+                  index *
+                  0.7
+                ) *
+                state.height *
+                0.12 +
+                Math.sin(
+                  time *
+                  0.36 +
+                  index
+                ) *
+                18;
+            }
+
+            const spring =
+              state.pointer.grabbed ===
+              world
+                ? 0
+                : 2.8;
+
+            world.vx +=
+              (
+                targetX -
+                world.x
+              ) *
+              spring *
+              deltaTime;
+
+            world.vy +=
+              (
+                targetY -
+                world.y
+              ) *
+              spring *
+              deltaTime;
+
+            const damping =
+              Math.pow(
+                0.86,
+                deltaTime *
+                60
+              );
+
+            world.vx *=
+              damping;
+
+            world.vy *=
+              damping;
+
+            if (
+              state.pointer.grabbed !==
+              world
+            ) {
+              world.x +=
+                world.vx *
+                deltaTime *
+                60;
+
+              world.y +=
+                world.vy *
+                deltaTime *
+                60;
+            }
+
+            world.rotation +=
+              world.angularSpeed *
+              deltaTime *
+              60;
+
+            world.energy *=
+              Math.pow(
+                0.94,
+                deltaTime *
+                60
+              );
+
+            world.radius +=
+              (
+                world.baseRadius -
+                world.radius
+              ) *
+              0.04;
+          }
+        );
+
+        if (
+          state.mode ===
+          "resonance"
+        ) {
+          resolveCollisions();
+        }
+      }
+
+      function resolveCollisions() {
+        for (
+          let firstIndex = 0;
+          firstIndex <
+          state.worlds.length;
+          firstIndex += 1
+        ) {
+          for (
+            let secondIndex =
+              firstIndex + 1;
+
+            secondIndex <
+            state.worlds.length;
+
+            secondIndex += 1
+          ) {
+            const firstWorld =
+              state.worlds[
+                firstIndex
+              ];
+
+            const secondWorld =
+              state.worlds[
+                secondIndex
+              ];
+
+            const deltaX =
+              secondWorld.x -
+              firstWorld.x;
+
+            const deltaY =
+              secondWorld.y -
+              firstWorld.y;
+
+            const distance =
+              Math.hypot(
+                deltaX,
+                deltaY
+              ) ||
+              0.001;
+
+            const minimumDistance =
+              (
+                firstWorld.radius +
+                secondWorld.radius
+              ) *
+              0.88;
+
+            if (
+              distance >=
+              minimumDistance
+            ) {
+              continue;
+            }
+
+            const normalX =
+              deltaX /
+              distance;
+
+            const normalY =
+              deltaY /
+              distance;
+
+            const overlap =
+              minimumDistance -
+              distance;
+
+            firstWorld.x -=
+              normalX *
+              overlap *
+              0.48;
+
+            firstWorld.y -=
+              normalY *
+              overlap *
+              0.48;
+
+            secondWorld.x +=
+              normalX *
+              overlap *
+              0.48;
+
+            secondWorld.y +=
+              normalY *
+              overlap *
+              0.48;
+
+            const relativeVelocity =
+              (
+                secondWorld.vx -
+                firstWorld.vx
+              ) *
+              normalX +
+              (
+                secondWorld.vy -
+                firstWorld.vy
+              ) *
+              normalY;
+
+            if (
+              relativeVelocity <
+              0
+            ) {
+              const impulse =
+                -relativeVelocity *
+                0.42;
+
+              firstWorld.vx -=
+                impulse *
+                normalX;
+
+              firstWorld.vy -=
+                impulse *
+                normalY;
+
+              secondWorld.vx +=
+                impulse *
+                normalX;
+
+              secondWorld.vy +=
+                impulse *
+                normalY;
+
+              firstWorld.energy =
+                Math.min(
+                  1,
+                  firstWorld.energy +
+                  0.22
+                );
+
+              secondWorld.energy =
+                Math.min(
+                  1,
+                  secondWorld.energy +
+                  0.22
+                );
+
+              if (
+                Math.abs(
+                  relativeVelocity
+                ) >
+                0.22
+              ) {
+                createPulse(
+                  (
+                    firstWorld.x +
+                    secondWorld.x
+                  ) /
+                  2,
+
+                  (
+                    firstWorld.y +
+                    secondWorld.y
+                  ) /
+                  2,
+
+                  firstWorld.colors[1]
+                );
+
+                playCollisionTone(
+                  (
+                    firstWorld.radius +
+                    secondWorld.radius
+                  ) /
+                  2,
+
+                  Math.abs(
+                    relativeVelocity
+                  )
+                );
+              }
+            }
+          }
+        }
+      }
+
+      function createPulse(
+        x,
+        y,
+        color
+      ) {
+        if (
+          state.pulses.length >
+          16
+        ) {
+          return;
+        }
+
+        state.pulses.push({
+          x,
+          y,
+          radius: 6,
+          alpha: 0.68,
+          color
+        });
+      }
+
+      function updatePulses(
+        deltaTime
+      ) {
+        state.pulses.forEach(
+          pulse => {
+            pulse.radius +=
+              78 *
+              deltaTime;
+
+            pulse.alpha -=
+              0.72 *
+              deltaTime;
+          }
+        );
+
+        state.pulses =
+          state.pulses.filter(
+            pulse =>
+              pulse.alpha >
+              0
+          );
+      }
+
+      function updateDrifter(
+        deltaTime
+      ) {
+        const drifter =
+          state.drifter;
+
+        drifter.timer +=
+          deltaTime;
+
+        if (
+          !drifter.active &&
+          drifter.timer >=
+          drifter.nextAt
+        ) {
+          drifter.active =
+            true;
+
+          drifter.x =
+            -80;
+
+          drifter.y =
+            state.height *
+            (
+              0.22 +
+              Math.random() *
+              0.38
+            );
+
+          drifter.timer =
+            0;
+        }
+
+        if (
+          drifter.active
+        ) {
+          drifter.x +=
+            24 *
+            deltaTime;
+
+          if (
+            drifter.x >
+            state.width +
+            100
+          ) {
+            drifter.active =
+              false;
+
+            drifter.timer =
+              0;
+
+            drifter.nextAt =
+              38 +
+              Math.random() *
+              30;
+          }
+        }
+      }
+
+      function drawBackground() {
+        context.clearRect(
+          0,
+          0,
+          state.width,
+          state.height
+        );
+
+        const glow =
+          context.createRadialGradient(
+            state.width / 2,
+            state.height * 0.45,
+            0,
+
+            state.width / 2,
+            state.height * 0.45,
+
+            Math.max(
+              state.width,
+              state.height
+            ) *
+            0.5
+          );
+
+        glow.addColorStop(
+          0,
+          "rgba(96,118,255,.08)"
+        );
+
+        glow.addColorStop(
+          0.45,
+          "rgba(85,60,170,.035)"
+        );
+
+        glow.addColorStop(
+          1,
+          "rgba(0,0,0,0)"
+        );
+
+        context.fillStyle =
+          glow;
+
+        context.fillRect(
+          0,
+          0,
+          state.width,
+          state.height
+        );
+
+        state.stars.forEach(
+          star => {
+            const alpha =
+              star.alpha *
+              (
+                0.62 +
+                Math.sin(
+                  state.time *
+                  star.speed +
+                  star.twinkle
+                ) *
+                0.38
+              );
+
+            context.beginPath();
+
+            context.arc(
+              star.x,
+              star.y,
+              star.radius,
+              0,
+              Math.PI *
+              2
+            );
+
+            context.fillStyle =
+              `rgba(255,255,255,${
+                Math.max(
+                  0.05,
+                  alpha
+                )
+              })`;
+
+            context.fill();
+          }
+        );
+      }
+
+      function drawGuides() {
+        if (
+          state.mode ===
+          "resonance"
+        ) {
+          context.save();
+
+          context.lineWidth =
+            1.2;
+
+          context.strokeStyle =
+            "rgba(175,195,255,.12)";
+
+          state.worlds.forEach(
+            world => {
+              context.beginPath();
+
+              context.moveTo(
+                world.x,
+                state.height *
+                0.08
+              );
+
+              context.lineTo(
+                world.x,
+                world.y -
+                world.radius
+              );
+
+              context.stroke();
+            }
+          );
+
+          context.restore();
+        }
+
+        if (
+          state.mode ===
+          "orbit"
+        ) {
+          context.save();
+
+          context.lineWidth =
+            1;
+
+          context.setLineDash(
+            [4, 9]
+          );
+
+          context.strokeStyle =
+            "rgba(164,136,255,.11)";
+
+          const orbitRadii = [
+            [
+              state.width *
+              0.18,
+
+              state.height *
+              0.16
+            ],
+
+            [
+              state.width *
+              0.215,
+
+              state.height *
+              0.19
+            ],
+
+            [
+              state.width *
+              0.25,
+
+              state.height *
+              0.16
+            ]
+          ];
+
+          orbitRadii.forEach(
+            radius => {
+              context.beginPath();
+
+              context.ellipse(
+                state.width /
+                2,
+
+                state.height *
+                0.46,
+
+                radius[0],
+                radius[1],
+
+                0,
+                0,
+                Math.PI *
+                2
+              );
+
+              context.stroke();
+            }
+          );
+
+          context.restore();
+        }
+
+        if (
+          state.mode ===
+          "tide"
+        ) {
+          context.save();
+          context.beginPath();
+
+          for (
+            let x = 0;
+            x <= state.width;
+            x += 8
+          ) {
+            const y =
+              state.height *
+              0.47 +
+              Math.sin(
+                state.time *
+                1.0 -
+                (
+                  x /
+                  state.width
+                ) *
+                5.4
+              ) *
+              state.height *
+              0.11;
+
+            if (
+              x === 0
+            ) {
+              context.moveTo(
+                x,
+                y
+              );
+            } else {
+              context.lineTo(
+                x,
+                y
+              );
+            }
+          }
+
+          const gradient =
+            context.createLinearGradient(
+              0,
+              0,
+              state.width,
+              0
+            );
+
+          gradient.addColorStop(
+            0,
+            "rgba(99,240,238,0)"
+          );
+
+          gradient.addColorStop(
+            0.25,
+            "rgba(99,240,238,.18)"
+          );
+
+          gradient.addColorStop(
+            0.7,
+            "rgba(166,121,255,.18)"
+          );
+
+          gradient.addColorStop(
+            1,
+            "rgba(255,117,200,0)"
+          );
+
+          context.lineWidth =
+            1.4;
+
+          context.strokeStyle =
+            gradient;
+
+          context.stroke();
+          context.restore();
+        }
+      }
+
+      function drawPulses() {
+        state.pulses.forEach(
+          pulse => {
+            context.save();
+
+            context.globalAlpha =
+              Math.max(
+                0,
+                pulse.alpha
+              );
+
+            context.strokeStyle =
+              pulse.color;
+
+            context.lineWidth =
+              1.6;
+
+            context.beginPath();
+
+            context.arc(
+              pulse.x,
+              pulse.y,
+              pulse.radius,
+              0,
+              Math.PI *
+              2
+            );
+
+            context.stroke();
+            context.restore();
+          }
+        );
+      }
+
+      function drawWorld(
+        world
+      ) {
+        context.save();
+
+        context.translate(
+          world.x,
+          world.y
+        );
+
+        const squash =
+          1 +
+          Math.sin(
+            state.time *
+            1.2 +
+            world.phase
+          ) *
+          0.018;
+
+        context.scale(
+          squash,
+          1 /
+          squash
+        );
+
+        if (
+          world.energy >
+          0.02
+        ) {
+          const energyGlow =
+            context.createRadialGradient(
+              0,
+              0,
+              world.radius *
+              0.7,
+
+              0,
+              0,
+              world.radius *
+              2.2
+            );
+
+          energyGlow.addColorStop(
+            0,
+            world.colors[1] +
+            "44"
+          );
+
+          energyGlow.addColorStop(
+            1,
+            "rgba(0,0,0,0)"
+          );
+
+          context.fillStyle =
+            energyGlow;
+
+          context.beginPath();
+
+          context.arc(
+            0,
+            0,
+            world.radius *
+            2.2,
+            0,
+            Math.PI *
+            2
+          );
+
+          context.fill();
+        }
+
+        if (
+          world.ring
+        ) {
+          context.save();
+
+          context.rotate(
+            world.tilt
+          );
+
+          context.scale(
+            1,
+            0.34
+          );
+
+          context.lineWidth =
+            Math.max(
+              2.2,
+              world.radius *
+              0.09
+            );
+
+          context.strokeStyle =
+            "rgba(220,228,255,.42)";
+
+          context.shadowBlur =
+            14;
+
+          context.shadowColor =
+            world.colors[1];
+
+          context.beginPath();
+
+          context.ellipse(
+            0,
+            0,
+            world.radius *
+            1.5,
+            world.radius *
+            1.5,
+            0,
+            0,
+            Math.PI *
+            2
+          );
+
+          context.stroke();
+          context.restore();
+        }
+
+        const planetGradient =
+          context.createRadialGradient(
+            -world.radius *
+            0.33,
+
+            -world.radius *
+            0.38,
+
+            world.radius *
+            0.08,
+
+            0,
+            0,
+
+            world.radius *
+            1.08
+          );
+
+        planetGradient.addColorStop(
+          0,
+          world.colors[0]
+        );
+
+        planetGradient.addColorStop(
+          0.12,
+          world.colors[1]
+        );
+
+        planetGradient.addColorStop(
+          0.48,
+          world.colors[2]
+        );
+
+        planetGradient.addColorStop(
+          1,
+          world.colors[3]
+        );
+
+        context.shadowBlur =
+          24 +
+          world.energy *
+          24;
+
+        context.shadowColor =
+          world.colors[2];
+
+        context.fillStyle =
+          planetGradient;
+
+        context.beginPath();
+
+        context.arc(
+          0,
+          0,
+          world.radius,
+          0,
+          Math.PI *
+          2
+        );
+
+        context.fill();
+
+        context.shadowBlur =
+          0;
+
+        context.save();
+
+        context.rotate(
+          world.rotation
+        );
+
+        context.globalAlpha =
+          0.34;
+
+        context.strokeStyle =
+          "rgba(255,255,255,.55)";
+
+        context.lineWidth =
+          Math.max(
+            1.3,
+            world.radius *
+            0.045
+          );
+
+        context.beginPath();
+
+        context.arc(
+          0,
+          0,
+          world.radius *
+          0.62,
+          -0.7,
+          1.25
+        );
+
+        context.stroke();
+
+        context.beginPath();
+
+        context.arc(
+          0,
+          0,
+          world.radius *
+          0.78,
+          2.0,
+          3.6
+        );
+
+        context.stroke();
+        context.restore();
+
+        if (
+          world.moon
+        ) {
+          const moonAngle =
+            state.time *
+            0.9 +
+            world.phase;
+
+          const moonOrbit =
+            world.radius *
+            1.55;
+
+          const moonX =
+            Math.cos(
+              moonAngle
+            ) *
+            moonOrbit;
+
+          const moonY =
+            Math.sin(
+              moonAngle
+            ) *
+            moonOrbit *
+            0.46;
+
+          context.fillStyle =
+            "#dfe8ff";
+
+          context.shadowBlur =
+            10;
+
+          context.shadowColor =
+            world.colors[1];
+
+          context.beginPath();
+
+          context.arc(
+            moonX,
+            moonY,
+            Math.max(
+              3.2,
+              world.radius *
+              0.12
+            ),
+            0,
+            Math.PI *
+            2
+          );
+
+          context.fill();
+        }
+
+        context.restore();
+      }
+
+      function drawDrifter() {
+        const drifter =
+          state.drifter;
+
+        if (
+          !drifter.active
+        ) {
+          return;
+        }
+
+        context.save();
+
+        context.translate(
+          drifter.x,
+          drifter.y +
+          Math.sin(
+            state.time *
+            2
+          ) *
+          7
+        );
+
+        context.globalAlpha =
+          0.74;
+
+        context.fillStyle =
+          "#8ae7bf";
+
+        context.beginPath();
+
+        context.ellipse(
+          0,
+          8,
+          22,
+          8,
+          0,
+          0,
+          Math.PI *
+          2
+        );
+
+        context.fill();
+
+        context.fillStyle =
+          "#ffbd72";
+
+        context.beginPath();
+
+        context.arc(
+          -7,
+          1,
+          11,
+          0,
+          Math.PI *
+          2
+        );
+
+        context.fill();
+
+        context.strokeStyle =
+          "rgba(255,255,255,.75)";
+
+        context.lineWidth =
+          2;
+
+        context.beginPath();
+
+        context.arc(
+          -7,
+          1,
+          6,
+          0,
+          Math.PI *
+          1.6
+        );
+
+        context.stroke();
+
+        context.fillStyle =
+          "#65d7b0";
+
+        context.beginPath();
+
+        context.arc(
+          16,
+          4,
+          7,
+          0,
+          Math.PI *
+          2
+        );
+
+        context.fill();
+
+        context.strokeStyle =
+          "#8ae7bf";
+
+        context.lineWidth =
+          1.6;
+
+        context.beginPath();
+
+        context.moveTo(
+          18,
+          -1
+        );
+
+        context.lineTo(
+          21,
+          -9
+        );
+
+        context.moveTo(
+          13,
+          -1
+        );
+
+        context.lineTo(
+          10,
+          -9
+        );
+
+        context.stroke();
+
+        context.fillStyle =
+          "#ffffff";
+
+        context.beginPath();
+
+        context.arc(
+          21,
+          -9,
+          1.5,
+          0,
+          Math.PI *
+          2
+        );
+
+        context.arc(
+          10,
+          -9,
+          1.5,
+          0,
+          Math.PI *
+          2
+        );
+
+        context.fill();
+
+        context.font =
+          "11px system-ui";
+
+        context.fillStyle =
+          "rgba(230,240,255,.86)";
+
+        context.fillText(
+          "cosmic inspection",
+          -30,
+          30
+        );
+
+        context.restore();
+      }
+
+      function render() {
+        drawBackground();
+        drawGuides();
+        drawPulses();
+
+        const sortedWorlds =
+          [
+            ...state.worlds
+          ].sort(
+            (
+              firstWorld,
+              secondWorld
+            ) =>
+              firstWorld.y -
+              secondWorld.y
+          );
+
+        sortedWorlds.forEach(
+          drawWorld
+        );
+
+        drawDrifter();
+      }
+
+      function animationFrame(
+        currentTime
+      ) {
+        const deltaTime =
+          Math.min(
+            0.035,
+            Math.max(
+              0.001,
+              (
+                currentTime -
+                state.lastFrame
+              ) /
+              1000
+            )
+          );
+
+        state.lastFrame =
+          currentTime;
+
+        if (
+          state.running
+        ) {
+          state.time +=
+            deltaTime *
+            (
+              reducedMotion
+                ? 0.45
+                : 1
+            );
+
+          updateWorlds(
+            deltaTime
+          );
+
+          updatePulses(
+            deltaTime
+          );
+
+          updateDrifter(
+            deltaTime
+          );
+
+          updateSoundscape(
+            deltaTime
+          );
+        }
+
+        render();
+
+        requestAnimationFrame(
+          animationFrame
+        );
+      }
+
+      function findWorldAt(
+        x,
+        y
+      ) {
+        for (
+          let index =
+            state.worlds.length -
+            1;
+
+          index >= 0;
+
+          index -= 1
+        ) {
+          const world =
+            state.worlds[index];
+
+          const distance =
+            Math.hypot(
+              x -
+              world.x,
+
+              y -
+              world.y
+            );
+
+          if (
+            distance <=
+            world.radius *
+            1.35
+          ) {
+            return world;
+          }
+        }
+
+        return null;
+      }
+
+      function getPointerPosition(
+        event
+      ) {
+        const rectangle =
+          canvas.getBoundingClientRect();
+
+        return {
+          x:
+            (
+              event.clientX -
+              rectangle.left
+            ) *
+            (
+              state.width /
+              rectangle.width
+            ),
+
+          y:
+            (
+              event.clientY -
+              rectangle.top
+            ) *
+            (
+              state.height /
+              rectangle.height
+            )
+        };
+      }
+
+      canvas.addEventListener(
+        "pointerdown",
+        event => {
+          const position =
+            getPointerPosition(
+              event
+            );
+
+          const grabbedWorld =
+            findWorldAt(
+              position.x,
+              position.y
+            );
+
+          state.pointer.active =
+            true;
+
+          state.pointer.x =
+            position.x;
+
+          state.pointer.y =
+            position.y;
+
+          state.pointer.grabbed =
+            grabbedWorld;
+
+          if (
+            grabbedWorld
+          ) {
+            if (
+              canvas.setPointerCapture
+            ) {
+              canvas.setPointerCapture(
+                event.pointerId
+              );
+            }
+
+            grabbedWorld.energy =
+              1;
+
+            grabbedWorld.radius *=
+              1.08;
+
+            playChime(
+              220 +
+              grabbedWorld.index *
+              34,
+
+              0.08,
+              0.05
+            );
+          } else {
+            state.pulses.push({
+              x:
+                position.x,
+
+              y:
+                position.y,
+
+              radius: 5,
+              alpha: 0.72,
+              color: "#71f1b0"
+            });
+
+            state.worlds.forEach(
+              world => {
+                const deltaX =
+                  world.x -
+                  position.x;
+
+                const deltaY =
+                  world.y -
+                  position.y;
+
+                const distance =
+                  Math.max(
+                    35,
+                    Math.hypot(
+                      deltaX,
+                      deltaY
+                    )
+                  );
+
+                const force =
+                  1050 /
+                  distance;
+
+                world.vx +=
+                  (
+                    deltaX /
+                    distance
+                  ) *
+                  force;
+
+                world.vy +=
+                  (
+                    deltaY /
+                    distance
+                  ) *
+                  force;
+
+                world.energy =
+                  Math.min(
+                    1,
+                    world.energy +
+                    0.35
+                  );
+              }
+            );
+
+            playChime(
+              330,
+              0.1,
+              0.045
+            );
+          }
+        }
+      );
+
+      canvas.addEventListener(
+        "pointermove",
+        event => {
+          if (
+            !state.pointer.active
+          ) {
+            return;
+          }
+
+          const position =
+            getPointerPosition(
+              event
+            );
+
+          state.pointer.x =
+            position.x;
+
+          state.pointer.y =
+            position.y;
+
+          const grabbedWorld =
+            state.pointer.grabbed;
+
+          if (
+            grabbedWorld
+          ) {
+            grabbedWorld.x =
+              position.x;
+
+            grabbedWorld.y =
+              position.y;
+
+            grabbedWorld.vx =
+              0;
+
+            grabbedWorld.vy =
+              0;
+
+            grabbedWorld.energy =
+              1;
+          }
+        }
+      );
+
+      function releasePointer(
+        event
+      ) {
+        const grabbedWorld =
+          state.pointer.grabbed;
+
+        if (
+          grabbedWorld
+        ) {
+          const position =
+            getPointerPosition(
+              event
+            );
+
+          const centerX =
+            state.width /
+            2;
+
+          const centerY =
+            state.height /
+            2;
+
+          grabbedWorld.vx +=
+            (
+              position.x -
+              centerX
+            ) *
+            0.018;
+
+          grabbedWorld.vy +=
+            (
+              position.y -
+              centerY
+            ) *
+            0.018;
+
+          grabbedWorld.energy =
+            1;
+
+          createPulse(
+            grabbedWorld.x,
+            grabbedWorld.y,
+            grabbedWorld.colors[1]
+          );
+
+          playChime(
+            280 +
+            grabbedWorld.index *
+            40,
+
+            0.13,
+            0.07
+          );
+        }
+
+        state.pointer.active =
+          false;
+
+        state.pointer.grabbed =
+          null;
+      }
+
+      canvas.addEventListener(
+        "pointerup",
+        releasePointer
+      );
+
+      canvas.addEventListener(
+        "pointercancel",
+        releasePointer
+      );
+
+      pauseButton.addEventListener(
+        "click",
+        () => {
+          state.running =
+            !state.running;
+
+          pauseButton.textContent =
+            state.running
+              ? "Pause"
+              : "Resume";
+
+          statusMain.textContent =
+            state.running
+              ? "System in motion"
+              : "Cosmos paused";
+
+          statusSub.textContent =
+            state.running
+              ? "The kinetic field is active."
+              : "Everything is perfectly still. Temporarily.";
+
+          showToast(
+            state.running
+              ? "Motion resumed."
+              : "Cosmos paused."
+          );
+        }
+      );
+
+      randomizeButton.addEventListener(
+        "click",
+        randomizeWorlds
+      );
+
+      fullscreenButton.addEventListener(
+        "click",
+        async () => {
+          try {
+            if (
+              !document.fullscreenElement
+            ) {
+              await shell.requestFullscreen();
+            } else {
+              await document.exitFullscreen();
+            }
+          } catch {
+            showToast(
+              "Fullscreen is unavailable in this browser."
+            );
+          }
+        }
+      );
+
+      document.addEventListener(
+        "fullscreenchange",
+        () => {
+          setTimeout(
+            resizeCanvas,
+            80
+          );
+        }
+      );
+
+      let audioContext =
+        null;
+
+      let masterGain =
+        null;
+
+      let soundNodes =
+        [];
+
+      let rainTimer =
+        0;
+
+      let wavePhase =
+        0;
+
+      let windPhase =
+        0;
+
+      function ensureAudio() {
+        if (
+          audioContext
+        ) {
+          if (
+            audioContext.state ===
+            "suspended"
+          ) {
+            audioContext.resume();
+          }
+
+          return true;
+        }
+
+        const AudioContextClass =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+        if (
+          !AudioContextClass
+        ) {
+          showToast(
+            "Web Audio is not supported in this browser."
+          );
+
+          return false;
+        }
+
+        audioContext =
+          new AudioContextClass();
+
+        masterGain =
+          audioContext.createGain();
+
+        masterGain.gain.value =
+          state.volume;
+
+        masterGain.connect(
+          audioContext.destination
+        );
+
+        return true;
+      }
+
+      function stopSoundscape() {
+        soundNodes.forEach(
+          node => {
+            try {
+              if (
+                typeof node.stop ===
+                "function"
+              ) {
+                node.stop();
+              }
+
+              if (
+                typeof node.disconnect ===
+                "function"
+              ) {
+                node.disconnect();
+              }
+            } catch {
+              // Node may already be stopped.
+            }
+          }
+        );
+
+        soundNodes =
+          [];
+
+        rainTimer =
+          0;
+      }
+
+      function createNoiseBuffer(
+        seconds = 2
+      ) {
+        const length =
+          Math.max(
+            1,
+            Math.floor(
+              audioContext.sampleRate *
+              seconds
+            )
+          );
+
+        const buffer =
+          audioContext.createBuffer(
+            1,
+            length,
+            audioContext.sampleRate
+          );
+
+        const channel =
+          buffer.getChannelData(
+            0
+          );
+
+        for (
+          let index = 0;
+          index < length;
+          index += 1
+        ) {
+          channel[index] =
+            Math.random() *
+            2 -
+            1;
+        }
+
+        return buffer;
+      }
+
+      function startSoundscape(
+        type
+      ) {
+        if (
+          !ensureAudio()
+        ) {
+          return;
+        }
+
+        stopSoundscape();
+
+        if (
+          type ===
+          "off"
+        ) {
+          return;
+        }
+
+        if (
+          type ===
+          "waves"
+        ) {
+          const firstOscillator =
+            audioContext.createOscillator();
+
+          const secondOscillator =
+            audioContext.createOscillator();
+
+          const gain =
+            audioContext.createGain();
+
+          const filter =
+            audioContext.createBiquadFilter();
+
+          firstOscillator.type =
+            "sine";
+
+          secondOscillator.type =
+            "triangle";
+
+          firstOscillator.frequency.value =
+            82;
+
+          secondOscillator.frequency.value =
+            123;
+
+          filter.type =
+            "lowpass";
+
+          filter.frequency.value =
+            700;
+
+          filter.Q.value =
+            0.8;
+
+          gain.gain.value =
+            0.035;
+
+          firstOscillator.connect(
+            gain
+          );
+
+          secondOscillator.connect(
+            gain
+          );
+
+          gain.connect(
+            filter
+          );
+
+          filter.connect(
+            masterGain
+          );
+
+          firstOscillator.start();
+          secondOscillator.start();
+
+          soundNodes.push(
+            firstOscillator,
+            secondOscillator,
+            gain,
+            filter
+          );
+        }
+
+        if (
+          type ===
+          "wind"
+        ) {
+          const source =
+            audioContext.createBufferSource();
+
+          const filter =
+            audioContext.createBiquadFilter();
+
+          const gain =
+            audioContext.createGain();
+
+          source.buffer =
+            createNoiseBuffer(
+              4
+            );
+
+          source.loop =
+            true;
+
+          filter.type =
+            "bandpass";
+
+          filter.frequency.value =
+            520;
+
+          filter.Q.value =
+            0.45;
+
+          gain.gain.value =
+            0.028;
+
+          source.connect(
+            filter
+          );
+
+          filter.connect(
+            gain
+          );
+
+          gain.connect(
+            masterGain
+          );
+
+          source.start();
+
+          soundNodes.push(
+            source,
+            filter,
+            gain
+          );
+        }
+
+        if (
+          type ===
+          "rain"
+        ) {
+          const source =
+            audioContext.createBufferSource();
+
+          const filter =
+            audioContext.createBiquadFilter();
+
+          const gain =
+            audioContext.createGain();
+
+          source.buffer =
+            createNoiseBuffer(
+              3
+            );
+
+          source.loop =
+            true;
+
+          filter.type =
+            "highpass";
+
+          filter.frequency.value =
+            2800;
+
+          gain.gain.value =
+            0.016;
+
+          source.connect(
+            filter
+          );
+
+          filter.connect(
+            gain
+          );
+
+          gain.connect(
+            masterGain
+          );
+
+          source.start();
+
+          soundNodes.push(
+            source,
+            filter,
+            gain
+          );
+        }
+      }
+
+      function setSoundscape(
+        type
+      ) {
+        state.sound =
+          type;
+
+        soundControls
+          .querySelectorAll(
+            "button"
+          )
+          .forEach(
+            button => {
+              button.classList.toggle(
+                "active",
+                button.dataset.sound ===
+                  type
+              );
+            }
+          );
+
+        startSoundscape(
+          type
+        );
+
+        const labels = {
+          off:
+            "Soundscape off",
+
+          rain:
+            "Cosmic Rain enabled",
+
+          waves:
+            "Cosmic Waves enabled",
+
+          wind:
+            "Cosmic Wind enabled"
+        };
+
+        showToast(
+          labels[type]
+        );
+      }
+
+      soundControls.addEventListener(
+        "click",
+        event => {
+          const button =
+            event.target.closest(
+              "button[data-sound]"
+            );
+
+          if (
+            !button
+          ) {
+            return;
+          }
+
+          setSoundscape(
+            button.dataset.sound
+          );
+        }
+      );
+
+      volumeSlider.addEventListener(
+        "input",
+        () => {
+          state.volume =
+            Number(
+              volumeSlider.value
+            ) /
+            100;
+
+          volumeValue.textContent =
+            volumeSlider.value +
+            "%";
+
+          if (
+            masterGain &&
+            audioContext
+          ) {
+            masterGain.gain.setTargetAtTime(
+              state.volume,
+              audioContext.currentTime,
+              0.04
+            );
+          }
+        }
+      );
+
+      function findAudioNode(
+        propertyName
+      ) {
+        return soundNodes.find(
+          node =>
+            node &&
+            propertyName in node
+        );
+      }
+
+      function updateSoundscape(
+        deltaTime
+      ) {
+        if (
+          !audioContext ||
+          state.sound ===
+          "off"
+        ) {
+          return;
+        }
+
+        if (
+          state.sound ===
+          "waves"
+        ) {
+          wavePhase +=
+            deltaTime;
+
+          const gainNode =
+            soundNodes.find(
+              node =>
+                node &&
+                node.gain &&
+                typeof node.gain.setTargetAtTime ===
+                "function"
+            );
+
+          if (
+            gainNode
+          ) {
+            const target =
+              0.026 +
+              (
+                Math.sin(
+                  wavePhase *
+                  0.55
+                ) *
+                0.5 +
+                0.5
+              ) *
+              0.025;
+
+            gainNode.gain.setTargetAtTime(
+              target,
+              audioContext.currentTime,
+              0.4
+            );
+          }
+        }
+
+        if (
+          state.sound ===
+          "wind"
+        ) {
+          windPhase +=
+            deltaTime;
+
+          const filterNode =
+            findAudioNode(
+              "frequency"
+            );
+
+          if (
+            filterNode &&
+            filterNode.frequency
+          ) {
+            const target =
+              420 +
+              (
+                Math.sin(
+                  windPhase *
+                  0.38
+                ) *
+                0.5 +
+                0.5
+              ) *
+              620;
+
+            filterNode.frequency.setTargetAtTime(
+              target,
+              audioContext.currentTime,
+              0.6
+            );
+          }
+        }
+
+        if (
+          state.sound ===
+          "rain"
+        ) {
+          rainTimer -=
+            deltaTime;
+
+          if (
+            rainTimer <=
+            0
+          ) {
+            rainTimer =
+              0.12 +
+              Math.random() *
+              0.55;
+
+            playRainDrop();
+          }
+        }
+      }
+
+      function playRainDrop() {
+        if (
+          !audioContext ||
+          !masterGain
+        ) {
+          return;
+        }
+
+        const oscillator =
+          audioContext.createOscillator();
+
+        const gain =
+          audioContext.createGain();
+
+        const now =
+          audioContext.currentTime;
+
+        oscillator.type =
+          "sine";
+
+        oscillator.frequency.setValueAtTime(
+          900 +
+          Math.random() *
+          1400,
+          now
+        );
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+          320 +
+          Math.random() *
+          360,
+          now +
+          0.12
+        );
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          now
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.018 +
+          Math.random() *
+          0.018,
+          now +
+          0.008
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          now +
+          0.16
+        );
+
+        oscillator.connect(
+          gain
+        );
+
+        if (
+          typeof audioContext.createStereoPanner ===
+          "function"
+        ) {
+          const panner =
+            audioContext.createStereoPanner();
+
+          panner.pan.value =
+            Math.random() *
+            1.6 -
+            0.8;
+
+          gain.connect(
+            panner
+          );
+
+          panner.connect(
+            masterGain
+          );
+        } else {
+          gain.connect(
+            masterGain
+          );
+        }
+
+        oscillator.start(
+          now
+        );
+
+        oscillator.stop(
+          now +
+          0.18
+        );
+      }
+
+      function playCollisionTone(
+        size,
+        strength
+      ) {
+        if (
+          !audioContext ||
+          state.sound ===
+          "off"
+        ) {
+          return;
+        }
+
+        const frequency =
+          clamp(
+            560 -
+            size *
+            5,
+            180,
+            620
+          );
+
+        playChime(
+          frequency,
+          0.06,
+          clamp(
+            strength *
+            0.015,
+            0.012,
+            0.05
+          )
+        );
+      }
+
+      function playChime(
+        frequency,
+        duration = 0.1,
+        level = 0.04
+      ) {
+        if (
+          !audioContext ||
+          !masterGain ||
+          state.sound ===
+          "off"
+        ) {
+          return;
+        }
+
+        const now =
+          audioContext.currentTime;
+
+        const oscillator =
+          audioContext.createOscillator();
+
+        const gain =
+          audioContext.createGain();
+
+        oscillator.type =
+          "sine";
+
+        oscillator.frequency.setValueAtTime(
+          frequency,
+          now
+        );
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+          frequency *
+          1.35,
+          now +
+          duration
+        );
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          now
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          level,
+          now +
+          0.015
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          now +
+          duration +
+          0.14
+        );
+
+        oscillator.connect(
+          gain
+        );
+
+        gain.connect(
+          masterGain
+        );
+
+        oscillator.start(
+          now
+        );
+
+        oscillator.stop(
+          now +
+          duration +
+          0.16
+        );
+      }
+
+      window.addEventListener(
+        "resize",
+        resizeCanvas
+      );
+
+      document.addEventListener(
+        "visibilitychange",
+        () => {
+          if (
+            document.hidden
+          ) {
+            state.lastFrame =
+              performance.now();
+          }
+        }
+      );
+
+      resizeCanvas();
+
+      requestAnimationFrame(
+        animationFrame
+      );
+    })();
+  </script>
+</body>
+</html>
