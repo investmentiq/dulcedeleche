@@ -712,6 +712,84 @@
   transform:rotate(12deg);
 }
 
+
+    .orbital-resonance::after{
+      background:
+        radial-gradient(
+          circle,
+          rgba(99,240,238,.28),
+          rgba(166,121,255,.14) 48%,
+          transparent 73%
+        );
+    }
+
+    .orbital-icon{
+      position:relative;
+      width:92px;
+      height:92px;
+      border-radius:50%;
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #fff 0 5%,
+          #71f1b0 9%,
+          #6f9cff 38%,
+          #6e4cff 58%,
+          #251556 100%
+        );
+      border:4px solid rgba(255,255,255,.72);
+      box-shadow:
+        0 0 22px rgba(99,240,238,.42),
+        0 0 40px rgba(166,121,255,.28),
+        inset 0 0 18px rgba(255,255,255,.18);
+    }
+
+    .orbital-icon::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:124px;
+      height:42px;
+      border:3px solid rgba(220,230,255,.56);
+      border-radius:50%;
+      transform:translate(-50%,-50%) rotate(-18deg);
+      box-shadow:0 0 14px rgba(99,240,238,.28);
+    }
+
+    .orbital-icon::after{
+      content:"";
+      position:absolute;
+      right:-17px;
+      top:29px;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:#ffd878;
+      box-shadow:0 0 16px rgba(255,216,120,.9);
+    }
+
+    .orbital-moon{
+      position:absolute;
+      left:-15px;
+      bottom:5px;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:linear-gradient(145deg,#fff,#a679ff);
+      box-shadow:0 0 16px rgba(166,121,255,.78);
+    }
+
+    .orbital-spark{
+      position:absolute;
+      right:-13px;
+      bottom:-10px;
+      color:#63f0ee;
+      font-size:1.5rem;
+      line-height:1;
+      text-shadow:0 0 12px rgba(99,240,238,.92);
+    }
+
     .game-content{
       position:relative;
       z-index:1;
@@ -882,7 +960,7 @@
           <h2 id="experiments-title">Experiments</h2>
         </div>
 
-        <span class="version">MGL v0.8</span>
+        <span class="version">MGL v0.9</span>
       </div>
 
       <div class="games">
@@ -1055,6 +1133,32 @@
           </div>
         </a>
         
+        <a
+          class="game-card orbital-resonance"
+          href="./games/orbital-resonance/"
+          aria-label="Launch Orbital Resonance"
+        >
+          <div class="game-icon" aria-hidden="true">
+            <div class="orbital-icon">
+              <span class="orbital-moon"></span>
+              <span class="orbital-spark">✦</span>
+            </div>
+          </div>
+
+          <div class="game-content">
+            <span class="game-number">Experiment 009</span>
+            <span class="tag">Live</span>
+
+            <h3>Orbital Resonance</h3>
+
+            <p>
+              Watch luminous worlds move through resonance, orbit,
+              and cosmic tides while atmospheric soundscapes quietly
+              reshape the space around them.
+            </p>
+          </div>
+        </a>
+
       </div>
     </section>
 
