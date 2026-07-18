@@ -1,1 +1,225 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07111f">
+<title>Leyla's Number Python: Number Rush v0.22</title>
+<style>
+:root{--text:#f7fbff;--muted:#b9cae7;--glass:rgba(8,22,42,.68);--line:rgba(255,255,255,.17);--good:#74ffd8;--gold:#ffd76e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#030812;font-family:Inter,ui-rounded,"SF Pro Rounded",system-ui,sans-serif;color:var(--text)}
+body{display:grid;place-items:center}
+.app{position:relative;width:min(100vw,520px);height:100dvh;max-height:980px;overflow:hidden;background:#06111f;isolation:isolate}
+canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.hud{position:absolute;z-index:5;top:max(10px,env(safe-area-inset-top));left:10px;right:10px;display:grid;grid-template-columns:.8fr 1.5fr .8fr;gap:7px;pointer-events:none}
+.pill{min-height:57px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(14px);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.24)}
+.pill b{font-size:18px;line-height:1}.pill span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.progress{position:absolute;z-index:5;top:max(74px,calc(env(safe-area-inset-top) + 74px));left:14px;right:14px;height:9px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.1);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#75ffd7,#ffe56e);box-shadow:0 0 18px rgba(117,255,215,.7);transition:width .13s}
+.dpadwrap{position:absolute;z-index:6;left:0;right:0;bottom:max(12px,env(safe-area-inset-bottom));display:flex;justify-content:center}
+.dpad{display:grid;grid-template-columns:62px 62px 62px;grid-template-rows:52px 52px;grid-template-areas:". up ." "left down right";gap:7px}
+.ctrl{width:62px;height:52px;border:1px solid rgba(255,255,255,.2);border-radius:17px;background:rgba(7,19,37,.72);backdrop-filter:blur(14px);color:white;font-size:24px;font-weight:900;box-shadow:0 10px 28px rgba(0,0,0,.3);touch-action:none}
+.ctrl:active{transform:translateY(2px) scale(.98);background:rgba(255,255,255,.15)}
+.up{grid-area:up}.left{grid-area:left}.down{grid-area:down}.right{grid-area:right}
+.overlay{position:absolute;z-index:20;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(180deg,rgba(1,5,12,.32),rgba(1,5,12,.86));backdrop-filter:blur(9px)}
+.overlay.hidden{display:none}.card{width:100%;max-width:425px;border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:25px 22px;background:linear-gradient(180deg,rgba(20,48,80,.91),rgba(7,18,35,.95));box-shadow:0 30px 90px rgba(0,0,0,.46);text-align:center}
+.logo{font-size:59px}.card h1{font-size:30px;line-height:1.06;margin:5px 0 8px}.tag{display:inline-block;border-radius:999px;background:rgba(255,255,255,.09);padding:6px 10px;color:#d9e8ff;font-size:11px;letter-spacing:.08em}
+.lead{color:#d0def2;font-size:15px;line-height:1.5;margin:17px 3px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:17px 0 21px}.features div{border:1px solid rgba(255,255,255,.12);border-radius:17px;padding:11px 5px;background:rgba(255,255,255,.055);font-size:11px;color:#cad9ef}.features strong{display:block;font-size:23px;margin-bottom:4px}
+.primary{width:100%;border:0;border-radius:19px;padding:15px 17px;font-size:17px;font-weight:900;background:linear-gradient(135deg,#75ffd7,#d9ff79);color:#062119;box-shadow:0 12px 34px rgba(117,255,215,.24)}
+.secondary{width:100%;margin-top:10px;border:1px solid rgba(255,255,255,.17);border-radius:17px;padding:12px;color:white;font-weight:800;background:rgba(255,255,255,.075)}
+.toast{position:absolute;z-index:10;top:92px;left:50%;transform:translateX(-50%) translateY(-8px);opacity:0;transition:.17s;border:1px solid rgba(255,255,255,.17);border-radius:999px;background:rgba(5,16,31,.85);backdrop-filter:blur(12px);padding:9px 15px;font-weight:900;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.home-btn{
+  position:absolute;
+  z-index:8;
+  right:max(12px,env(safe-area-inset-right));
+  bottom:max(12px,env(safe-area-inset-bottom));
+  width:50px;
+  height:50px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:17px;
+  background:rgba(7,19,37,.76);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  color:#fff;
+  text-decoration:none;
+  font-size:23px;
+  box-shadow:0 10px 28px rgba(0,0,0,.32);
+}
+.home-btn:active{
+  transform:translateY(2px) scale(.98);
+  background:rgba(255,255,255,.15);
+}
+.brand{position:absolute;z-index:6;bottom:7px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:rgba(210,228,250,.45);pointer-events:none}
+@media(min-width:600px){.app{height:min(94dvh,900px);border-radius:28px;box-shadow:0 35px 110px rgba(0,0,0,.5)}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<canvas id="game"></canvas>
+<div class="hud">
+  <div class="pill"><b id="level">1</b><span>Level</span></div>
+  <div class="pill"><b><span id="score" style="font-size:18px;color:white;margin:0">0</span> / <span id="target" style="font-size:18px;color:white;margin:0">100</span></b><span>Number Rush</span></div>
+  <div class="pill"><b id="time">30</b><span>Seconds</span></div>
+</div>
+<div class="progress"><i id="bar"></i></div>
+<div class="toast" id="toast">Go, Leyla!</div>
+<div class="dpadwrap">
+ <div class="dpad">
+  <button class="ctrl up" id="up">▲</button>
+  <button class="ctrl left" id="left">◀</button>
+  <button class="ctrl down" id="down">▼</button>
+  <button class="ctrl right" id="right">▶</button>
+ </div>
+</div>
+<div class="overlay" id="start">
+ <div class="card">
+  <div class="logo">🐍⚡</div>
+  <h1>Leyla's Number Python:<br>Number Rush</h1>
+  <div class="tag">MGL EXPERIMENT 003 · v0.22</div>
+  <p class="lead">Race against the clock. Eat numbers, avoid poison and bombs, and beat an endless sequence of increasingly difficult levels.</p>
+  <div class="features">
+   <div><strong>∞</strong>Levels</div>
+   <div><strong>☠</strong>Avoid Poison</div>
+   <div><strong>💣</strong>Dodge Bombs</div>
+  </div>
+  <button class="primary" id="startBtn">Start Number Rush</button>
+ </div>
+</div>
+<div class="overlay hidden" id="result">
+ <div class="card">
+  <div class="logo" id="resultEmoji">🌟</div>
+  <h1 id="resultTitle">Level Complete!</h1>
+  <p class="lead" id="resultText">Great work, Leyla!</p>
+  <button class="primary" id="nextBtn">Next Level</button>
+  <button class="secondary" id="restartBtn">Restart From Level 1</button>
+ </div>
+</div>
+<a class="home-btn" href="../../" aria-label="Back to MartianGalactic Labs" title="Home">⌂</a>
+<div class="brand">MartianGalactic Labs</div>
+</div>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id),canvas=$("game"),ctx=canvas.getContext("2d"),app=$("app");
+let W=390,H=780,D=1,running=false,last=0,elapsed=0,level=1,score=0,target=100,time=30;
+let L=false,R=false,U=false,Dn=false,audio=null,spawnClock=0,bonusClock=0,shake=0;
+const snake={x:195,y:520,vx:0,vy:0,r:19,body:[]};
+let orbs=[],particles=[],stars=[];
+function cfg(n){
+ return {
+  target:Math.round(100*Math.pow(1.115,n-1)/5)*5,
+  time:Math.max(18,30-Math.floor((n-1)/4)),
+  maxOrbs:Math.min(15,7+Math.floor(n/3)),
+  speed:430+Math.min(210,n*7),
+  drift:12+Math.min(55,n*1.7),
+  minusChance:n<5?0:Math.min(.13,(n-4)*.006),
+  poisonChance:n<3?0:Math.min(.10,(n-2)*.0045),
+  bombChance:n<6?0:Math.min(.095,(n-5)*.0038),
+  bonusChance:Math.min(.15,.055+n*.002)
+ };
+}
+function resize(){const r=app.getBoundingClientRect();W=Math.max(320,r.width);H=Math.max(560,r.height);D=Math.min(devicePixelRatio||1,2);canvas.width=W*D;canvas.height=H*D;ctx.setTransform(D,0,0,D,0,0);makeStars()}
+addEventListener("resize",resize);
+function makeStars(){stars=Array.from({length:65},()=>({x:Math.random()*W,y:Math.random()*H,r:.3+Math.random()*1.7,a:.15+Math.random()*.5,s:.2+Math.random()*.9}))}
+function sound(f=440,d=.08,t="sine",v=.04){try{if(!audio)audio=new(AudioContext||webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(audio.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);o.stop(audio.currentTime+d)}catch(e){}}
+function toast(msg){const x=$("toast");x.textContent=msg;x.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove("show"),850)}
+function sync(){const c=cfg(level);$("level").textContent=level;$("score").textContent=score;$("target").textContent=target;$("time").textContent=Math.max(0,Math.ceil(time));$("bar").style.width=Math.min(100,score/target*100)+"%"}
+function resetLevel(){const c=cfg(level);target=c.target;time=c.time;score=0;spawnClock=0;bonusClock=0;orbs=[];particles=[];snake.x=W/2;snake.y=H*.58;snake.vx=snake.vy=0;snake.body=[];for(let i=0;i<24;i++)snake.body.push({x:snake.x,y:snake.y+i*7});for(let i=0;i<c.maxOrbs;i++)spawnOrb(false);sync()}
+function safePos(rad){for(let k=0;k<35;k++){const x=35+Math.random()*(W-70),y=120+Math.random()*(H-300);if(Math.hypot(x-snake.x,y-snake.y)>100&&!orbs.some(o=>Math.hypot(x-o.x,y-o.y)<rad+o.r+16))return{x,y}}return{x:40+Math.random()*(W-80),y:130+Math.random()*(H-320)}}
+function spawnOrb(forceBonus=false){const c=cfg(level),p=safePos(23);let kind="number",value=Math.floor(Math.random()*10);const roll=Math.random();
+ if(forceBonus||roll<c.bonusChance){kind=Math.random()<.55?"time":"double";value=kind==="time"?5:2}
+ else if(roll<c.bonusChance+c.bombChance){kind="bomb";value=0}
+ else if(roll<c.bonusChance+c.bombChance+c.poisonChance){kind="poison";value=0}
+ else if(roll<c.bonusChance+c.bombChance+c.poisonChance+c.minusChance){kind="minus";value=5+Math.floor(Math.random()*6)}
+ orbs.push({x:p.x,y:p.y,r:(kind==="bomb"?23:20)+Math.random()*3,vx:(Math.random()-.5)*c.drift,vy:(Math.random()-.5)*c.drift,phase:Math.random()*6.28,kind,value,hue:Math.random()*360});
+}
+function burst(x,y,h,count=15){for(let i=0;i<count;i++){const a=Math.random()*6.28,s=45+Math.random()*130;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.55+Math.random()*.55,r:2+Math.random()*4,h})}}
+function eat(o){
+ if(o.kind==="number"){score+=o.value;toast("+"+o.value+"  •  "+score);sound(400+o.value*42,.075,"triangle",.045)}
+ if(o.kind==="time"){time+=5;toast("+5 seconds ⏱");sound(760,.12,"sine",.055)}
+ if(o.kind==="double"){score*=2;toast("Double total! ×2");sound(660,.1,"triangle",.055);setTimeout(()=>sound(920,.13,"triangle",.045),90)}
+ if(o.kind==="minus"){score=Math.max(0,score-o.value);toast("−"+o.value+" careful!");sound(175,.16,"sawtooth",.035);shake=6}
+ if(o.kind==="poison"){
+   time=Math.max(1,time*.5);
+   toast("Poison! Time cut in half ☠");
+   sound(135,.24,"sawtooth",.045);
+   shake=9;
+ }
+ if(o.kind==="bomb"){
+   toast("BOOM! 💥");
+   burst(o.x,o.y,18,42);
+   sound(95,.32,"sawtooth",.07);
+   shake=18;
+   orbs.splice(orbs.indexOf(o),1);
+   sync();
+   setTimeout(()=>finish(false,"bomb"),180);
+   return;
+ }
+ burst(o.x,o.y,(o.kind==="minus"||o.kind==="poison")?5:o.hue,o.kind==="double"?25:15);
+ orbs.splice(orbs.indexOf(o),1);spawnOrb(false);sync();
+ if(score>=target)finish(true)
+}
+function finish(win,reason="time"){if(!running)return;running=false;$("result").classList.remove("hidden");
+ if(win){$("resultEmoji").textContent=level%10===0?"👑🐍":"🌟";$("resultTitle").textContent="Level "+level+" Complete!";$("resultText").textContent="Fantastic, Leyla! You reached "+score+" with "+Math.ceil(time)+" seconds left.";$("nextBtn").textContent="Continue to Level "+(level+1);sound(650,.1,"triangle",.06);setTimeout(()=>sound(880,.14,"triangle",.055),120)}
+ else{
+   if(reason==="bomb"){
+     $("resultEmoji").textContent="💥🐍";
+     $("resultTitle").textContent="The Bomb Got Our Python!";
+     $("resultText").textContent="Careful steering, Leyla! Avoid the bombs and retry Level "+level+".";
+   }else{
+     $("resultEmoji").textContent="⏰";
+     $("resultTitle").textContent="So Close!";
+     $("resultText").textContent="You reached "+score+" out of "+target+". Try this level again!";
+   }
+   $("nextBtn").textContent="Retry Level "+level;
+   sound(180,.22,"sine",.04)
+ }
+ $("nextBtn").onclick=()=>{$("result").classList.add("hidden");if(win)level++;resetLevel();running=true;last=performance.now()}
+}
+function update(dt){
+ if(!running)return;elapsed+=dt;time-=dt;if(time<=0){time=0;sync();finish(false);return}
+ const c=cfg(level),dx=(R?1:0)-(L?1:0),dy=(Dn?1:0)-(U?1:0),mag=Math.hypot(dx,dy)||1;
+ snake.vx+=dx/mag*c.speed*dt;snake.vy+=dy/mag*c.speed*dt;snake.vx*=Math.pow(.025,dt);snake.vy*=Math.pow(.025,dt);
+ snake.x=Math.max(22,Math.min(W-22,snake.x+snake.vx*dt));snake.y=Math.max(105,Math.min(H-130,snake.y+snake.vy*dt));
+ snake.body.unshift({x:snake.x,y:snake.y});while(snake.body.length>Math.min(65,24+Math.floor(score/18)))snake.body.pop();
+ orbs.forEach(o=>{o.phase+=dt*2;o.x+=o.vx*dt;o.y+=o.vy*dt;if(o.x<o.r||o.x>W-o.r)o.vx*=-1;if(o.y<112+o.r||o.y>H-125-o.r)o.vy*=-1;if(Math.hypot(snake.x-o.x,snake.y-o.y)<snake.r+o.r-4)eat(o)});
+ particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=70*dt;p.life-=dt});particles=particles.filter(p=>p.life>0);
+ bonusClock+=dt;if(bonusClock>8.5){bonusClock=0;if(Math.random()<.62)spawnOrb(true)}
+ shake*=Math.pow(.04,dt);sync()
+}
+function bg(){
+ const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#183b63");g.addColorStop(.52,"#0a2441");g.addColorStop(1,"#05101d");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ stars.forEach(s=>{ctx.globalAlpha=s.a*(.55+.45*Math.sin(elapsed*s.s+s.x));ctx.fillStyle="#e4f3ff";ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.28);ctx.fill()});ctx.globalAlpha=1;
+ for(let i=0;i<7;i++){const y=(elapsed*(15+level*.2)+i*120)%(H+150)-70;ctx.globalAlpha=.055;ctx.fillStyle=i%2?"#72ffd5":"#a58cff";ctx.beginPath();ctx.ellipse((i*97+level*13)%W,y,52,17,.2,0,6.28);ctx.fill()}ctx.globalAlpha=1
+}
+function drawOrbs(){orbs.forEach(o=>{ctx.save();ctx.translate(o.x,o.y+Math.sin(o.phase)*3);ctx.shadowBlur=18;
+ let txt="",c1="",c2="";
+ if(o.kind==="number"){txt=o.value;c1=`hsl(${o.hue},86%,68%)`;c2=`hsl(${(o.hue+45)%360},82%,52%)`;ctx.shadowColor=c1}
+ if(o.kind==="time"){txt="+5";c1="#62efff";c2="#3975ff";ctx.shadowColor="#62efff"}
+ if(o.kind==="double"){txt="×2";c1="#ffe56e";c2="#ff9e3d";ctx.shadowColor="#ffe56e"}
+ if(o.kind==="minus"){txt="−"+o.value;c1="#ff7896";c2="#c72f6a";ctx.shadowColor="#ff517c"}
+ if(o.kind==="poison"){txt="☠";c1="#b7ff63";c2="#3c9d38";ctx.shadowColor="#9cff55"}
+ if(o.kind==="bomb"){txt="💣";c1="#575d69";c2="#151820";ctx.shadowColor="#ff714d"}
+ const g=ctx.createLinearGradient(-o.r,-o.r,o.r,o.r);g.addColorStop(0,c1);g.addColorStop(1,c2);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,o.r,0,6.28);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle="rgba(255,255,255,.22)";ctx.beginPath();ctx.arc(-6,-7,6,0,6.28);ctx.fill();ctx.fillStyle="white";ctx.font=o.kind==="bomb"?"25px serif":`900 ${o.kind==="number"?o.r+5:(o.kind==="poison"?22:16)}px system-ui`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(txt,0,1);ctx.restore()})}
+function drawSnake(){for(let i=snake.body.length-1;i>0;i--){const p=snake.body[i],t=i/snake.body.length,r=7+(1-t)*8;ctx.fillStyle=`hsl(${(120+i*7+level*4)%360},72%,${45+i%2*8}%)`;ctx.beginPath();ctx.arc(p.x,p.y,r,0,6.28);ctx.fill();if(i%4===0){ctx.fillStyle="rgba(255,240,139,.72)";ctx.beginPath();ctx.arc(p.x+2,p.y,r*.38,0,6.28);ctx.fill()}}
+ const h=snake.body[0]||snake;ctx.save();ctx.translate(h.x,h.y);ctx.shadowBlur=20;ctx.shadowColor="rgba(95,255,173,.55)";ctx.fillStyle="#57db8d";ctx.beginPath();ctx.ellipse(0,0,22,19,0,0,6.28);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle="white";ctx.beginPath();ctx.arc(-7,-5,5.5,0,6.28);ctx.arc(7,-5,5.5,0,6.28);ctx.fill();ctx.fillStyle="#15281f";ctx.beginPath();ctx.arc(-6,-5,2.3,0,6.28);ctx.arc(8,-5,2.3,0,6.28);ctx.fill();ctx.strokeStyle="#17392c";ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,3,7,.15*Math.PI,.85*Math.PI);ctx.stroke();ctx.strokeStyle="#ff6d91";ctx.beginPath();ctx.moveTo(0,9);ctx.lineTo(0,15);ctx.lineTo(-4,18);ctx.moveTo(0,15);ctx.lineTo(4,18);ctx.stroke();ctx.restore()}
+function draw(){ctx.save();if(shake)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);ctx.clearRect(-10,-10,W+20,H+20);bg();drawOrbs();drawSnake();particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=`hsl(${p.h},90%,68%)`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill()});ctx.globalAlpha=1;ctx.restore()}
+function frame(t){const dt=Math.min(.033,(t-last)/1000||0);last=t;update(dt);draw();requestAnimationFrame(frame)}
+function set(s,v){if(s==="L")L=v;if(s==="R")R=v;if(s==="U")U=v;if(s==="D")Dn=v}
+function bind(id,s){const e=$(id),on=x=>{x.preventDefault();set(s,true)},off=x=>{x.preventDefault();set(s,false)};["pointerdown","touchstart","mousedown"].forEach(k=>e.addEventListener(k,on,{passive:false}));["pointerup","pointercancel","pointerleave","touchend","touchcancel","mouseup"].forEach(k=>e.addEventListener(k,off,{passive:false}))}
+bind("left","L");bind("right","R");bind("up","U");bind("down","D");
+addEventListener("keydown",e=>{if(e.key==="ArrowLeft"||e.key==="a")L=true;if(e.key==="ArrowRight"||e.key==="d")R=true;if(e.key==="ArrowUp"||e.key==="w")U=true;if(e.key==="ArrowDown"||e.key==="s")Dn=true});
+addEventListener("keyup",e=>{if(e.key==="ArrowLeft"||e.key==="a")L=false;if(e.key==="ArrowRight"||e.key==="d")R=false;if(e.key==="ArrowUp"||e.key==="w")U=false;if(e.key==="ArrowDown"||e.key==="s")Dn=false});
+let drag=false,lx=0,ly=0;canvas.addEventListener("pointerdown",e=>{drag=true;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture?.(e.pointerId)});canvas.addEventListener("pointermove",e=>{if(!drag)return;const x=e.clientX-lx,y=e.clientY-ly;lx=e.clientX;ly=e.clientY;snake.vx+=x*4;snake.vy+=y*4});canvas.addEventListener("pointerup",()=>drag=false);canvas.addEventListener("pointercancel",()=>drag=false);
+$("startBtn").onclick=()=>{$("start").classList.add("hidden");level=1;resetLevel();running=true;last=performance.now();sound(520,.08)};
+$("restartBtn").onclick=()=>{$("result").classList.add("hidden");level=1;resetLevel();running=true;last=performance.now()};
+resize();resetLevel();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
