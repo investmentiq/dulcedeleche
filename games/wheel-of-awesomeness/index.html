@@ -362,53 +362,63 @@
       aspect-ratio: 1;
     }
 
-    .pointer {
-      position: absolute;
-      z-index: 8;
+   .pointer {
+  position: absolute;
+  z-index: 8;
 
-      top: -2px;
-      left: 50%;
+  top: -2px;
+  left: 50%;
 
-      width: 0;
-      height: 0;
+  width: 44px;
+  height: 45px;
 
-      border-left:
-        20px solid transparent;
+  transform:
+    translateX(-50%);
 
-      border-right:
-        20px solid transparent;
+  filter:
+    drop-shadow(
+      0 5px 12px
+      rgba(0, 0, 0, 0.45)
+    );
+}
 
-      border-bottom:
-        38px solid white;
+.pointer::before {
+  content: "";
 
-      transform:
-        translateX(-50%);
+  position: absolute;
+  inset: 0;
 
-      filter:
-        drop-shadow(
-          0 5px 12px
-          rgba(0, 0, 0, 0.45)
-        );
-    }
+  background: white;
 
-    .pointer::after {
-      content: "";
+  clip-path:
+    polygon(
+      0 0,
+      100% 0,
+      50% 100%
+    );
+}
 
-      position: absolute;
+.pointer::after {
+  content: "";
 
-      top: 7px;
-      left: -7px;
+  position: absolute;
 
-      width: 14px;
-      height: 14px;
+  left: 50%;
+  bottom: -2px;
 
-      border-radius: 50%;
+  width: 14px;
+  height: 14px;
 
-      background: var(--cyan);
+  border-radius: 50%;
 
-      box-shadow:
-        0 0 18px var(--cyan);
-    }
+  background: var(--cyan);
+
+  box-shadow:
+    0 0 18px var(--cyan);
+
+  transform:
+    translateX(-50%);
+}
 
     .wheel-shell {
       width: 100%;
@@ -836,10 +846,9 @@
       }
 
       .pointer {
-        border-left-width: 15px;
-        border-right-width: 15px;
-        border-bottom-width: 30px;
-      }
+  width: 34px;
+  height: 36px;
+}
 
       .actions {
         grid-template-columns:
