@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080b17" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Pocket Orchestra v0.10 — MartianGalactic Labs</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#080b17;
+      --panel:rgba(255,255,255,.075);
+      --panel-strong:rgba(255,255,255,.115);
+      --line:rgba(179,190,255,.2);
+      --text:#f7f8ff;
+      --muted:#b9c1d9;
+      --cyan:#55eee2;
+      --blue:#72a7ff;
+      --violet:#aa7cff;
+      --pink:#ff74bd;
+      --gold:#ffd36d;
+      --green:#72f2ae;
+      --shadow:0 24px 70px rgba(0,0,0,.32);
+    }
+
+    *{box-sizing:border-box}
+    html,body{min-height:100%}
+    body{
+      margin:0;
+      overflow-x:hidden;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 20%,rgba(58,217,255,.15),transparent 24rem),
+        radial-gradient(circle at 88% 16%,rgba(165,88,255,.22),transparent 28rem),
+        radial-gradient(circle at 50% 110%,rgba(255,88,179,.11),transparent 30rem),
+        linear-gradient(145deg,#060914,#0b1430 58%,#190b38);
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px),
+        radial-gradient(circle,rgba(255,255,255,.25) 0 1px,transparent 1.4px);
+      background-size:48px 48px,48px 48px,110px 110px;
+      mask-image:linear-gradient(to bottom,black,transparent 94%);
+      opacity:.72;
+    }
+
+    .orb{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(1px);
+      pointer-events:none;
+      opacity:.5;
+      animation:drift 12s ease-in-out infinite alternate;
+    }
+    .orb.one{width:180px;height:180px;left:-70px;top:18%;background:radial-gradient(circle,rgba(85,238,226,.28),transparent 70%)}
+    .orb.two{width:230px;height:230px;right:-90px;top:34%;background:radial-gradient(circle,rgba(170,124,255,.3),transparent 70%);animation-duration:15s}
+    .orb.three{width:160px;height:160px;left:35%;bottom:-60px;background:radial-gradient(circle,rgba(255,116,189,.22),transparent 70%);animation-duration:18s}
+    @keyframes drift{to{transform:translate3d(20px,-18px,0) scale(1.08)}}
+
+    .page{
+      position:relative;
+      width:min(1120px,calc(100% - 28px));
+      margin:0 auto;
+      padding:26px 0 96px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:38px;
+    }
+
+    .brand{display:flex;align-items:center;gap:12px}
+    .mark{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      border:1px solid rgba(170,124,255,.4);
+      background:linear-gradient(145deg,rgba(85,238,226,.12),rgba(170,124,255,.18));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 30px rgba(0,0,0,.18);
+      font-size:22px;
+    }
+    .brand-copy{display:grid;gap:2px;text-transform:uppercase;letter-spacing:.15em;line-height:1}
+    .brand-copy strong{font-size:.8rem}
+    .brand-copy span{font-size:.72rem;color:var(--cyan)}
+
+    .status-chip{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 12px;
+      background:rgba(255,255,255,.05);
+      color:#9ef7e1;
+      font-size:.7rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      backdrop-filter:blur(14px);
+    }
+    .status-chip i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(114,242,174,.8)}
+
+    .hero{
+      text-align:center;
+      max-width:850px;
+      margin:0 auto 28px;
+    }
+    .kicker{color:var(--cyan);font-size:.76rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+    h1{margin:12px 0 14px;font-size:clamp(2.8rem,8vw,6.4rem);line-height:.93;letter-spacing:-.07em}
+    .gradient{
+      display:block;
+      background:linear-gradient(90deg,var(--cyan),var(--blue) 42%,var(--violet) 70%,var(--pink));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .subtitle{margin:0 auto;color:var(--muted);font-size:clamp(1rem,2vw,1.16rem);line-height:1.7;max-width:700px}
+
+    .stage{
+      position:relative;
+      margin:34px auto 20px;
+      padding:24px;
+      border:1px solid var(--line);
+      border-radius:30px;
+      background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.045));
+      backdrop-filter:blur(18px);
+      box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.04);
+      overflow:hidden;
+    }
+    .stage::before{
+      content:"";position:absolute;inset:auto 10% -70px 10%;height:130px;
+      background:radial-gradient(ellipse,rgba(85,238,226,.16),transparent 70%);
+      filter:blur(10px);
+    }
+
+    .conductor-area{
+      min-height:170px;
+      display:grid;
+      place-items:center;
+      position:relative;
+      margin-bottom:18px;
+    }
+
+    .conductor{
+      position:relative;
+      width:170px;
+      height:112px;
+      filter:drop-shadow(0 18px 18px rgba(0,0,0,.28));
+      animation:bob 2.8s ease-in-out infinite;
+    }
+    @keyframes bob{50%{transform:translateY(-6px)}}
+
+    .shell{
+      position:absolute;left:10px;bottom:10px;width:74px;height:74px;border-radius:50%;
+      background:radial-gradient(circle at 38% 35%,#ffe4a4,#ef9e57 56%,#8b4d3b 100%);
+      box-shadow:inset -8px -8px 0 rgba(0,0,0,.08),0 0 24px rgba(255,211,109,.18);
+    }
+    .shell::before{content:"";position:absolute;inset:15px;border:5px solid rgba(114,57,42,.48);border-radius:50%;box-shadow:inset 0 0 0 5px rgba(255,255,255,.08)}
+    .body{position:absolute;left:57px;bottom:15px;width:90px;height:30px;border-radius:25px 32px 18px 18px;background:linear-gradient(180deg,#b9f49b,#6fc56f)}
+    .head{position:absolute;right:8px;bottom:35px;width:44px;height:48px;border-radius:48% 52% 44% 48%;background:linear-gradient(145deg,#c9f8a8,#76cc74)}
+    .eye{position:absolute;right:8px;top:10px;width:6px;height:6px;background:#132019;border-radius:50%;box-shadow:0 0 0 3px #fff}
+    .antenna,.antenna2{position:absolute;width:3px;height:28px;background:#78cb72;right:22px;top:-18px;border-radius:999px;transform:rotate(-8deg);transform-origin:bottom}
+    .antenna2{right:7px;transform:rotate(11deg)}
+    .antenna::after,.antenna2::after{content:"";position:absolute;top:-2px;left:-3px;width:9px;height:9px;background:#8de384;border-radius:50%}
+    .hat{position:absolute;right:3px;bottom:77px;width:46px;height:13px;border-radius:50%;background:#151526;box-shadow:0 -15px 0 -3px #151526}
+    .hat::after{content:"";position:absolute;width:28px;height:8px;left:9px;top:-11px;border-radius:5px 5px 1px 1px;background:linear-gradient(90deg,#39234f,#1c1a31)}
+    .bow{position:absolute;right:43px;bottom:28px;width:28px;height:16px}
+    .bow::before,.bow::after{content:"";position:absolute;top:2px;width:14px;height:12px;background:var(--pink);border-radius:4px 9px 9px 4px;transform:rotate(18deg)}
+    .bow::after{right:0;transform:scaleX(-1) rotate(18deg)}
+    .baton{position:absolute;right:-16px;bottom:66px;width:56px;height:3px;background:linear-gradient(90deg,#fff,#ffd36d);border-radius:999px;transform-origin:left center;transform:rotate(-24deg);animation:conduct 1s ease-in-out infinite alternate}
+    @keyframes conduct{to{transform:rotate(22deg)}}
+
+    .speech{
+      position:absolute;top:8px;right:8%;max-width:260px;
+      padding:12px 15px;border:1px solid var(--line);border-radius:18px 18px 18px 5px;
+      background:rgba(10,14,34,.72);color:#dfe5ff;font-size:.86rem;line-height:1.45;
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
+    }
+
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;position:relative;z-index:2}
+    .instrument{
+      --accent:var(--cyan);
+      position:relative;
+      min-height:210px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:24px;
+      background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.035));
+      color:inherit;
+      padding:22px 16px 18px;
+      text-align:center;
+      cursor:pointer;
+      overflow:hidden;
+      transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+      -webkit-tap-highlight-color:transparent;
+    }
+    .instrument:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 60%,white 10%);background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.05))}
+    .instrument:active{transform:translateY(-1px) scale(.99)}
+    .instrument.active{border-color:color-mix(in srgb,var(--accent) 75%,white 10%);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent),0 18px 40px color-mix(in srgb,var(--accent) 16%,transparent),inset 0 1px 0 rgba(255,255,255,.08)}
+    .instrument::before{content:"";position:absolute;width:120px;height:120px;right:-42px;bottom:-52px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 34%,transparent),transparent 70%)}
+    .instrument .icon{font-size:58px;line-height:1;display:block;filter:drop-shadow(0 0 15px color-mix(in srgb,var(--accent) 35%,transparent));transition:transform .18s ease}
+    .instrument.active .icon{animation:groove .65s ease-in-out infinite alternate}
+    @keyframes groove{to{transform:rotate(4deg) translateY(-4px) scale(1.04)}}
+    .instrument h3{margin:17px 0 6px;font-size:1.15rem}
+    .instrument p{margin:0;color:var(--muted);font-size:.83rem;line-height:1.5}
+    .badge{position:absolute;top:13px;right:13px;padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18);font-size:.62rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .instrument.active .badge{color:#07130d;background:var(--accent);border-color:transparent}
+    .pulse-ring{position:absolute;left:50%;top:66px;width:80px;height:80px;border:2px solid var(--accent);border-radius:50%;transform:translate(-50%,-50%) scale(.4);opacity:0}
+    .instrument.hit .pulse-ring{animation:ring .48s ease-out}
+    @keyframes ring{0%{opacity:.7;transform:translate(-50%,-50%) scale(.45)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.45)}}
+
+    .drums{--accent:var(--gold)}
+    .keys{--accent:var(--cyan)}
+    .bass{--accent:var(--green)}
+    .sax{--accent:var(--pink)}
+
+    .controls{
+      display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .control{
+      min-height:44px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 14px;
+      font:inherit;
+      font-size:.82rem;
+      font-weight:800;
+      cursor:pointer;
+      backdrop-filter:blur(12px);
+      transition:transform .15s ease,background .15s ease;
+    }
+    .control:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)}
+    .tempo-wrap{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.055);font-size:.8rem;color:var(--muted)}
+    input[type="range"]{accent-color:var(--violet);width:120px}
+    .tempo-value{color:var(--text);font-weight:900;min-width:58px}
+
+    .tip{text-align:center;color:rgba(220,225,245,.68);font-size:.78rem;margin-top:16px}
+
+    .home{
+      position:fixed;
+      right:max(18px,env(safe-area-inset-right));
+      bottom:max(18px,env(safe-area-inset-bottom));
+      z-index:20;
+      width:52px;height:52px;border-radius:17px;
+      display:grid;place-items:center;
+      color:white;text-decoration:none;font-size:22px;
+      border:1px solid rgba(184,193,255,.28);
+      background:rgba(12,16,38,.78);
+      box-shadow:0 16px 36px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.08);
+      backdrop-filter:blur(16px);
+      transition:transform .16s ease,background .16s ease;
+    }
+    .home:hover{transform:translateY(-3px);background:rgba(24,30,68,.9)}
+
+    .toast{
+      position:fixed;left:50%;bottom:28px;z-index:30;
+      transform:translate(-50%,20px);opacity:0;pointer-events:none;
+      padding:10px 14px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(10,14,34,.88);color:#eef1ff;font-size:.8rem;font-weight:800;
+      transition:.22s ease;backdrop-filter:blur(14px)
+    }
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+
+    @media(max-width:880px){
+      .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .speech{right:2%;top:0}
+    }
+    @media(max-width:560px){
+      .page{width:min(100% - 20px,1120px);padding-top:18px}
+      .topbar{align-items:flex-start;margin-bottom:28px}
+      .status-chip{font-size:.58rem;padding:7px 9px}
+      h1{font-size:clamp(2.7rem,15vw,4.8rem)}
+      .stage{padding:14px;border-radius:24px}
+      .conductor-area{min-height:190px}
+      .speech{position:relative;right:auto;top:auto;margin:0 auto 12px;max-width:100%;text-align:center;border-radius:16px}
+      .grid{grid-template-columns:1fr 1fr;gap:10px}
+      .instrument{min-height:180px;padding:18px 10px 14px}
+      .instrument .icon{font-size:50px}
+      .instrument h3{font-size:1rem}
+      .instrument p{font-size:.74rem}
+      .tempo-wrap{width:100%;justify-content:center}
+      input[type="range"]{width:min(160px,42vw)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="orb one"></div><div class="orb two"></div><div class="orb three"></div>
+
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">🧪</div>
+        <div class="brand-copy"><strong>MartianGalactic</strong><span>Labs</span></div>
+      </div>
+      <div class="status-chip"><i></i> Audio lab online</div>
+    </header>
+
+    <section class="hero">
+      <div class="kicker">Experiment 005</div>
+      <h1>Pocket <span class="gradient">Orchestra</span></h1>
+      <p class="subtitle">Wake the instruments, build a tiny looping song, and let Maestro Snail conduct the whole delightful operation.</p>
+    </section>
+
+    <section class="stage" aria-label="Pocket Orchestra instrument mixer">
+      <div class="conductor-area">
+        <div class="speech" id="speech">Tap an instrument. I shall pretend this was all carefully rehearsed.</div>
+        <div class="conductor" aria-label="Maestro Snail conductor">
+          <div class="shell"></div><div class="body"></div><div class="head"><div class="eye"></div><div class="antenna"></div><div class="antenna2"></div></div>
+          <div class="hat"></div><div class="bow"></div><div class="baton"></div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <button class="instrument drums" data-track="drums" aria-pressed="false">
+          <span class="badge">Sleeping</span><span class="pulse-ring"></span><span class="icon">🥁</span><h3>Moon Drums</h3><p>Warm rhythm and tiny cosmic thumps.</p>
+        </button>
+        <button class="instrument keys" data-track="keys" aria-pressed="false">
+          <span class="badge">Sleeping</span><span class="pulse-ring"></span><span class="icon">🎹</span><h3>Glass Keys</h3><p>Soft chords with a shimmering tail.</p>
+        </button>
+        <button class="instrument bass" data-track="bass" aria-pressed="false">
+          <span class="badge">Sleeping</span><span class="pulse-ring"></span><span class="icon">🎸</span><h3>Moss Bass</h3><p>A plucky low groove that holds it together.</p>
+        </button>
+        <button class="instrument sax" data-track="sax" aria-pressed="false">
+          <span class="badge">Sleeping</span><span class="pulse-ring"></span><span class="icon">🎷</span><h3>Comet Sax</h3><p>The dramatic creature. Naturally.</p>
+        </button>
+      </div>
+
+      <div class="controls">
+        <button class="control" id="surpriseBtn">✨ Surprise Mix</button>
+        <button class="control" id="clearBtn">↺ Clear Stage</button>
+        <button class="control" id="muteBtn">🔊 Sound On</button>
+        <label class="tempo-wrap">Tempo <input id="tempo" type="range" min="72" max="128" value="96" step="1" /><span class="tempo-value" id="tempoValue">96 BPM</span></label>
+      </div>
+      <div class="tip">Tap any card to add or remove that instrument. Everything is generated live in your browser.</div>
+    </section>
+  </main>
+
+  <a class="home" href="../../" aria-label="Back to MartianGalactic Labs" title="Back to the lab">⌂</a>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (() => {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      let ctx = null;
+      let master = null;
+      let scheduler = null;
+      let step = 0;
+      let muted = false;
+      let bpm = 96;
+      const active = new Set();
+
+      const cards = [...document.querySelectorAll('.instrument')];
+      const speech = document.getElementById('speech');
+      const tempo = document.getElementById('tempo');
+      const tempoValue = document.getElementById('tempoValue');
+      const muteBtn = document.getElementById('muteBtn');
+      const toast = document.getElementById('toast');
+
+      const comments = {
+        empty: [
+          'A bold interpretation of silence.',
+          'The orchestra is currently on a very small break.',
+          'Tap an instrument. I have polished the baton.'
+        ],
+        drums: ['Excellent. We now possess rhythm.', 'The Moon Drums have awakened.', 'Tiny thumps. Serious artistic intent.'],
+        keys: ['Glass Keys online. Very tasteful.', 'A little shimmer improves most situations.', 'The chords approve of this decision.'],
+        bass: ['Moss Bass reporting for groove duty.', 'Now the floor has somewhere to stand.', 'Low notes: structurally important.'],
+        sax: ['Comet Sax has entered dramatically.', 'Subtlety has left the building.', 'A mysterious solo is now statistically likely.'],
+        mix: ['This is unexpectedly coherent.', 'I shall take full credit for the arrangement.', 'The ensemble is alive. Please remain calm.', 'Excellent. We have accidentally made music.']
+      };
+
+      function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+      function say(text){ speech.textContent = text; }
+      function showToast(text){ toast.textContent = text; toast.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>toast.classList.remove('show'),1400); }
+
+      function ensureAudio(){
+        if(!AudioContextClass){ showToast('Web Audio is not supported here.'); return false; }
+        if(!ctx){
+          ctx = new AudioContextClass();
+          master = ctx.createGain();
+          master.gain.value = .72;
+          const comp = ctx.createDynamicsCompressor();
+          comp.threshold.value = -18; comp.knee.value = 18; comp.ratio.value = 5; comp.attack.value = .004; comp.release.value = .22;
+          master.connect(comp); comp.connect(ctx.destination);
+        }
+        if(ctx.state === 'suspended') ctx.resume();
+        if(!scheduler) startScheduler();
+        return true;
+      }
+
+      function gainAt(value, when, duration=.25){
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(.0001, when);
+        g.gain.exponentialRampToValueAtTime(Math.max(.0002,value), when + .01);
+        g.gain.exponentialRampToValueAtTime(.0001, when + duration);
+        g.connect(master);
+        return g;
+      }
+
+      function playKick(t){
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.type='sine'; o.frequency.setValueAtTime(125,t); o.frequency.exponentialRampToValueAtTime(48,t+.16);
+        g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.34,t+.008); g.gain.exponentialRampToValueAtTime(.0001,t+.25);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t+.28);
+      }
+      function playHat(t, open=false){
+        const len = open ? .18 : .06;
+        const buffer = ctx.createBuffer(1, ctx.sampleRate*len, ctx.sampleRate);
+        const data=buffer.getChannelData(0); for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*(1-i/data.length);
+        const src=ctx.createBufferSource(), f=ctx.createBiquadFilter(), g=ctx.createGain();
+        src.buffer=buffer; f.type='highpass'; f.frequency.value=5200; g.gain.value=open?.085:.055;
+        src.connect(f); f.connect(g); g.connect(master); src.start(t);
+      }
+      function playChord(t, root){
+        const notes=[root,root*1.25,root*1.5];
+        notes.forEach((freq,i)=>{
+          const o=ctx.createOscillator(), g=ctx.createGain(), f=ctx.createBiquadFilter();
+          o.type=i===0?'triangle':'sine'; o.frequency.value=freq; f.type='lowpass'; f.frequency.value=1800;
+          g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(.07/(i+1),t+.04); g.gain.exponentialRampToValueAtTime(.0001,t+.75);
+          o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t+.8);
+        });
+      }
+      function playBass(t, freq){
+        const o=ctx.createOscillator(), g=ctx.createGain(), f=ctx.createBiquadFilter();
+        o.type='triangle'; o.frequency.value=freq; f.type='lowpass'; f.frequency.value=600; f.Q.value=3;
+        g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.14,t+.008); g.gain.exponentialRampToValueAtTime(.0001,t+.32);
+        o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t+.36);
+      }
+      function playSax(t,freq){
+        const o=ctx.createOscillator(), o2=ctx.createOscillator(), g=ctx.createGain(), f=ctx.createBiquadFilter(), lfo=ctx.createOscillator(), lg=ctx.createGain();
+        o.type='sawtooth'; o2.type='square'; o.frequency.value=freq; o2.frequency.value=freq*1.006;
+        f.type='lowpass'; f.frequency.value=980; f.Q.value=5; lfo.frequency.value=5.2; lg.gain.value=3.5; lfo.connect(lg); lg.connect(o.frequency);
+        g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(.055,t+.05); g.gain.exponentialRampToValueAtTime(.0001,t+.48);
+        o.connect(f);o2.connect(f);f.connect(g);g.connect(master);o.start(t);o2.start(t);lfo.start(t);o.stop(t+.52);o2.stop(t+.52);lfo.stop(t+.52);
+      }
+
+      function flash(name){
+        const card=document.querySelector(`[data-track="${name}"]`);
+        if(!card) return; card.classList.remove('hit'); void card.offsetWidth; card.classList.add('hit');
+      }
+
+      function tick(){
+        if(!ctx) return;
+        const t=ctx.currentTime+.045;
+        if(active.has('drums')){
+          if(step%4===0){playKick(t);flash('drums')}
+          if(step%2===1) playHat(t,step%8===7);
+        }
+        if(active.has('keys') && step%4===0){
+          const roots=[220,261.63,196,246.94]; playChord(t,roots[(step/4)%4|0]);flash('keys');
+        }
+        if(active.has('bass') && step%2===0){
+          const notes=[110,110,98,123.47,110,130.81,98,123.47];playBass(t,notes[(step/2)%8|0]);flash('bass');
+        }
+        if(active.has('sax') && [3,7,11,14].includes(step%16)){
+          const notes=[329.63,392,293.66,369.99];playSax(t,notes[[3,7,11,14].indexOf(step%16)]);flash('sax');
+        }
+        step=(step+1)%16;
+      }
+
+      function startScheduler(){
+        const loop=()=>{ tick(); scheduler=setTimeout(loop,(60000/bpm)/2); };
+        loop();
+      }
+      function restartScheduler(){ clearTimeout(scheduler); scheduler=null; if(ctx) startScheduler(); }
+
+      function updateCard(card,on){
+        card.classList.toggle('active',on);
+        card.setAttribute('aria-pressed',String(on));
+        card.querySelector('.badge').textContent=on?'Playing':'Sleeping';
+      }
+
+      function toggleTrack(name,card){
+        if(!ensureAudio()) return;
+        const turningOn=!active.has(name);
+        turningOn?active.add(name):active.delete(name);
+        updateCard(card,turningOn);
+        if(active.size===0) say(pick(comments.empty));
+        else if(turningOn) say(active.size>1?pick(comments.mix):pick(comments[name]));
+        else say(active.size>0?pick(comments.mix):pick(comments.empty));
+      }
+
+      cards.forEach(card=>card.addEventListener('click',()=>toggleTrack(card.dataset.track,card)));
+
+      document.getElementById('surpriseBtn').addEventListener('click',()=>{
+        if(!ensureAudio()) return;
+        active.clear();
+        const shuffled=[...cards].sort(()=>Math.random()-.5);
+        const count=2+Math.floor(Math.random()*3);
+        shuffled.slice(0,count).forEach(c=>active.add(c.dataset.track));
+        cards.forEach(c=>updateCard(c,active.has(c.dataset.track)));
+        say(pick(comments.mix)); showToast('A fresh tiny arrangement appeared.');
+      });
+
+      document.getElementById('clearBtn').addEventListener('click',()=>{
+        active.clear(); cards.forEach(c=>updateCard(c,false)); say(pick(comments.empty)); showToast('Stage cleared. Maestro remains optimistic.');
+      });
+
+      muteBtn.addEventListener('click',()=>{
+        if(!ensureAudio()) return;
+        muted=!muted; master.gain.setTargetAtTime(muted?0:.72,ctx.currentTime,.03);
+        muteBtn.textContent=muted?'🔇 Sound Off':'🔊 Sound On';
+        showToast(muted?'The orchestra is miming.':'Sound restored.');
+      });
+
+      tempo.addEventListener('input',()=>{
+        bpm=Number(tempo.value); tempoValue.textContent=`${bpm} BPM`; restartScheduler();
+      });
+
+      document.addEventListener('visibilitychange',()=>{
+        if(document.hidden && ctx && ctx.state==='running') ctx.suspend();
+      });
+    })();
+  </script>
+</body>
+</html>
