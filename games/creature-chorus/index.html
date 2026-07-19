@@ -285,16 +285,6 @@
       color: transparent;
     }
 
-    .intro {
-      max-width: 760px;
-      margin: 0;
-
-      color: var(--muted);
-
-      font-size: clamp(1rem, 2vw, 1.15rem);
-      line-height: 1.75;
-    }
-
     .stage {
       overflow: hidden;
 
@@ -639,7 +629,23 @@
       color: #9da7c8;
       font-size: 0.82rem;
     }
+    
+.about-panel{
+  margin-top:18px;
+  padding:18px 20px;
 
+  border:1px solid var(--border);
+  border-radius:22px;
+
+  background:rgba(255,255,255,.045);
+
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.about-panel strong{
+  color:var(--text);
+}
     footer {
       margin-top: 24px;
 
@@ -660,6 +666,14 @@
     }
 
     @media (max-width: 560px) {
+     
+      .about-panel{
+  margin-top:12px;
+  padding:15px 16px;
+  border-radius:18px;
+  font-size:.88rem;
+}
+      
       .page {
         width: min(100% - 22px, 1100px);
         padding-top: 18px;
@@ -733,19 +747,14 @@
         <span class="gradient-text">Creature Chorus.</span>
       </h1>
 
-      <p class="intro">
-        Tap the creatures to make them sing. Layer their strange little
-        voices, shuffle the ensemble, and let Maestro Snail conduct the
-        most unnecessary choir on the internet.
-      </p>
     </section>
 
     <section class="stage" aria-label="Creature Chorus">
       <div class="controls">
-        <div class="status" id="status">
-          <strong>Choir sleeping.</strong><br>
-          Tap a creature to wake a voice.
-        </div>
+       <div class="status" id="status">
+  <strong>Choir sleeping.</strong><br>
+  Tap an animal to add it to the choir.
+</div>
 
         <div class="buttons">
           <button id="randomize" type="button">
@@ -867,7 +876,14 @@
         </p>
       </div>
     </section>
-
+    
+ <section class="about-panel">
+      <strong>About this experiment:</strong>
+      Tap the creatures to make them sing. Layer their strange little
+      voices, shuffle the ensemble, and let Maestro Snail conduct the
+      most unnecessary choir on the internet.
+    </section>
+    
     <footer>
       Built with curiosity. Conducted at approximately snail speed.
     </footer>
@@ -1140,8 +1156,8 @@
 
         if (activeCreatures.size === 0) {
           status.innerHTML =
-            "<strong>Choir sleeping.</strong><br>" +
-            "Tap a creature to wake a voice.";
+  "<strong>Choir sleeping.</strong><br>" +
+  "Tap an animal to add it to the choir.";
 
           maestroLine.textContent =
             "Maestro Snail is reviewing the seating arrangement.";
