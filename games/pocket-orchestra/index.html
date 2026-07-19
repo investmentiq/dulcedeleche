@@ -243,6 +243,50 @@
     input[type="range"]{accent-color:var(--violet);width:120px}
     .tempo-value{color:var(--text);font-weight:900;min-width:58px}
 
+    .about-panel{
+  max-width:760px;
+
+  margin:18px auto 0;
+  padding:20px 22px;
+
+  text-align:center;
+
+  border:1px solid var(--line);
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.065),
+      rgba(255,255,255,.03)
+    );
+
+  color:var(--muted);
+
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.about-kicker{
+  margin-bottom:8px;
+
+  color:var(--cyan);
+
+  font-size:.7rem;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.about-panel p{
+  max-width:620px;
+
+  margin:0 auto;
+
+  font-size:.92rem;
+  line-height:1.65;
+}
+    
     .tip{text-align:center;color:rgba(220,225,245,.68);font-size:.78rem;margin-top:16px}
 
     .home{
@@ -289,6 +333,14 @@
       .instrument p{font-size:.74rem}
       .tempo-wrap{width:100%;justify-content:center}
       input[type="range"]{width:min(160px,42vw)}
+
+      .about-panel{
+  margin-top:14px;
+  padding:17px 15px;
+  border-radius:18px;
+}
+
+      
     }
     @media(prefers-reduced-motion:reduce){
       *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
@@ -310,7 +362,7 @@
     <section class="hero">
       <div class="kicker">Experiment 005</div>
       <h1>Pocket <span class="gradient">Orchestra</span></h1>
-      <p class="subtitle">Wake the instruments, build a tiny looping song, and let Maestro Snail conduct the whole delightful operation.</p>
+      
     </section>
 
     <section class="stage" aria-label="Pocket Orchestra instrument mixer">
@@ -345,6 +397,17 @@
       </div>
       <div class="tip">Tap any card to add or remove that instrument. Everything is generated live in your browser.</div>
     </section>
+    
+    <section class="about-panel">
+  <div class="about-kicker">
+    About this experiment
+  </div>
+
+  <p>
+    Wake the instruments, build a tiny looping song,
+    and let Maestro Snail conduct the whole delightful operation.
+  </p>
+</section>
   </main>
 
   <a class="home" href="../../" aria-label="Back to MartianGalactic Labs" title="Back to the lab">⌂</a>
