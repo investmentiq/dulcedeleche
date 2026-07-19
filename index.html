@@ -790,6 +790,66 @@
       text-shadow:0 0 12px rgba(99,240,238,.92);
     }
 
+
+    .atmospheric-terminal::after{
+      background:
+        radial-gradient(
+          circle,
+          rgba(255,205,112,.34),
+          rgba(76,232,223,.14) 48%,
+          transparent 73%
+        );
+    }
+
+    .weather-icon{
+      position:relative;
+      width:92px;
+      height:92px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle at 35% 30%,#fff 0 5%,#fff3b0 9%,#ffc968 34%,#f18b55 67%,#5b3d72 100%);
+      border:4px solid rgba(255,255,255,.72);
+      box-shadow:
+        0 0 22px rgba(255,205,112,.42),
+        0 0 40px rgba(76,232,223,.22),
+        inset 0 0 18px rgba(255,255,255,.18);
+    }
+
+    .weather-icon::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:124px;
+      height:42px;
+      border:3px solid rgba(220,240,255,.54);
+      border-radius:50%;
+      transform:translate(-50%,-50%) rotate(-16deg);
+      box-shadow:0 0 14px rgba(76,232,223,.25);
+    }
+
+    .weather-icon::after{
+      content:"🌤️";
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      font-size:2.55rem;
+      filter:drop-shadow(0 7px 10px rgba(0,0,0,.28));
+    }
+
+    .weather-signal{
+      position:absolute;
+      right:-12px;
+      bottom:-8px;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:#63f0c1;
+      border:3px solid rgba(255,255,255,.85);
+      box-shadow:0 0 17px rgba(99,240,193,.9);
+    }
+
     .game-content{
       position:relative;
       z-index:1;
@@ -960,7 +1020,7 @@
           <h2 id="experiments-title">Experiments</h2>
         </div>
 
-        <span class="version">MGL v0.9</span>
+        <span class="version">MGL v0.10</span>
       </div>
 
       <div class="games">
@@ -1158,6 +1218,31 @@
             </p>
           </div>
         </a>
+
+        <a
+          class="game-card atmospheric-terminal"
+          href="./games/atmospheric-terminal/"
+          aria-label="Launch Atmospheric Terminal"
+        >
+          <div class="game-icon" aria-hidden="true">
+            <div class="weather-icon">
+              <span class="weather-signal"></span>
+            </div>
+          </div>
+
+          <div class="game-content">
+            <span class="game-number">Experiment 010</span>
+            <span class="tag">Live</span>
+
+            <h3>Atmospheric Terminal</h3>
+
+            <p>
+              Reveal the weather around you and watch the entire MGL interface
+              respond with changing light, motion, sound, and atmospheric personality.
+            </p>
+          </div>
+        </a>
+
 
       </div>
     </section>
