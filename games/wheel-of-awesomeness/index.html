@@ -16,7 +16,7 @@
   >
 
   <title>
-    Wheel of Awesomeness v0.46 — MartianGalactic Labs
+    Wheel of Awesomeness v0.47 — MartianGalactic Labs
   </title>
 
   <style>
@@ -991,7 +991,7 @@
       </div>
 
       <div class="version">
-        MGL v0.46
+        MGL v0.47
       </div>
     </div>
 
@@ -1125,7 +1125,7 @@
     </section>
 
     <footer>
-      Wheel of Awesomeness v0.46 ·
+      Wheel of Awesomeness v0.47 ·
       MartianGalactic Labs ·
       Browser powered, cosmos approved.
     </footer>
@@ -1169,6 +1169,9 @@
 
       const wheel =
         document.getElementById("wheel");
+
+      const wheelPanel =
+        document.querySelector(".wheel-panel");
 
       const context =
         wheel.getContext("2d");
@@ -1697,6 +1700,11 @@
         if (spinning) {
           return;
         }
+
+        wheelPanel.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
 
         spinning = true;
 
