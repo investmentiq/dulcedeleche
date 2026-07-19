@@ -290,7 +290,14 @@
 
       padding:8px 0 4px;
     }
-
+.round-line{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  text-align:center;
+}
     .round{
       color:var(--warn);
 
@@ -301,11 +308,11 @@
     }
 
     .prompt{
-      color:var(--muted);
+  color:var(--muted);
 
-      font-size:1.1rem;
-      text-align:center;
-    }
+  font-size:1.1rem;
+  text-align:center;
+}
 
     .digits{
       display:grid;
@@ -1255,20 +1262,21 @@
       </div>
 
       <div class="arena">
-        <div
-          class="round"
-          id="roundLabel"
-        >
-          Round 1
-        </div>
+       <div class="round-line">
+  <span
+    class="round"
+    id="roundLabel"
+  >
+    Round 1
+  </span>
 
-        <div
-          class="prompt"
-          id="prompt"
-        >
-          Pick the hidden number.
-        </div>
-
+  <span
+    class="prompt"
+    id="prompt"
+  >
+    Pick the hidden number.
+  </span>
+</div>
         <div
           class="digits"
           id="digits"
