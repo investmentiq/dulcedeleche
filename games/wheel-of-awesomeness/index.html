@@ -277,23 +277,6 @@
       color: transparent;
     }
 
-    .intro {
-      max-width: 680px;
-
-      margin: 0 auto;
-
-      color: var(--muted);
-
-      font-size:
-        clamp(
-          0.98rem,
-          2vw,
-          1.18rem
-        );
-
-      line-height: 1.6;
-    }
-
     .lab {
       display: grid;
 
@@ -834,6 +817,23 @@
       }
     }
 
+    .about-panel{
+  margin-top:18px;
+  padding:18px 20px;
+
+  border:1px solid var(--line);
+  border-radius:22px;
+
+  background:rgba(255,255,255,.045);
+  color:var(--muted);
+
+  line-height:1.65;
+}
+
+.about-panel strong{
+  color:var(--text);
+}
+    
     footer {
       margin-top: 18px;
 
@@ -870,6 +870,15 @@
     }
 
     @media (max-width: 560px) {
+      
+      .about-panel{
+  margin-top:12px;
+  padding:15px 16px;
+  border-radius:18px;
+  font-size:.88rem;
+  line-height:1.55;
+}
+      
       .page {
         width:
           min(
@@ -893,11 +902,6 @@
         margin: 7px 0 5px;
         font-size: clamp(2rem, 12vw, 3.25rem);
         line-height: 0.96;
-      }
-
-      .intro {
-        font-size: 0.9rem;
-        line-height: 1.42;
       }
 
       .lab {
@@ -1005,10 +1009,6 @@
         <span>Awesomeness</span>
       </h1>
 
-      <p class="intro">
-        Spin the wheel. Receive one completely unnecessary
-        but scientifically uplifting message from the cosmos.
-      </p>
     </header>
 
     <section class="lab">
@@ -1122,6 +1122,12 @@
           It simply reminds the future that you are coming.
         </div>
       </aside>
+    </section>
+    
+     <section class="about-panel">
+      <strong>About this experiment:</strong>
+      Spin the wheel and receive one completely unnecessary but
+      scientifically uplifting message from the cosmos.
     </section>
 
     <footer>
