@@ -3,46 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Number Pulse v2.5 | MartianGalactic Labs</title>
+
+  <title>Number Pulse v2.6 | MartianGalactic Labs</title>
+
   <style>
     :root{
       --bg1:#111827;
       --bg2:#312e81;
+
       --card:rgba(255,255,255,.12);
       --card-border:rgba(255,255,255,.18);
+
       --text:#f9fafb;
       --muted:#cbd5e1;
+
       --accent:#22d3ee;
       --accent2:#a78bfa;
+
       --good:#34d399;
       --bad:#fb7185;
       --warn:#fbbf24;
+
       --shadow:0 24px 70px rgba(0,0,0,.35);
     }
 
-    *{box-sizing:border-box}
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
 
     body{
       margin:0;
+
       min-height:100vh;
+
       display:grid;
       place-items:center;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 15% 20%, rgba(34,211,238,.22), transparent 25%),
-        radial-gradient(circle at 85% 25%, rgba(167,139,250,.25), transparent 28%),
-        radial-gradient(circle at 50% 85%, rgba(251,191,36,.16), transparent 25%),
-        linear-gradient(135deg,var(--bg1),var(--bg2));
+
       padding:24px;
+
       overflow-x:hidden;
+
+      color:var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 15% 20%,
+          rgba(34,211,238,.22),
+          transparent 25%
+        ),
+        radial-gradient(
+          circle at 85% 25%,
+          rgba(167,139,250,.25),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 50% 85%,
+          rgba(251,191,36,.16),
+          transparent 25%
+        ),
+        linear-gradient(
+          135deg,
+          var(--bg1),
+          var(--bg2)
+        );
+    }
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    button:focus-visible,
+    a:focus-visible{
+      outline:3px solid rgba(34,211,238,.72);
+      outline-offset:3px;
     }
 
     .home-button{
       position:fixed;
+      z-index:1000;
       top:16px;
       left:16px;
-      z-index:1000;
 
       display:inline-flex;
       align-items:center;
@@ -52,20 +106,22 @@
       min-height:42px;
       padding:0 14px;
 
+      color:var(--text);
+
       border:1px solid rgba(255,255,255,.16);
       border-radius:999px;
 
       background:rgba(255,255,255,.09);
+
       backdrop-filter:blur(14px);
       -webkit-backdrop-filter:blur(14px);
 
-      color:var(--text);
+      box-shadow:0 10px 30px rgba(0,0,0,.22);
+
       text-decoration:none;
       font-size:.82rem;
       font-weight:800;
       letter-spacing:.02em;
-
-      box-shadow:0 10px 30px rgba(0,0,0,.22);
 
       transition:
         transform .18s ease,
@@ -75,6 +131,7 @@
 
     .home-button:hover{
       transform:translateY(-2px);
+
       background:rgba(255,255,255,.14);
       border-color:rgba(34,211,238,.55);
     }
@@ -85,6 +142,7 @@
 
     .shell{
       width:min(920px,100%);
+
       display:grid;
       gap:18px;
     }
@@ -94,20 +152,17 @@
       justify-content:space-between;
       align-items:center;
       gap:12px;
+
       flex-wrap:wrap;
     }
 
     .brand{
+      color:var(--accent);
+
+      font-size:.85rem;
       font-weight:900;
       letter-spacing:.08em;
       text-transform:uppercase;
-      font-size:.85rem;
-      color:var(--accent);
-    }
-
-    .mode{
-      color:var(--muted);
-      font-size:.9rem;
     }
 
     .top-actions{
@@ -116,48 +171,72 @@
       gap:10px;
     }
 
+    .mode{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
     .sound-toggle{
       appearance:none;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.09);
-      color:white;
+
       min-width:112px;
       padding:9px 14px;
-      border-radius:999px;
+
       cursor:pointer;
+
+      color:white;
+
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:999px;
+
+      background:rgba(255,255,255,.09);
+
       font-weight:800;
-      transition:.18s transform,.18s background,.18s border-color;
+
+      transition:
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease;
     }
 
     .sound-toggle:hover{
       transform:translateY(-2px);
+
       background:rgba(255,255,255,.14);
       border-color:rgba(34,211,238,.55);
     }
 
     .card{
-      background:var(--card);
+      overflow:hidden;
+
       border:1px solid var(--card-border);
       border-radius:28px;
+
+      background:var(--card);
+
       backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+
       box-shadow:var(--shadow);
-      overflow:hidden;
     }
 
     .main{
-      padding:30px;
       display:grid;
       gap:24px;
+
+      padding:30px;
     }
 
     .hero{
-      text-align:center;
       display:grid;
       gap:8px;
+
+      text-align:center;
     }
 
     h1{
       margin:0;
+
       font-size:clamp(2rem,6vw,4rem);
       line-height:1;
       letter-spacing:-.06em;
@@ -165,7 +244,9 @@
 
     .subtitle{
       margin:0;
+
       color:var(--muted);
+
       font-size:1rem;
     }
 
@@ -176,104 +257,273 @@
     }
 
     .stat{
-      background:rgba(255,255,255,.08);
+      padding:16px;
+
+      text-align:center;
+
       border:1px solid rgba(255,255,255,.12);
       border-radius:20px;
-      padding:16px;
-      text-align:center;
+
+      background:rgba(255,255,255,.08);
     }
 
     .stat b{
       display:block;
-      font-size:1.55rem;
+
       margin-top:3px;
+
+      font-size:1.55rem;
     }
 
     .stat span{
       color:var(--muted);
+
       font-size:.8rem;
-      text-transform:uppercase;
       letter-spacing:.08em;
+      text-transform:uppercase;
     }
 
     .arena{
       display:grid;
-      gap:20px;
       place-items:center;
+      gap:20px;
+
       padding:8px 0 4px;
     }
 
     .round{
       color:var(--warn);
+
+      font-size:.85rem;
       font-weight:800;
       letter-spacing:.08em;
       text-transform:uppercase;
-      font-size:.85rem;
     }
 
     .prompt{
-      font-size:1.1rem;
       color:var(--muted);
+
+      font-size:1.1rem;
       text-align:center;
     }
 
     .digits{
       display:grid;
-      grid-template-columns:repeat(5, minmax(52px,78px));
+      grid-template-columns:repeat(5,minmax(52px,78px));
       gap:12px;
+
       justify-content:center;
     }
 
     .digit{
       appearance:none;
-      border:none;
-      cursor:pointer;
+
       min-height:70px;
+
+      cursor:pointer;
+
+      color:white;
+
+      border:1px solid rgba(255,255,255,.16);
       border-radius:20px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.18),
+          rgba(255,255,255,.08)
+        );
+
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+
       font-size:1.65rem;
       font-weight:900;
-      color:white;
-      background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.08));
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow:0 10px 24px rgba(0,0,0,.18);
-      transition:.18s transform,.18s background,.18s border-color;
+
+      transition:
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease,
+        opacity .18s ease;
     }
 
     .digit:hover{
       transform:translateY(-3px) scale(1.03);
+
       border-color:rgba(34,211,238,.7);
-      background:linear-gradient(145deg,rgba(34,211,238,.35),rgba(167,139,250,.2));
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(34,211,238,.35),
+          rgba(167,139,250,.2)
+        );
     }
 
-    .digit:active{transform:scale(.97)}
-    .digit:disabled{cursor:not-allowed;opacity:.55;transform:none}
+    .digit:active{
+      transform:scale(.97);
+    }
+
+    .digit:disabled{
+      cursor:not-allowed;
+
+      opacity:.55;
+
+      transform:none;
+    }
+
+    .digit.correct-choice{
+      opacity:1;
+
+      border-color:rgba(52,211,153,.9);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(52,211,153,.58),
+          rgba(34,211,238,.28)
+        );
+
+      box-shadow:
+        0 0 0 2px rgba(52,211,153,.16),
+        0 0 26px rgba(52,211,153,.36);
+    }
+
+    .digit.wrong-choice{
+      opacity:1;
+
+      border-color:rgba(251,113,133,.82);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(251,113,133,.5),
+          rgba(167,139,250,.22)
+        );
+    }
+
+    .digit.hidden-reveal{
+      opacity:1;
+
+      border-color:rgba(251,191,36,.85);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(251,191,36,.42),
+          rgba(167,139,250,.24)
+        );
+
+      box-shadow:0 0 22px rgba(251,191,36,.28);
+    }
 
     .feedback{
-      min-height:104px;
       width:min(560px,100%);
-      border-radius:22px;
-      padding:18px;
+      min-height:104px;
+
       display:grid;
       place-items:center;
+
+      padding:18px;
+
       text-align:center;
-      background:rgba(255,255,255,.06);
+
       border:1px solid rgba(255,255,255,.12);
+      border-radius:22px;
+
+      background:rgba(255,255,255,.06);
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        background .18s ease;
     }
 
     .feedback strong{
       display:block;
-      font-size:1.4rem;
+
       margin-bottom:4px;
+
+      font-size:1.4rem;
     }
 
     .feedback.good{
-      background:rgba(52,211,153,.14);
       border-color:rgba(52,211,153,.5);
+      background:rgba(52,211,153,.14);
     }
 
     .feedback.bad{
-      background:rgba(251,113,133,.14);
       border-color:rgba(251,113,133,.5);
+      background:rgba(251,113,133,.14);
+    }
+
+    .feedback.auto-ready{
+      cursor:pointer;
+    }
+
+    .feedback.auto-ready:hover{
+      transform:translateY(-1px);
+
+      border-color:rgba(34,211,238,.55);
+    }
+
+    .pulse-countdown{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+
+      min-height:25px;
+      margin-top:-8px;
+
+      cursor:pointer;
+
+      color:var(--muted);
+
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.04em;
+
+      user-select:none;
+      -webkit-user-select:none;
+    }
+
+    .pulse-countdown[hidden]{
+      display:none;
+    }
+
+    .pulse-dots{
+      display:inline-flex;
+      gap:7px;
+    }
+
+    .pulse-dot{
+      width:9px;
+      height:9px;
+
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:50%;
+
+      background:rgba(255,255,255,.18);
+
+      transition:
+        transform .22s ease,
+        opacity .22s ease,
+        background .22s ease,
+        box-shadow .22s ease;
+    }
+
+    .pulse-dot.active{
+      transform:scale(1.17);
+
+      background:var(--accent);
+
+      box-shadow:0 0 14px rgba(34,211,238,.8);
+    }
+
+    .pulse-dot.done{
+      transform:scale(.74);
+
+      opacity:.24;
     }
 
     .progress-wrap{
@@ -284,22 +534,36 @@
     .progress-label{
       display:flex;
       justify-content:space-between;
+
       color:var(--muted);
+
       font-size:.86rem;
     }
 
     .progress{
       height:12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.08);
+
       overflow:hidden;
+
+      border-radius:999px;
+
+      background:rgba(255,255,255,.08);
     }
 
     .progress > div{
-      height:100%;
       width:0%;
+      height:100%;
+
       border-radius:inherit;
-      background:linear-gradient(90deg,var(--accent),var(--accent2),var(--warn));
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--accent),
+          var(--accent2),
+          var(--warn)
+        );
+
       transition:width .35s ease;
     }
 
@@ -307,30 +571,52 @@
       display:flex;
       justify-content:center;
       gap:12px;
+
       flex-wrap:wrap;
     }
 
     .btn{
-      border:none;
-      cursor:pointer;
-      border-radius:999px;
       padding:13px 22px;
-      font-weight:800;
+
+      cursor:pointer;
+
+      border:none;
+      border-radius:999px;
+
       font-size:.95rem;
-      transition:.18s transform,.18s opacity;
+      font-weight:800;
+
+      transition:
+        transform .18s ease,
+        opacity .18s ease,
+        border-color .18s ease;
     }
 
-    .btn:hover{transform:translateY(-2px)}
-    .btn:active{transform:scale(.98)}
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .btn:active{
+      transform:scale(.98);
+    }
+
     .primary{
       color:#0f172a;
-      background:linear-gradient(90deg,var(--accent),#67e8f9);
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--accent),
+          #67e8f9
+        );
     }
 
     .secondary{
       color:white;
-      background:rgba(255,255,255,.11);
+
       border:1px solid rgba(255,255,255,.15);
+
+      background:rgba(255,255,255,.11);
     }
 
     .history{
@@ -338,8 +624,9 @@
     }
 
     .history h2{
-      font-size:1rem;
       margin:0 0 12px;
+
+      font-size:1rem;
     }
 
     .history-grid{
@@ -350,31 +637,41 @@
 
     .history-item{
       aspect-ratio:1;
+
       display:grid;
       place-items:center;
-      border-radius:14px;
-      background:rgba(255,255,255,.07);
+
       color:var(--muted);
+
       border:1px solid rgba(255,255,255,.08);
-      font-weight:800;
+      border-radius:14px;
+
+      background:rgba(255,255,255,.07);
+
       font-size:.84rem;
+      font-weight:800;
     }
 
     .history-item.correct{
-      background:rgba(52,211,153,.2);
-      border-color:rgba(52,211,153,.5);
       color:#d1fae5;
+
+      border-color:rgba(52,211,153,.5);
+
+      background:rgba(52,211,153,.2);
     }
 
     .history-item.wrong{
-      background:rgba(251,113,133,.18);
-      border-color:rgba(251,113,133,.45);
       color:#ffe4e6;
+
+      border-color:rgba(251,113,133,.45);
+
+      background:rgba(251,113,133,.18);
     }
 
     .footer{
-      text-align:center;
       color:rgba(255,255,255,.52);
+
+      text-align:center;
       font-size:.8rem;
     }
 
@@ -383,9 +680,444 @@
     }
 
     @keyframes flash{
-      0%{transform:scale(.98);opacity:.7}
-      55%{transform:scale(1.02);opacity:1}
-      100%{transform:scale(1);opacity:1}
+      0%{
+        transform:scale(.98);
+        opacity:.7;
+      }
+
+      55%{
+        transform:scale(1.02);
+        opacity:1;
+      }
+
+      100%{
+        transform:scale(1);
+        opacity:1;
+      }
+    }
+
+    /* MGL Snail finale */
+
+    .snail-finale{
+      position:fixed;
+      z-index:1200;
+      inset:0;
+
+      display:grid;
+      place-items:center;
+
+      padding:22px;
+
+      pointer-events:none;
+      opacity:0;
+
+      background:
+        radial-gradient(
+          circle at 50% 42%,
+          rgba(34,211,238,.2),
+          transparent 24rem
+        ),
+        rgba(6,10,28,.8);
+
+      backdrop-filter:blur(13px);
+      -webkit-backdrop-filter:blur(13px);
+
+      transition:opacity .35s ease;
+    }
+
+    .snail-finale.show{
+      pointer-events:auto;
+      opacity:1;
+    }
+
+    .finale-card{
+      width:min(520px,100%);
+
+      overflow:hidden;
+
+      padding:24px;
+
+      text-align:center;
+
+      border:1px solid rgba(255,255,255,.19);
+      border-radius:28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.17),
+          rgba(255,255,255,.07)
+        );
+
+      box-shadow:
+        0 28px 80px rgba(0,0,0,.46),
+        inset 0 1px 0 rgba(255,255,255,.14);
+    }
+
+    .snail-stage{
+      position:relative;
+
+      height:150px;
+
+      overflow:hidden;
+
+      margin:-4px -24px 8px;
+    }
+
+    .snail-trail{
+      position:absolute;
+      right:0;
+      bottom:24px;
+      left:0;
+
+      height:2px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(34,211,238,.52),
+          rgba(167,139,250,.62),
+          transparent
+        );
+
+      box-shadow:0 0 14px rgba(34,211,238,.3);
+    }
+
+    .lab-snail{
+      position:absolute;
+      bottom:18px;
+      left:-140px;
+
+      width:128px;
+      height:86px;
+
+      animation:
+        snailArrival 1.7s cubic-bezier(.2,.75,.25,1) forwards;
+    }
+
+    .snail-finale.turbo .lab-snail{
+      animation-duration:.82s;
+    }
+
+    .snail-shell{
+      position:absolute;
+      top:5px;
+      left:17px;
+
+      width:70px;
+      height:70px;
+
+      border:3px solid rgba(255,255,255,.42);
+      border-radius:50%;
+
+      background:
+        radial-gradient(
+          circle at 37% 32%,
+          #ffd7fb 0 8%,
+          #ff75c8 18%,
+          #a679ff 58%,
+          #47307f 100%
+        );
+
+      box-shadow:
+        0 0 28px rgba(166,121,255,.55),
+        inset 0 0 18px rgba(255,255,255,.22);
+    }
+
+    .snail-shell::before{
+      content:"";
+
+      position:absolute;
+      inset:14px;
+
+      border:4px solid rgba(255,255,255,.36);
+      border-radius:50%;
+
+      clip-path:inset(0 0 0 47%);
+
+      transform:rotate(30deg);
+    }
+
+    .snail-body{
+      position:absolute;
+      bottom:5px;
+      left:49px;
+
+      width:73px;
+      height:29px;
+
+      border-radius:18px 25px 17px 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #c8fff3,
+          #63f0ee 60%,
+          #2ab9c7
+        );
+
+      box-shadow:0 0 18px rgba(99,240,238,.36);
+    }
+
+    .snail-head{
+      position:absolute;
+      right:2px;
+      bottom:17px;
+
+      width:39px;
+      height:39px;
+
+      border-radius:48% 52% 46% 54%;
+
+      background:
+        linear-gradient(
+          145deg,
+          #d7fff7,
+          #63f0ee
+        );
+
+      box-shadow:0 0 16px rgba(99,240,238,.38);
+    }
+
+    .snail-head::before,
+    .snail-head::after{
+      content:"";
+
+      position:absolute;
+      top:-17px;
+
+      width:3px;
+      height:20px;
+
+      border-radius:999px;
+
+      background:#b9fff3;
+
+      transform-origin:bottom;
+    }
+
+    .snail-head::before{
+      left:9px;
+
+      transform:rotate(-12deg);
+    }
+
+    .snail-head::after{
+      right:9px;
+
+      transform:rotate(12deg);
+    }
+
+    .snail-eye{
+      position:absolute;
+      z-index:2;
+      top:8px;
+
+      width:5px;
+      height:5px;
+
+      border-radius:50%;
+
+      background:#10172f;
+    }
+
+    .snail-eye.one{
+      left:9px;
+    }
+
+    .snail-eye.two{
+      right:9px;
+    }
+
+    .snail-smile{
+      position:absolute;
+      bottom:7px;
+      left:13px;
+
+      width:13px;
+      height:7px;
+
+      border-bottom:2px solid rgba(16,23,47,.76);
+      border-radius:50%;
+    }
+
+    .snail-flag{
+      position:absolute;
+      top:-18px;
+      left:24px;
+
+      width:3px;
+      height:43px;
+
+      background:rgba(255,255,255,.78);
+
+      transform:rotate(-6deg);
+      transform-origin:bottom;
+    }
+
+    .snail-flag::after{
+      content:"MGL";
+
+      position:absolute;
+      top:0;
+      left:3px;
+
+      width:43px;
+      height:24px;
+
+      display:grid;
+      place-items:center;
+
+      color:#071421;
+
+      border-radius:4px 8px 8px 4px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent),
+          #b9fff3
+        );
+
+      font-size:.57rem;
+      font-weight:950;
+      letter-spacing:.08em;
+    }
+
+    .snail-crown{
+      position:absolute;
+      z-index:3;
+      top:-13px;
+      right:5px;
+
+      display:none;
+
+      color:var(--warn);
+
+      font-size:28px;
+
+      filter:drop-shadow(0 0 9px rgba(251,191,36,.65));
+    }
+
+    .snail-finale.crowned .snail-crown{
+      display:block;
+    }
+
+    @keyframes snailArrival{
+      0%{
+        left:-140px;
+
+        transform:
+          translateY(0)
+          rotate(-2deg);
+      }
+
+      70%{
+        left:calc(50% - 64px);
+
+        transform:
+          translateY(-4px)
+          rotate(1deg);
+      }
+
+      85%{
+        left:calc(50% - 57px);
+
+        transform:
+          translateY(0)
+          rotate(-1deg);
+      }
+
+      100%{
+        left:calc(50% - 64px);
+
+        transform:
+          translateY(0)
+          rotate(0);
+      }
+    }
+
+    .finale-label{
+      color:var(--accent);
+
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .finale-score{
+      margin:8px 0 0;
+
+      font-size:clamp(2.2rem,10vw,4.2rem);
+      line-height:1;
+      letter-spacing:-.06em;
+    }
+
+    .finale-message{
+      max-width:390px;
+      min-height:48px;
+
+      margin:12px auto 18px;
+
+      color:var(--muted);
+
+      line-height:1.5;
+    }
+
+    .finale-actions{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+
+      flex-wrap:wrap;
+    }
+
+    .finale-actions .btn{
+      min-width:150px;
+    }
+
+    .cosmic-confetti{
+      position:absolute;
+      inset:0;
+
+      overflow:hidden;
+
+      pointer-events:none;
+    }
+
+    .cosmic-piece{
+      position:absolute;
+      top:-18px;
+
+      width:8px;
+      height:14px;
+
+      border-radius:3px;
+
+      animation:cosmicFall 2.3s linear forwards;
+    }
+
+    @keyframes cosmicFall{
+      to{
+        opacity:.12;
+
+        transform:
+          translate3d(var(--drift),110vh,0)
+          rotate(var(--spin));
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,
+      *::before,
+      *::after{
+        scroll-behavior:auto !important;
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
     }
 
     @media (max-width:640px){
@@ -396,21 +1128,73 @@
       .home-button{
         top:12px;
         left:12px;
+
         min-height:40px;
         padding:0 12px;
+
         font-size:.78rem;
       }
 
-      .main{padding:22px 16px}
-      .stats{grid-template-columns:1fr 1fr}
-      .stats .stat:last-child{grid-column:1/-1}
-      .digits{grid-template-columns:repeat(5,1fr);width:100%;gap:8px}
-      .digit{min-height:58px;border-radius:16px;font-size:1.35rem}
-      .history{padding:18px 14px 20px}
-      .history-grid{grid-template-columns:repeat(5,1fr)}
+      .mode{
+        display:none;
+      }
+
+      .main{
+        gap:20px;
+
+        padding:22px 16px;
+      }
+
+      .stats{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .stats .stat:last-child{
+        grid-column:1/-1;
+      }
+
+      .digits{
+        width:100%;
+
+        grid-template-columns:repeat(5,1fr);
+        gap:8px;
+      }
+
+      .digit{
+        min-height:58px;
+
+        border-radius:16px;
+
+        font-size:1.35rem;
+      }
+
+      .history{
+        padding:18px 14px 20px;
+      }
+
+      .history-grid{
+        grid-template-columns:repeat(5,1fr);
+      }
+
+      .finale-card{
+        padding:20px 16px;
+      }
+
+      .snail-stage{
+        margin:-4px -16px 8px;
+      }
+
+      .finale-actions{
+        display:grid;
+      }
+
+      .finale-actions .btn{
+        width:100%;
+      }
     }
   </style>
 </head>
+
 <body>
   <a
     class="home-button"
@@ -422,315 +1206,1238 @@
 
   <main class="shell">
     <div class="topbar">
-      <div class="brand">MartianGalactic Labs</div>
+      <div class="brand">
+        MartianGalactic Labs
+      </div>
+
       <div class="top-actions">
-        <div class="mode">Experimental micro-game</div>
-        <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button>
+        <div class="mode">
+          Experimental micro-game
+        </div>
+
+        <button
+          class="sound-toggle"
+          id="soundToggle"
+          type="button"
+          aria-pressed="true"
+        >
+          🔊 Sound on
+        </button>
       </div>
     </div>
 
     <section class="card main">
       <div class="hero">
-        <h1>Number Pulse</h1>
-        <p class="subtitle">The system picks a digit from 0–9. You get 10 rounds.</p>
+        <h1>
+          Number Pulse
+        </h1>
+
+        <p class="subtitle">
+          The system picks a digit from 0–9. You get 10 rounds.
+        </p>
       </div>
 
       <div class="stats">
-        <div class="stat"><span>Round</span><b id="roundStat">1 / 10</b></div>
-        <div class="stat"><span>Correct</span><b id="correctStat">0</b></div>
-        <div class="stat"><span>Accuracy</span><b id="accuracyStat">0%</b></div>
+        <div class="stat">
+          <span>Round</span>
+          <b id="roundStat">1 / 10</b>
+        </div>
+
+        <div class="stat">
+          <span>Correct</span>
+          <b id="correctStat">0</b>
+        </div>
+
+        <div class="stat">
+          <span>Accuracy</span>
+          <b id="accuracyStat">0%</b>
+        </div>
       </div>
 
       <div class="arena">
-        <div class="round" id="roundLabel">Round 1</div>
-        <div class="prompt" id="prompt">Pick the hidden number.</div>
+        <div
+          class="round"
+          id="roundLabel"
+        >
+          Round 1
+        </div>
 
-        <div class="digits" id="digits"></div>
+        <div
+          class="prompt"
+          id="prompt"
+        >
+          Pick the hidden number.
+        </div>
 
-        <div class="feedback" id="feedback">
+        <div
+          class="digits"
+          id="digits"
+        ></div>
+
+        <div
+          class="feedback"
+          id="feedback"
+        >
           <div>
             <strong>Ready?</strong>
             Choose your first number.
           </div>
         </div>
+
+        <div
+          class="pulse-countdown"
+          id="pulseCountdown"
+          hidden
+          aria-live="polite"
+          title="Tap to continue immediately"
+        >
+          <span>Next pulse</span>
+
+          <span
+            class="pulse-dots"
+            aria-hidden="true"
+          >
+            <i class="pulse-dot active"></i>
+            <i class="pulse-dot active"></i>
+            <i class="pulse-dot active"></i>
+          </span>
+
+          <span>tap to skip</span>
+        </div>
       </div>
 
       <div class="progress-wrap">
         <div class="progress-label">
-          <span>Run progress</span>
-          <span id="progressText">0 / 10 complete</span>
+          <span>
+            Run progress
+          </span>
+
+          <span id="progressText">
+            0 / 10 complete
+          </span>
         </div>
-        <div class="progress"><div id="progressBar"></div></div>
+
+        <div class="progress">
+          <div id="progressBar"></div>
+        </div>
       </div>
 
       <div class="actions">
-        <button class="btn primary" id="nextBtn" hidden>Next round</button>
-        <button class="btn secondary" id="resetBtn">Reset game</button>
+        <button
+          class="btn secondary"
+          id="resetBtn"
+          type="button"
+        >
+          Reset game
+        </button>
       </div>
     </section>
 
     <section class="card history">
-      <h2>Round history</h2>
-      <div class="history-grid" id="historyGrid"></div>
+      <h2>
+        Round history
+      </h2>
+
+      <div
+        class="history-grid"
+        id="historyGrid"
+      ></div>
     </section>
 
-    <div class="footer">Number Pulse v2.5 · MartianGalactic Labs · One guess per round. Pure luck. Zero pressure.</div>
+    <div class="footer">
+      Number Pulse v2.6 · MartianGalactic Labs ·
+      One decision per round. Pure luck. Zero pressure.
+    </div>
   </main>
+
+  <section
+    class="snail-finale"
+    id="snailFinale"
+    aria-hidden="true"
+    aria-label="Run complete"
+  >
+    <div
+      class="cosmic-confetti"
+      id="cosmicConfetti"
+    ></div>
+
+    <div class="finale-card">
+      <div
+        class="snail-stage"
+        aria-hidden="true"
+      >
+        <div class="snail-trail"></div>
+
+        <div class="lab-snail">
+          <div class="snail-shell"></div>
+          <div class="snail-body"></div>
+
+          <div class="snail-head">
+            <i class="snail-eye one"></i>
+            <i class="snail-eye two"></i>
+            <i class="snail-smile"></i>
+            <span class="snail-crown">♛</span>
+          </div>
+
+          <div class="snail-flag"></div>
+        </div>
+      </div>
+
+      <div class="finale-label">
+        Laboratory run complete
+      </div>
+
+      <h2
+        class="finale-score"
+        id="finaleScore"
+      >
+        0 / 10
+      </h2>
+
+      <p
+        class="finale-message"
+        id="finaleMessage"
+      >
+        Maestro Snail is reviewing the probability field.
+      </p>
+
+      <div class="finale-actions">
+        <button
+          class="btn primary"
+          id="playAgainBtn"
+          type="button"
+        >
+          Play again
+        </button>
+
+        <button
+          class="btn secondary"
+          id="reviewRunBtn"
+          type="button"
+        >
+          Review run
+        </button>
+      </div>
+    </div>
+  </section>
 
   <script>
     const TOTAL_ROUNDS = 10;
+    const AUTO_ADVANCE_DELAY = 1500;
+    const FINALE_DELAY = 1000;
 
     let round = 1;
     let correct = 0;
     let hiddenNumber = randomDigit();
+
     let locked = false;
     let gameFinished = false;
+
     let history = [];
 
-    const digitsEl = document.getElementById('digits');
-    const feedbackEl = document.getElementById('feedback');
-    const roundStatEl = document.getElementById('roundStat');
-    const correctStatEl = document.getElementById('correctStat');
-    const accuracyStatEl = document.getElementById('accuracyStat');
-    const roundLabelEl = document.getElementById('roundLabel');
-    const promptEl = document.getElementById('prompt');
-    const nextBtn = document.getElementById('nextBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const historyGrid = document.getElementById('historyGrid');
-    const soundToggle = document.getElementById('soundToggle');
+    let autoAdvanceTimer = null;
+    let countdownTimer = null;
+    let countdownStep = 3;
 
     let soundEnabled = true;
     let audioContext = null;
 
+    const digitsEl =
+      document.getElementById('digits');
+
+    const feedbackEl =
+      document.getElementById('feedback');
+
+    const roundStatEl =
+      document.getElementById('roundStat');
+
+    const correctStatEl =
+      document.getElementById('correctStat');
+
+    const accuracyStatEl =
+      document.getElementById('accuracyStat');
+
+    const roundLabelEl =
+      document.getElementById('roundLabel');
+
+    const promptEl =
+      document.getElementById('prompt');
+
+    const resetBtn =
+      document.getElementById('resetBtn');
+
+    const progressBar =
+      document.getElementById('progressBar');
+
+    const progressText =
+      document.getElementById('progressText');
+
+    const historyGrid =
+      document.getElementById('historyGrid');
+
+    const soundToggle =
+      document.getElementById('soundToggle');
+
+    const pulseCountdown =
+      document.getElementById('pulseCountdown');
+
+    const pulseDots =
+      [...document.querySelectorAll('.pulse-dot')];
+
+    const snailFinale =
+      document.getElementById('snailFinale');
+
+    const finaleScore =
+      document.getElementById('finaleScore');
+
+    const finaleMessage =
+      document.getElementById('finaleMessage');
+
+    const playAgainBtn =
+      document.getElementById('playAgainBtn');
+
+    const reviewRunBtn =
+      document.getElementById('reviewRunBtn');
+
+    const cosmicConfetti =
+      document.getElementById('cosmicConfetti');
+
     function getAudioContext() {
       if (!audioContext) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContextClass) return null;
-        audioContext = new AudioContextClass();
+        const AudioContextClass =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+          return null;
+        }
+
+        audioContext =
+          new AudioContextClass();
       }
-      if (audioContext.state === 'suspended') {
+
+      if (
+        audioContext.state ===
+        'suspended'
+      ) {
         audioContext.resume();
       }
+
       return audioContext;
     }
 
-    function tone(frequency, duration = 0.12, type = 'sine', volume = 0.08, delay = 0) {
-      if (!soundEnabled) return;
+    function tone(
+      frequency,
+      duration = 0.12,
+      type = 'sine',
+      volume = 0.08,
+      delay = 0
+    ) {
+      if (!soundEnabled) {
+        return;
+      }
 
-      const ctx = getAudioContext();
-      if (!ctx) return;
+      const ctx =
+        getAudioContext();
 
-      const start = ctx.currentTime + delay;
-      const oscillator = ctx.createOscillator();
-      const gain = ctx.createGain();
+      if (!ctx) {
+        return;
+      }
 
-      oscillator.type = type;
-      oscillator.frequency.setValueAtTime(frequency, start);
+      const start =
+        ctx.currentTime + delay;
 
-      gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(volume, start + 0.015);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+      const oscillator =
+        ctx.createOscillator();
+
+      const gain =
+        ctx.createGain();
+
+      oscillator.type =
+        type;
+
+      oscillator.frequency.setValueAtTime(
+        frequency,
+        start
+      );
+
+      gain.gain.setValueAtTime(
+        0.0001,
+        start
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        volume,
+        start + 0.015
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        start + duration
+      );
 
       oscillator.connect(gain);
       gain.connect(ctx.destination);
 
       oscillator.start(start);
-      oscillator.stop(start + duration + 0.03);
+
+      oscillator.stop(
+        start + duration + 0.03
+      );
     }
 
     function playTap() {
-      tone(360, 0.07, 'sine', 0.045);
+      tone(
+        360,
+        0.07,
+        'sine',
+        0.045
+      );
     }
 
     function playCorrect() {
-      tone(523.25, 0.13, 'sine', 0.08);
-      tone(659.25, 0.15, 'sine', 0.08, 0.10);
-      tone(783.99, 0.20, 'sine', 0.075, 0.20);
+      tone(
+        523.25,
+        0.13,
+        'sine',
+        0.08
+      );
+
+      tone(
+        659.25,
+        0.15,
+        'sine',
+        0.08,
+        0.10
+      );
+
+      tone(
+        783.99,
+        0.20,
+        'sine',
+        0.075,
+        0.20
+      );
     }
 
     function playWrong() {
-      tone(220, 0.16, 'triangle', 0.065);
-      tone(165, 0.22, 'triangle', 0.055, 0.11);
+      tone(
+        220,
+        0.16,
+        'triangle',
+        0.065
+      );
+
+      tone(
+        165,
+        0.22,
+        'triangle',
+        0.055,
+        0.11
+      );
     }
 
     function playNext() {
-      tone(440, 0.08, 'sine', 0.045);
-      tone(554.37, 0.10, 'sine', 0.045, 0.07);
+      tone(
+        440,
+        0.08,
+        'sine',
+        0.045
+      );
+
+      tone(
+        554.37,
+        0.10,
+        'sine',
+        0.045,
+        0.07
+      );
+    }
+
+    function playPulse(index) {
+      tone(
+        520 + index * 65,
+        0.045,
+        'sine',
+        0.028
+      );
     }
 
     function playFinish() {
-      tone(392, 0.13, 'sine', 0.065);
-      tone(523.25, 0.15, 'sine', 0.07, 0.10);
-      tone(659.25, 0.16, 'sine', 0.07, 0.20);
-      tone(783.99, 0.28, 'sine', 0.075, 0.31);
+      tone(
+        392,
+        0.13,
+        'sine',
+        0.065
+      );
+
+      tone(
+        523.25,
+        0.15,
+        'sine',
+        0.07,
+        0.10
+      );
+
+      tone(
+        659.25,
+        0.16,
+        'sine',
+        0.07,
+        0.20
+      );
+
+      tone(
+        783.99,
+        0.28,
+        'sine',
+        0.075,
+        0.31
+      );
     }
 
     function updateSoundButton() {
-      soundToggle.textContent = soundEnabled ? '🔊 Sound on' : '🔇 Sound off';
-      soundToggle.setAttribute('aria-pressed', String(soundEnabled));
+      soundToggle.textContent =
+        soundEnabled
+          ? '🔊 Sound on'
+          : '🔇 Sound off';
+
+      soundToggle.setAttribute(
+        'aria-pressed',
+        String(soundEnabled)
+      );
     }
 
     function randomDigit() {
-      return Math.floor(Math.random() * 10);
+      return Math.floor(
+        Math.random() * 10
+      );
     }
 
     function buildDigits() {
       digitsEl.innerHTML = '';
-      for (let i = 0; i <= 9; i++) {
-        const button = document.createElement('button');
-        button.className = 'digit';
-        button.textContent = i;
-        button.setAttribute('aria-label', `Guess ${i}`);
-        button.addEventListener('click', () => makeGuess(i));
-        digitsEl.appendChild(button);
+
+      for (
+        let number = 0;
+        number <= 9;
+        number++
+      ) {
+        const button =
+          document.createElement('button');
+
+        button.className =
+          'digit';
+
+        button.type =
+          'button';
+
+        button.textContent =
+          number;
+
+        button.dataset.number =
+          number;
+
+        button.setAttribute(
+          'aria-label',
+          `Guess ${number}`
+        );
+
+        button.addEventListener(
+          'click',
+          () => makeGuess(number)
+        );
+
+        digitsEl.appendChild(
+          button
+        );
+      }
+    }
+
+    function clearDigitHighlights() {
+      [
+        ...digitsEl.children
+      ].forEach(button => {
+        button.classList.remove(
+          'correct-choice',
+          'wrong-choice',
+          'hidden-reveal'
+        );
+      });
+    }
+
+    function highlightResult(
+      guess,
+      isCorrect
+    ) {
+      const guessedButton =
+        digitsEl.querySelector(
+          `[data-number="${guess}"]`
+        );
+
+      const hiddenButton =
+        digitsEl.querySelector(
+          `[data-number="${hiddenNumber}"]`
+        );
+
+      if (guessedButton) {
+        guessedButton.classList.add(
+          isCorrect
+            ? 'correct-choice'
+            : 'wrong-choice'
+        );
+      }
+
+      if (
+        !isCorrect &&
+        hiddenButton
+      ) {
+        hiddenButton.classList.add(
+          'hidden-reveal'
+        );
       }
     }
 
     function buildHistory() {
       historyGrid.innerHTML = '';
-      for (let i = 0; i < TOTAL_ROUNDS; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'history-item';
-        const item = history[i];
+
+      for (
+        let index = 0;
+        index < TOTAL_ROUNDS;
+        index++
+      ) {
+        const cell =
+          document.createElement('div');
+
+        cell.className =
+          'history-item';
+
+        const item =
+          history[index];
+
         if (!item) {
-          cell.textContent = i + 1;
+          cell.textContent =
+            index + 1;
         } else {
-          cell.classList.add(item.correct ? 'correct' : 'wrong');
-          cell.textContent = `${item.guess}→${item.hidden}`;
-          cell.title = `Round ${i + 1}: guessed ${item.guess}, hidden number ${item.hidden}`;
+          cell.classList.add(
+            item.correct
+              ? 'correct'
+              : 'wrong'
+          );
+
+          cell.textContent =
+            `${item.guess}→${item.hidden}`;
+
+          cell.title =
+            `Round ${index + 1}: guessed ${item.guess}, hidden number ${item.hidden}`;
         }
-        historyGrid.appendChild(cell);
+
+        historyGrid.appendChild(
+          cell
+        );
       }
     }
 
-    function setDigitsDisabled(disabled) {
-      [...digitsEl.children].forEach(btn => btn.disabled = disabled);
+    function setDigitsDisabled(
+      disabled
+    ) {
+      [
+        ...digitsEl.children
+      ].forEach(button => {
+        button.disabled =
+          disabled;
+      });
+    }
+
+    function clearAdvanceTimers() {
+      window.clearTimeout(
+        autoAdvanceTimer
+      );
+
+      window.clearInterval(
+        countdownTimer
+      );
+
+      autoAdvanceTimer = null;
+      countdownTimer = null;
+    }
+
+    function hidePulseCountdown() {
+      pulseCountdown.hidden =
+        true;
+
+      feedbackEl.classList.remove(
+        'auto-ready'
+      );
+
+      pulseDots.forEach(dot => {
+        dot.classList.remove(
+          'active',
+          'done'
+        );
+      });
+    }
+
+    function startPulseCountdown() {
+      clearAdvanceTimers();
+
+      countdownStep = 3;
+
+      pulseCountdown.hidden =
+        false;
+
+      feedbackEl.classList.add(
+        'auto-ready'
+      );
+
+      pulseDots.forEach(dot => {
+        dot.classList.add(
+          'active'
+        );
+
+        dot.classList.remove(
+          'done'
+        );
+      });
+
+      countdownTimer =
+        window.setInterval(() => {
+          countdownStep--;
+
+          const dotIndex =
+            2 - countdownStep;
+
+          const dot =
+            pulseDots[dotIndex];
+
+          if (dot) {
+            dot.classList.remove(
+              'active'
+            );
+
+            dot.classList.add(
+              'done'
+            );
+          }
+
+          playPulse(
+            3 - countdownStep
+          );
+
+          if (
+            countdownStep <= 0
+          ) {
+            window.clearInterval(
+              countdownTimer
+            );
+
+            countdownTimer = null;
+          }
+        }, 430);
+
+      autoAdvanceTimer =
+        window.setTimeout(
+          nextRound,
+          AUTO_ADVANCE_DELAY
+        );
+    }
+
+    function skipToNextRound() {
+      if (
+        !locked ||
+        gameFinished ||
+        round >= TOTAL_ROUNDS
+      ) {
+        return;
+      }
+
+      clearAdvanceTimers();
+      nextRound();
     }
 
     function makeGuess(guess) {
-      if (locked) return;
+      if (
+        locked ||
+        gameFinished
+      ) {
+        return;
+      }
+
       locked = true;
+
       setDigitsDisabled(true);
 
       playTap();
 
-      const isCorrect = guess === hiddenNumber;
+      const isCorrect =
+        guess === hiddenNumber;
+
       if (isCorrect) {
         correct++;
-        window.setTimeout(playCorrect, 55);
+
+        window.setTimeout(
+          playCorrect,
+          55
+        );
       } else {
-        window.setTimeout(playWrong, 55);
+        window.setTimeout(
+          playWrong,
+          55
+        );
       }
 
       history.push({
         guess,
-        hidden: hiddenNumber,
-        correct: isCorrect
+        hidden:hiddenNumber,
+        correct:isCorrect
       });
 
-      feedbackEl.className = `feedback ${isCorrect ? 'good' : 'bad'} flash`;
-      feedbackEl.innerHTML = isCorrect
-        ? `<div><strong>Correct. Nice hit.</strong>You picked ${guess}, and the system picked ${hiddenNumber}.</div>`
-        : `<div><strong>Not this time.</strong>You picked ${guess}. The system picked ${hiddenNumber}.</div>`;
+      highlightResult(
+        guess,
+        isCorrect
+      );
+
+      feedbackEl.className =
+        `feedback ${isCorrect ? 'good' : 'bad'} flash`;
+
+      feedbackEl.innerHTML =
+        isCorrect
+          ? `
+            <div>
+              <strong>Correct. Nice hit.</strong>
+              You picked ${guess}, and the system picked ${hiddenNumber}.
+            </div>
+          `
+          : `
+            <div>
+              <strong>Not this time.</strong>
+              You picked ${guess}. The system picked ${hiddenNumber}.
+            </div>
+          `;
 
       updateStats();
       buildHistory();
 
-      if (round >= TOTAL_ROUNDS) {
+      if (
+        round >= TOTAL_ROUNDS
+      ) {
         finishGame();
       } else {
-        nextBtn.hidden = false;
-        nextBtn.textContent = 'Next round';
+        startPulseCountdown();
       }
     }
 
     function nextRound() {
+      if (
+        gameFinished ||
+        round >= TOTAL_ROUNDS
+      ) {
+        return;
+      }
+
+      clearAdvanceTimers();
+      hidePulseCountdown();
+      clearDigitHighlights();
+
       playNext();
+
       round++;
-      hiddenNumber = randomDigit();
+
+      hiddenNumber =
+        randomDigit();
+
       locked = false;
+
       setDigitsDisabled(false);
-      nextBtn.hidden = true;
-      feedbackEl.className = 'feedback';
-      feedbackEl.innerHTML = `<div><strong>Round ${round}</strong>Choose your next number.</div>`;
-      promptEl.textContent = 'Pick the hidden number.';
+
+      feedbackEl.className =
+        'feedback';
+
+      feedbackEl.innerHTML =
+        `
+          <div>
+            <strong>Round ${round}</strong>
+            Choose your next number.
+          </div>
+        `;
+
+      promptEl.textContent =
+        'Pick the hidden number.';
+
       updateStats();
     }
 
+    function getVerdict() {
+      if (correct >= 9) {
+        return (
+          'Probability has officially become concerned.'
+        );
+      }
+
+      if (correct >= 6) {
+        return (
+          'Statistically suspicious. Very strong run.'
+        );
+      }
+
+      if (correct >= 3) {
+        return (
+          'Excellent luck. The probability field definitely moved.'
+        );
+      }
+
+      if (correct === 2) {
+        return (
+          'Two clean hits. Respectable cosmic interference.'
+        );
+      }
+
+      if (correct === 1) {
+        return (
+          'Exactly one clean hit.'
+        );
+      }
+
+      return (
+        'A perfect zero. Weirdly elegant.'
+      );
+    }
+
+    function getFinaleMessage() {
+      if (correct >= 9) {
+        return {
+          message:
+            'Probability has filed a formal complaint.',
+          mode:
+            'crowned'
+        };
+      }
+
+      if (correct >= 6) {
+        return {
+          message:
+            'Maestro Snail has activated turbo celebration mode.',
+          mode:
+            'turbo'
+        };
+      }
+
+      if (correct >= 3) {
+        return {
+          message:
+            'A respectable disturbance in the probability field.',
+          mode:
+            ''
+        };
+      }
+
+      return {
+        message:
+          'The cosmos remains unpredictable. Maestro Snail approves.',
+        mode:
+          ''
+      };
+    }
+
     function finishGame() {
-      const accuracy = Math.round((correct / TOTAL_ROUNDS) * 100);
+      clearAdvanceTimers();
+      hidePulseCountdown();
+
       gameFinished = true;
-      nextBtn.hidden = false;
-      nextBtn.textContent = 'Play again';
 
-      let verdict = 'Probability did what probability does.';
-      if (correct >= 5) verdict = 'Statistically suspicious. Very strong run.';
-      else if (correct >= 3) verdict = 'Excellent luck.';
-      else if (correct === 2) verdict = 'Solid result.';
-      else if (correct === 1) verdict = 'Exactly one clean hit.';
-      else verdict = 'A perfect zero. Weirdly elegant.';
+      const accuracy =
+        Math.round(
+          correct /
+          TOTAL_ROUNDS *
+          100
+        );
 
-      roundLabelEl.textContent = 'Run complete';
-      promptEl.textContent = verdict;
-      feedbackEl.className = 'feedback good flash';
+      const verdict =
+        getVerdict();
+
+      roundLabelEl.textContent =
+        'Run complete';
+
+      promptEl.textContent =
+        verdict;
+
+      feedbackEl.className =
+        'feedback good flash';
+
       feedbackEl.innerHTML =
-        `<div><strong>${correct} / ${TOTAL_ROUNDS} correct — ${accuracy}%</strong>${verdict}</div>`;
+        `
+          <div>
+            <strong>
+              ${correct} / ${TOTAL_ROUNDS} correct — ${accuracy}%
+            </strong>
+            ${verdict}
+          </div>
+        `;
 
-      window.setTimeout(playFinish, 120);
+      window.setTimeout(
+        playFinish,
+        120
+      );
+
+      window.setTimeout(
+        showSnailFinale,
+        FINALE_DELAY
+      );
+    }
+
+    function burstCosmicConfetti() {
+      cosmicConfetti.innerHTML =
+        '';
+
+      const palette = [
+        '#22d3ee',
+        '#a78bfa',
+        '#fb7185',
+        '#34d399',
+        '#fbbf24'
+      ];
+
+      for (
+        let index = 0;
+        index < 58;
+        index++
+      ) {
+        const piece =
+          document.createElement('i');
+
+        piece.className =
+          'cosmic-piece';
+
+        piece.style.left =
+          `${Math.random() * 100}%`;
+
+        piece.style.background =
+          palette[
+            Math.floor(
+              Math.random() *
+              palette.length
+            )
+          ];
+
+        piece.style.setProperty(
+          '--drift',
+          `${Math.random() * 220 - 110}px`
+        );
+
+        piece.style.setProperty(
+          '--spin',
+          `${Math.random() * 900 - 450}deg`
+        );
+
+        piece.style.animationDelay =
+          `${Math.random() * 0.45}s`;
+
+        piece.style.animationDuration =
+          `${1.7 + Math.random() * 1.4}s`;
+
+        cosmicConfetti.appendChild(
+          piece
+        );
+      }
+
+      window.setTimeout(() => {
+        cosmicConfetti.innerHTML =
+          '';
+      }, 3400);
+    }
+
+    function showSnailFinale() {
+      const accuracy =
+        Math.round(
+          correct /
+          TOTAL_ROUNDS *
+          100
+        );
+
+      const finale =
+        getFinaleMessage();
+
+      snailFinale.className =
+        `snail-finale ${finale.mode}`.trim();
+
+      finaleScore.textContent =
+        `${correct} / ${TOTAL_ROUNDS} · ${accuracy}%`;
+
+      finaleMessage.textContent =
+        finale.message;
+
+      snailFinale.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+      window.requestAnimationFrame(() => {
+        snailFinale.classList.add(
+          'show'
+        );
+      });
+
+      if (correct >= 3) {
+        burstCosmicConfetti();
+      }
+    }
+
+    function hideSnailFinale() {
+      snailFinale.classList.remove(
+        'show'
+      );
+
+      snailFinale.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      window.setTimeout(() => {
+        snailFinale.className =
+          'snail-finale';
+      }, 350);
     }
 
     function updateStats() {
-      const completed = history.length;
-      const accuracy = completed === 0 ? 0 : Math.round((correct / completed) * 100);
+      const completed =
+        history.length;
 
-      roundStatEl.textContent = `${Math.min(round, TOTAL_ROUNDS)} / ${TOTAL_ROUNDS}`;
-      correctStatEl.textContent = correct;
-      accuracyStatEl.textContent = `${accuracy}%`;
-      roundLabelEl.textContent = round <= TOTAL_ROUNDS ? `Round ${round}` : 'Run complete';
-      progressText.textContent = `${completed} / ${TOTAL_ROUNDS} complete`;
-      progressBar.style.width = `${(completed / TOTAL_ROUNDS) * 100}%`;
+      const accuracy =
+        completed === 0
+          ? 0
+          : Math.round(
+              correct /
+              completed *
+              100
+            );
+
+      roundStatEl.textContent =
+        `${Math.min(round,TOTAL_ROUNDS)} / ${TOTAL_ROUNDS}`;
+
+      correctStatEl.textContent =
+        correct;
+
+      accuracyStatEl.textContent =
+        `${accuracy}%`;
+
+      if (!gameFinished) {
+        roundLabelEl.textContent =
+          `Round ${round}`;
+      }
+
+      progressText.textContent =
+        `${completed} / ${TOTAL_ROUNDS} complete`;
+
+      progressBar.style.width =
+        `${completed / TOTAL_ROUNDS * 100}%`;
     }
 
     function resetGame() {
+      clearAdvanceTimers();
+      hidePulseCountdown();
+      hideSnailFinale();
+      clearDigitHighlights();
+
       playTap();
+
       round = 1;
       correct = 0;
-      hiddenNumber = randomDigit();
+
+      hiddenNumber =
+        randomDigit();
+
       locked = false;
       gameFinished = false;
+
       history = [];
 
       setDigitsDisabled(false);
-      nextBtn.hidden = true;
-      nextBtn.textContent = 'Next round';
 
-      feedbackEl.className = 'feedback';
-      feedbackEl.innerHTML = `<div><strong>Ready?</strong>Choose your first number.</div>`;
-      roundLabelEl.textContent = 'Round 1';
-      promptEl.textContent = 'Pick the hidden number.';
+      feedbackEl.className =
+        'feedback';
+
+      feedbackEl.innerHTML =
+        `
+          <div>
+            <strong>Ready?</strong>
+            Choose your first number.
+          </div>
+        `;
+
+      roundLabelEl.textContent =
+        'Round 1';
+
+      promptEl.textContent =
+        'Pick the hidden number.';
+
       updateStats();
       buildHistory();
     }
 
-    nextBtn.addEventListener('click', () => {
-      if (gameFinished) {
+    feedbackEl.addEventListener(
+      'click',
+      skipToNextRound
+    );
+
+    pulseCountdown.addEventListener(
+      'click',
+      skipToNextRound
+    );
+
+    resetBtn.addEventListener(
+      'click',
+      resetGame
+    );
+
+    playAgainBtn.addEventListener(
+      'click',
+      () => {
         resetGame();
-      } else {
-        nextRound();
-      }
-    });
 
-    resetBtn.addEventListener('click', resetGame);
-
-    soundToggle.addEventListener('click', () => {
-      soundEnabled = !soundEnabled;
-      updateSoundButton();
-      if (soundEnabled) {
-        playNext();
+        window.scrollTo({
+          top:0,
+          behavior:'smooth'
+        });
       }
-    });
+    );
+
+    reviewRunBtn.addEventListener(
+      'click',
+      hideSnailFinale
+    );
+
+    soundToggle.addEventListener(
+      'click',
+      () => {
+        soundEnabled =
+          !soundEnabled;
+
+        updateSoundButton();
+
+        if (soundEnabled) {
+          playNext();
+        }
+      }
+    );
+
+    document.addEventListener(
+      'keydown',
+      event => {
+        if (
+          event.key === 'Escape' &&
+          snailFinale.classList.contains('show')
+        ) {
+          hideSnailFinale();
+        }
+
+        if (
+          locked &&
+          !gameFinished &&
+          event.key === 'Enter'
+        ) {
+          skipToNextRound();
+        }
+      }
+    );
 
     updateSoundButton();
     buildDigits();
