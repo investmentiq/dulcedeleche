@@ -155,7 +155,137 @@
 
       flex-wrap:wrap;
     }
+.mgl-logo{
+  display:inline-flex;
+  align-items:center;
+  gap:11px;
 
+  color:var(--text);
+  text-decoration:none;
+
+  border-radius:16px;
+
+  transition:
+    transform .18s ease,
+    filter .18s ease;
+}
+
+.mgl-logo:hover{
+  transform:translateY(-2px);
+
+  filter:brightness(1.12);
+}
+
+.mgl-logo:active{
+  transform:scale(.98);
+}
+
+.mgl-orbit{
+  position:relative;
+
+  width:45px;
+  height:45px;
+
+  flex:0 0 45px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 34% 30%,
+      rgba(255,255,255,.22),
+      rgba(34,211,238,.14) 40%,
+      rgba(167,139,250,.16)
+    );
+
+  box-shadow:
+    0 0 22px rgba(34,211,238,.16),
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+
+.mgl-orbit::before{
+  content:"";
+
+  position:absolute;
+
+  width:48px;
+  height:19px;
+
+  border:1px solid rgba(167,139,250,.7);
+  border-radius:50%;
+
+  transform:rotate(-20deg);
+
+  box-shadow:0 0 10px rgba(167,139,250,.24);
+}
+
+.mgl-planet{
+  position:relative;
+  z-index:2;
+
+  width:18px;
+  height:18px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      #d8ffff,
+      var(--accent) 38%,
+      #4475db 72%,
+      #30246e
+    );
+
+  box-shadow:
+    0 0 13px rgba(34,211,238,.7);
+}
+
+.mgl-moon{
+  position:absolute;
+  z-index:3;
+
+  top:7px;
+  right:4px;
+
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:var(--warn);
+
+  box-shadow:
+    0 0 8px rgba(251,191,36,.8);
+}
+
+.mgl-wordmark{
+  display:grid;
+  gap:1px;
+
+  line-height:1;
+}
+
+.mgl-wordmark strong{
+  color:var(--accent);
+
+  font-size:1.05rem;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+
+.mgl-wordmark small{
+  color:var(--muted);
+
+  font-size:.65rem;
+  font-weight:800;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
     .brand{
       color:var(--accent);
 
@@ -1129,18 +1259,8 @@
 
     @media (max-width:640px){
       body{
-        padding:72px 14px 20px;
-      }
-
-      .home-button{
-        top:12px;
-        left:12px;
-
-        min-height:40px;
-        padding:0 12px;
-
-        font-size:.78rem;
-      }
+  padding:18px 14px 20px;
+}
 
       .mode{
         display:none;
@@ -1203,19 +1323,24 @@
 </head>
 
 <body>
-  <a
-    class="home-button"
-    href="https://mglabs.investilogiusa.com/"
-    aria-label="Return to MartianGalactic Labs"
-  >
-    ← MGLabs
-  </a>
-
+  
   <main class="shell">
     <div class="topbar">
-      <div class="brand">
-        MartianGalactic Labs
-      </div>
+     <a
+  class="mgl-logo"
+  href="https://mglabs.investilogiusa.com/"
+  aria-label="Return to MartianGalactic Labs"
+>
+  <span class="mgl-orbit" aria-hidden="true">
+    <span class="mgl-planet"></span>
+    <span class="mgl-moon"></span>
+  </span>
+
+  <span class="mgl-wordmark">
+    <strong>MGL</strong>
+    <small>MartianGalactic Labs</small>
+  </span>
+</a>
 
       <div class="top-actions">
         <div class="mode">
