@@ -16,7 +16,7 @@
   >
 
   <title>
-    Wheel of Awesomeness v0.44 — MartianGalactic Labs
+    Wheel of Awesomeness v0.46 — MartianGalactic Labs
   </title>
 
   <style>
@@ -508,6 +508,54 @@
       letter-spacing: 0.09em;
       line-height: 1.12;
       text-transform: uppercase;
+
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+    }
+
+    .hub:hover {
+      transform: scale(1.035);
+      filter: brightness(1.08);
+    }
+
+    .hub:active {
+      transform: scale(0.97);
+    }
+
+    .hub:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    .hub:disabled {
+      cursor: wait;
+      opacity: 0.82;
+      transform: none;
+    }
+
+    .hub-small,
+    .hub-main {
+      display: block;
+      pointer-events: none;
+    }
+
+    .hub-small {
+      font-size: 0.72em;
+      letter-spacing: 0.12em;
+    }
+
+    .hub-main {
+      margin: 0.08em 0;
+      color: var(--cyan);
+      font-size: 1.28em;
+      letter-spacing: 0.07em;
+      text-shadow: 0 0 16px rgba(94, 232, 255, 0.55);
     }
 
     .control-panel {
@@ -533,6 +581,10 @@
         );
 
       letter-spacing: -0.035em;
+    }
+
+    .terminal-title {
+      margin-top: 20px !important;
     }
 
     .control-panel .sub {
@@ -796,8 +848,12 @@
         grid-template-columns: 1fr;
       }
 
-      .control-panel {
+      .wheel-panel {
         order: -1;
+      }
+
+      .control-panel {
+        order: 0;
       }
 
       .result {
@@ -826,6 +882,30 @@
 
       .topbar {
         align-items: flex-start;
+        margin-bottom: 10px;
+      }
+
+      .hero {
+        margin: 2px auto 12px;
+      }
+
+      .hero h1 {
+        margin: 7px 0 5px;
+        font-size: clamp(2rem, 12vw, 3.25rem);
+        line-height: 0.96;
+      }
+
+      .intro {
+        font-size: 0.9rem;
+        line-height: 1.42;
+      }
+
+      .lab {
+        gap: 12px;
+      }
+
+      .wheel-wrap {
+        width: min(560px, 88vw);
       }
 
       .brand {
@@ -843,6 +923,17 @@
 
       .panel {
         border-radius: 25px;
+      }
+
+      .wheel-panel::after {
+        content: "Swipe up for the cosmic message terminal ↓";
+        display: block;
+        width: 100%;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        text-align: center;
       }
 
       .pointer {
@@ -900,7 +991,7 @@
       </div>
 
       <div class="version">
-        MGL v0.44
+        MGL v0.46
       </div>
     </div>
 
@@ -937,26 +1028,20 @@
             ></canvas>
           </div>
 
-          <div class="hub">
-            MGL
-            <br>
-            Awesome
-            <br>
-            Core
-          </div>
+          <button
+            class="hub"
+            id="hubSpinBtn"
+            type="button"
+            aria-label="Spin the Wheel of Awesomeness"
+          >
+            <span class="hub-small">MGL</span>
+            <span class="hub-main">Spin</span>
+            <span class="hub-small">the wheel</span>
+          </button>
         </div>
       </div>
 
       <aside class="panel control-panel">
-        <h2>
-          Cosmic message terminal
-        </h2>
-
-        <p class="sub">
-          Every spin selects one signal from the
-          MartianGalactic encouragement array.
-        </p>
-
         <div
           class="result"
           id="result"
@@ -976,6 +1061,15 @@
             Awesomeness is currently calibrating.
           </div>
         </div>
+
+        <h2 class="terminal-title">
+          Cosmic message terminal
+        </h2>
+
+        <p class="sub">
+          Every spin selects one signal from the
+          MartianGalactic encouragement array.
+        </p>
 
         <div class="actions">
           <button
@@ -1031,7 +1125,7 @@
     </section>
 
     <footer>
-      Wheel of Awesomeness v0.44 ·
+      Wheel of Awesomeness v0.46 ·
       MartianGalactic Labs ·
       Browser powered, cosmos approved.
     </footer>
@@ -1081,6 +1175,9 @@
 
       const spinBtn =
         document.getElementById("spinBtn");
+
+      const hubSpinBtn =
+        document.getElementById("hubSpinBtn");
 
       const againBtn =
         document.getElementById("againBtn");
@@ -1604,6 +1701,8 @@
         spinning = true;
 
         spinBtn.disabled = true;
+        hubSpinBtn.disabled = true;
+        hubSpinBtn.querySelector(".hub-main").textContent = "Spinning";
         againBtn.disabled = true;
 
         result.classList.remove(
@@ -1701,16 +1800,28 @@
             spinning = false;
 
             spinBtn.disabled = false;
+            hubSpinBtn.disabled = false;
+            hubSpinBtn.querySelector(".hub-main").textContent = "Again";
             againBtn.disabled = false;
 
             spinBtn.textContent =
               "Spin Again";
+
+            result.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
           },
           5900
         );
       }
 
       spinBtn.addEventListener(
+        "click",
+        spin
+      );
+
+      hubSpinBtn.addEventListener(
         "click",
         spin
       );
