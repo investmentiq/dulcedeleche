@@ -42,7 +42,8 @@ function saved(){
   try{return JSON.parse(localStorage.getItem(BOOKMARK_KEY)||"[]");}catch{return [];}
 }
 function setSaved(items){localStorage.setItem(BOOKMARK_KEY,JSON.stringify(items));}
-function currentApiBase(){return (localStorage.getItem(API_KEY)||"").replace(/\/$/,"");}
+const DEFAULT_API_BASE="https://mgl-sozluk-api.investilogiusa.workers.dev";
+function currentApiBase(){return (localStorage.getItem(API_KEY)||DEFAULT_API_BASE).replace(/\/$/,"");}
 function configureApiFromQuery(){
   const raw=(qs.get("api")||"").trim();
   if(!raw)return;
