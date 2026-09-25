@@ -1,50 +1,221 @@
-const DATA={
- popular:[
-  {id:5423457,title:"tayland'da uzun süre yaşamak",count:214},
-  {id:4831021,title:"yapay zekânın günlük hayata etkisi",count:389},
-  {id:3768910,title:"istanbul'da bir eylül günü",count:117},
-  {id:6912044,title:"macbook pro'yu yıllarca kullanmak",count:82},
-  {id:8124102,title:"uzaktan çalışmanın görünmeyen tarafları",count:164},
-  {id:2500911,title:"kahve içmek için en doğru saat",count:53}
- ],
- today:[
-  {id:9021001,title:"bugün öğrendiğim küçük ama işe yarar bilgi",count:97},
-  {id:9021002,title:"şehir değiştirince değişen alışkanlıklar",count:61},
-  {id:9021003,title:"telefon yerine bilgisayarda çalışmanın rahatlığı",count:43},
-  {id:9021004,title:"yağmur bastırınca sığınılan yerler",count:28}
- ],
- debe:[
-  {id:8110001,title:"insanın kendi düzenini yeniden kurması",count:1},
-  {id:8110002,title:"başka bir ülkede gündelik hayat gözlemleri",count:1},
-  {id:8110003,title:"teknolojiyle hayatı biraz daha sadeleştirmek",count:1}
- ]
-};
-const ENTRIES={
-  5423457:[
-    {id:162001,"author":"gezginokur","date":"25 eylül 2026 10:24","fav":18,"comments":3,text:"Bir yerde uzun süre kalınca turist gibi değil, gündelik hayatın ritmiyle bakmaya başlıyorsun. Market, ulaşım, kahve, spor salonu ve yürünebilirlik bir anda manzaradan daha önemli oluyor."},
-    {id:162002,"author":"sessiznotlar","date":"25 eylül 2026 11:07","fav":11,"comments":1,text:"Bence en büyük fark seçenek çokluğu değil; küçük günlük sürtünmelerin ne kadar az olduğu. Bir şehir insana bunu veriyorsa uzun kalmak kolaylaşıyor."}
+const SAMPLE_DATA={
+  popular:[
+    {TopicId:5423457,Title:"tayland'da uzun süre yaşamak",FullCount:214},
+    {TopicId:4831021,Title:"yapay zekânın günlük hayata etkisi",FullCount:389},
+    {TopicId:3768910,Title:"istanbul'da bir eylül günü",FullCount:117},
+    {TopicId:6912044,Title:"macbook pro'yu yıllarca kullanmak",FullCount:82},
+    {TopicId:8124102,Title:"uzaktan çalışmanın görünmeyen tarafları",FullCount:164},
+    {TopicId:2500911,Title:"kahve içmek için en doğru saat",FullCount:53}
+  ],
+  today:[
+    {TopicId:9021001,Title:"bugün öğrendiğim küçük ama işe yarar bilgi",FullCount:97},
+    {TopicId:9021002,Title:"şehir değiştirince değişen alışkanlıklar",FullCount:61},
+    {TopicId:9021003,Title:"telefon yerine bilgisayarda çalışmanın rahatlığı",FullCount:43},
+    {TopicId:9021004,Title:"yağmur bastırınca sığınılan yerler",FullCount:28}
+  ],
+  debe:[
+    {TopicId:8110001,EntryId:8110001,Title:"insanın kendi düzenini yeniden kurması"},
+    {TopicId:8110002,EntryId:8110002,Title:"başka bir ülkede gündelik hayat gözlemleri"},
+    {TopicId:8110003,EntryId:8110003,Title:"teknolojiyle hayatı biraz daha sadeleştirmek"}
   ]
 };
+const SAMPLE_ENTRIES=[
+  {Id:162001,Author:{Nick:"gezginokur",Id:1},Created:"2026-09-25T10:24:00+03:00",FavoriteCount:18,CommentCount:3,Content:"Bir yerde uzun süre kalınca turist gibi değil, gündelik hayatın ritmiyle bakmaya başlıyorsun. Market, ulaşım, kahve, spor salonu ve yürünebilirlik bir anda manzaradan daha önemli oluyor."},
+  {Id:162002,Author:{Nick:"sessiznotlar",Id:2},Created:"2026-09-25T11:07:00+03:00",FavoriteCount:11,CommentCount:1,Content:"Bence en büyük fark seçenek çokluğu değil; küçük günlük sürtünmelerin ne kadar az olduğu. Bir şehir insana bunu veriyorsa uzun kalmak kolaylaşıyor."}
+];
+
 const $=(s)=>document.querySelector(s);
-const qs=new URLSearchParams(location.search);
-const saved=()=>JSON.parse(localStorage.getItem("mgl-sozluk-preview")||"[]");
-const setSaved=x=>localStorage.setItem("mgl-sozluk-preview",JSON.stringify(x));
-function header(q=""){return `<header class="topbar"><a class="brand" href="./"><span class="brandMark">s</span><span class="brandText"><strong>sözlük okuru</strong><small>reader / anonymous</small></span></a><form class="search"><input name="q" value="${esc(q)}" placeholder="başlık ara · @yazar · #entry…"><button>ara</button></form><div class="headerActions"><a class="labs" href="../../">MGL // LABS</a><select id="theme" class="theme" aria-label="Renk teması"><option value="dark">koyu</option><option value="light">açık</option></select><span class="status"><i></i>prototip</span></div></header><div class="previewBar"><span class="previewFlag">MGL prototype</span><strong>MartianGalactic Labs prototipi.</strong> Bu sürüm gerçek Ekşi API'sine bağlı olmayan yayınlanmış bir Labs prototipidir; mevcut Sözlük Okuru yayını değişmedi.</div>`}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function topicCard(t,i,tag){return `<a class="topic" href="?topic=${t.id}"><span class="rank">${String(i+1).padStart(2,"0")}</span><span class="topicBody"><small>${tag}</small><strong>${esc(t.title)}</strong></span><span class="count">${t.count}<small>entry</small></span><span class="arrow">↗</span></a>`}
-function aside(){const items=saved();return `<aside><div class="asideHead"><span>okuma listem</span><em>${items.length}</em></div>${items.length?`<div class="savedList">${items.map(x=>`<a href="?topic=${x.id}">${esc(x.title)}<span>↗</span></a>`).join("")}</div>`:`<div class="emptyState"><span class="bookmark">◇</span><strong>Henüz sessiz.</strong><p>Takip etmek istediğin başlıkları burada biriktirebilirsin.</p></div>`}<div class="readerNote"><span>okur notu</span><p>Bu önizlemede kayıtlar yalnızca bu tarayıcıda tutulur.</p></div></aside>`}
-function home(){
- const q=(qs.get("q")||"").trim(),feed=qs.get("feed")||"popular";
- let topics=DATA[feed]||DATA.popular;
- if(q)topics=[...DATA.popular,...DATA.today,...DATA.debe].filter(t=>t.title.toLocaleLowerCase("tr").includes(q.toLocaleLowerCase("tr")));
- const now=new Date(),day=new Intl.DateTimeFormat("tr-TR",{day:"numeric",month:"long"}).format(now),weekday=new Intl.DateTimeFormat("tr-TR",{weekday:"long"}).format(now);
- return header(q)+`<section class="hero"><div><p class="eyebrow">ekşi sözlük, gürültüsü azaltılmış</p><h1>${q?`“${esc(q)}”`:"Ne konuşuluyor?"}</h1><p class="intro">${q?`${topics.length} örnek sonuç gösteriliyor. Bu sayfa görsel ve etkileşim önizlemesidir.`:"Gündemi sakin bir akışta oku. Başlıkları tara, entry’lerde ara ve kaldığın yeri kaybetme."}</p></div><div class="dateCard"><span>${day}</span><strong>${weekday}</strong><small>anonim · salt okunur</small></div></section>
- <nav class="tabs"><a class="${!q&&feed==="popular"?"active":""}" href="?feed=popular">gündem</a><a class="${!q&&feed==="today"?"active":""}" href="?feed=today">bugün</a><a class="${!q&&feed==="debe"?"active":""}" href="?feed=debe">debe</a></nav>
- <section class="contentGrid"><div>${topics.length?topics.map((t,i)=>topicCard(t,i,q?"arama sonucu":feed==="popular"?"gündem":feed)).join(""):'<div class="emptyResults">Bu aramayla eşleşen örnek başlık yok.</div>'}</div>${aside()}</section>`;
+const API_KEY="mgl-sozluk-api-base";
+const BOOKMARK_KEY="mgl-sozluk-bookmarks";
+const THEME_KEY="mgl-sozluk-theme";
+let qs=new URLSearchParams(location.search);
+
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-function detail(id){
- const all=[...DATA.popular,...DATA.today,...DATA.debe],t=all.find(x=>x.id===id)||{id,title:"örnek başlık",count:2};const items=ENTRIES[id]||ENTRIES[5423457];const isSaved=saved().some(x=>x.id===id);
- return header()+`<section class="detailHero"><div><p class="eyebrow">başlık · ${t.count} entry</p><h1>${esc(t.title)}</h1></div><button class="saveButton" id="save">${isSaved?"✓ listemde":"+ listeme ekle"}</button></section><a class="back" href="./">← gündeme dön</a><section class="readingColumn">${items.map(x=>`<article class="entryCard"><div class="entryText">${esc(x.text)}</div><footer><a href="?q=@${x.author}">@${x.author}</a><span>${x.date}</span><span>★ ${x.fav}</span><span>yorum ${x.comments}</span><a class="entryId">#${x.id}</a></footer></article>`).join("")}</section>`;
+function num(value,fallback=1){
+  const n=Number(value);
+  return Number.isFinite(n)&&n>0?Math.floor(n):fallback;
 }
-function render(){const id=Number(qs.get("topic")||0);$("#app").innerHTML=id?detail(id):home();const theme=$("#theme"),stored=localStorage.getItem("mgl-sozluk-theme")||"dark";document.documentElement.dataset.theme=stored;if(theme){theme.value=stored;theme.onchange=()=>{document.documentElement.dataset.theme=theme.value;localStorage.setItem("mgl-sozluk-theme",theme.value)}}const save=$("#save");if(save){save.onclick=()=>{const id=Number(qs.get("topic")),all=[...DATA.popular,...DATA.today,...DATA.debe],t=all.find(x=>x.id===id)||{id,title:"örnek başlık"};let items=saved();items=items.some(x=>x.id===id)?items.filter(x=>x.id!==id):[...items,{id,title:t.title}];setSaved(items);render()}}}
+function pageValue(){return Math.min(250,num(qs.get("page"),1));}
+function saved(){
+  try{return JSON.parse(localStorage.getItem(BOOKMARK_KEY)||"[]");}catch{return [];}
+}
+function setSaved(items){localStorage.setItem(BOOKMARK_KEY,JSON.stringify(items));}
+function currentApiBase(){return (localStorage.getItem(API_KEY)||"").replace(/\/$/,"");}
+function configureApiFromQuery(){
+  const raw=(qs.get("api")||"").trim();
+  if(!raw)return;
+  try{
+    const url=new URL(raw);
+    if(url.protocol!=="https:")throw new Error("HTTPS required");
+    localStorage.setItem(API_KEY,url.origin+url.pathname.replace(/\/$/,""));
+    qs.delete("api");
+    const clean=location.pathname+(qs.toString()?"?"+qs.toString():"");
+    history.replaceState(null,"",clean);
+  }catch{}
+}
+configureApiFromQuery();
+
+async function apiGet(route,params={}){
+  const base=currentApiBase();
+  if(!base)throw new Error("API_NOT_CONFIGURED");
+  const url=new URL(base+route);
+  Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,String(v)));
+  const response=await fetch(url.toString(),{headers:{Accept:"application/json"}});
+  const payload=await response.json().catch(()=>null);
+  if(!response.ok||!payload?.ok)throw new Error(payload?.error||("API "+response.status));
+  return payload.data;
+}
+function trDate(input){
+  if(!input)return"";
+  try{return new Intl.DateTimeFormat("tr-TR",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(new Date(input));}catch{return String(input);}
+}
+function linkify(text){
+  const safe=escapeHtml(text);
+  return safe.replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+)/gi,raw=>{
+    const clean=raw.replace(/[),.;!?]+$/,"");
+    const punctuation=raw.slice(clean.length);
+    const href=clean.startsWith("www.")?"https://"+clean:clean;
+    return '<a class="entryLink" href="'+href+'" target="_blank" rel="noopener noreferrer">'+clean+"</a>"+punctuation;
+  });
+}
+function header(query=""){
+  const live=!!currentApiBase();
+  return '<header class="topbar">'+
+    '<a class="brand" href="./" aria-label="sözlük okuru ana sayfa"><span class="brandMark">s</span><span class="brandText"><strong>sözlük okuru</strong><small>reader / anonymous</small></span></a>'+
+    '<form class="search" action="./"><input name="q" value="'+escapeHtml(query)+'" placeholder="başlık ara · @yazar · #entry…"><button>ara</button></form>'+
+    '<div class="headerActions"><a class="labs" href="../../">MGL // LABS</a><select id="theme" class="theme" aria-label="Renk teması"><option value="dark">koyu</option><option value="light">açık</option></select>'+
+    '<span class="status '+(live?"liveApi":"")+'"><i></i>'+(live?"canlı api":"prototip")+"</span></div></header>"+
+    (live?'<div class="previewBar liveBar"><span class="previewFlag">MGL live</span><strong>Canlı veri.</strong> Okuma modu anonim ve salt okunur.</div>':'<div class="previewBar"><span class="previewFlag">MGL prototype</span><strong>API bağlantısı bekleniyor.</strong> Şimdilik örnek veri gösteriliyor.</div>');
+}
+function topicCard(item,index,tag){
+  const topicId=Number(item.TopicId||item.Id||item.EntryId);
+  const entryId=Number(item.EntryId||0);
+  const count=item.MatchedCount??item.FullCount??"";
+  const href=entryId?"?entry="+entryId:"?topic="+topicId;
+  return '<a class="topic" href="'+href+'"><span class="rank">'+String(index+1).padStart(2,"0")+'</span><span class="topicBody"><small>'+escapeHtml(tag)+'</small><strong>'+escapeHtml(item.Title||item.title||"")+'</strong></span><span class="count">'+escapeHtml(count)+'<small>'+(entryId?"#"+entryId:"entry")+'</small></span><span class="arrow">↗</span></a>';
+}
+function aside(){
+  const items=saved();
+  return '<aside><div class="asideHead"><span>okuma listem</span><em>'+items.length+'</em></div>'+
+    (items.length?'<div class="savedList">'+items.map(x=>'<a href="?topic='+x.id+'">'+escapeHtml(x.title)+'<span>↗</span></a>').join("")+'</div>':'<div class="emptyState"><span class="bookmark">◇</span><strong>Henüz sessiz.</strong><p>Takip etmek istediğin başlıkları burada biriktirebilirsin.</p></div>')+
+    '<div class="readerNote"><span>okur notu</span><p>Kayıtların yalnızca bu tarayıcıda tutulur.</p></div></aside>';
+}
+function pager(page,total,params){
+  total=Math.max(1,Number(total)||1);
+  if(total<=1)return"";
+  const make=p=>{const u=new URLSearchParams(params);u.set("page",String(p));return"?"+u.toString();};
+  return '<nav class="pager" aria-label="sayfalar"><div class="pagerSteps">'+
+    (page>1?'<a href="'+make(1)+'">« ilk</a><a href="'+make(page-1)+'">← önceki</a>':'<a class="disabled">« ilk</a>')+
+    '</div><form class="pageJump" action="./">'+Object.entries(params).map(([k,v])=>'<input type="hidden" name="'+escapeHtml(k)+'" value="'+escapeHtml(v)+'">').join("")+
+    '<label>sayfa</label><input name="page" type="number" min="1" max="'+total+'" value="'+page+'"><span>/ '+total+'</span><button>git</button></form><div class="pagerSteps">'+
+    (page<total?'<a href="'+make(page+1)+'">sonraki →</a><a href="'+make(total)+'">son »</a>':'<a class="disabled">son »</a>')+"</div></nav>";
+}
+function entryCard(item){
+  const author=item.Author?.Nick||"anonim";
+  return '<article class="entryCard" id="entry-'+Number(item.Id||0)+'"><div class="entryText">'+linkify(item.Content||"")+'</div><footer><a href="?q=@'+encodeURIComponent(author)+'">@'+escapeHtml(author)+'</a><span>'+escapeHtml(trDate(item.Created))+'</span><span>★ '+Number(item.FavoriteCount||0)+'</span><span>yorum '+Number(item.CommentCount||0)+'</span><a class="entryId" href="?entry='+Number(item.Id||0)+'">#'+Number(item.Id||0)+"</a></footer></article>";
+}
+function setupChrome(){
+  const theme=$("#theme");
+  const stored=localStorage.getItem(THEME_KEY)||"dark";
+  document.documentElement.dataset.theme=stored;
+  if(theme){
+    theme.value=stored;
+    theme.onchange=()=>{document.documentElement.dataset.theme=theme.value;localStorage.setItem(THEME_KEY,theme.value);};
+  }
+  const button=$("#save");
+  if(button){
+    button.onclick=()=>{
+      const id=Number(button.dataset.id),title=button.dataset.title||"başlık";
+      let items=saved();
+      items=items.some(x=>x.id===id)?items.filter(x=>x.id!==id):[...items,{id,title}];
+      setSaved(items);
+      button.textContent=items.some(x=>x.id===id)?"✓ listemde":"+ listeme ekle";
+    };
+  }
+}
+function loadingView(){
+  $("#app").innerHTML=header(qs.get("q")||"")+'<section class="loadingView"><span></span><p>akış bağlanıyor…</p></section>';
+  setupChrome();
+}
+function errorView(message){
+  $("#app").innerHTML=header(qs.get("q")||"")+'<section class="errorView"><span>bağlantı notu</span><h1>Akışa ulaşılamadı.</h1><p>'+escapeHtml(message)+'</p><a href="./">yeniden dene</a></section>';
+  setupChrome();
+}
+
+async function loadHome(query,feedName,page){
+  let payload,topics,total=1;
+  if(currentApiBase()){
+    if(query){
+      payload=await apiGet("/v1/search",{q:query,page});
+      topics=payload.Topics||[];
+    }else{
+      payload=await apiGet("/v1/feed",{kind:feedName,page});
+      topics=feedName==="debe"?(payload.DebeItems||[]).map(x=>({TopicId:Number(x.EntryId),EntryId:Number(x.EntryId),Title:String(x.Title||"")})):(payload.Topics||[]);
+    }
+    total=Number(payload.PageCount||1);
+  }else{
+    const source=SAMPLE_DATA[feedName]||SAMPLE_DATA.popular;
+    topics=query?[...SAMPLE_DATA.popular,...SAMPLE_DATA.today,...SAMPLE_DATA.debe].filter(t=>String(t.Title).toLocaleLowerCase("tr").includes(query.toLocaleLowerCase("tr"))):source;
+  }
+  const labels={popular:"gündem",today:"bugün",debe:"debe"};
+  const now=new Date();
+  const day=new Intl.DateTimeFormat("tr-TR",{day:"numeric",month:"long"}).format(now);
+  const weekday=new Intl.DateTimeFormat("tr-TR",{weekday:"long"}).format(now);
+  $("#app").innerHTML=header(query)+
+    '<section class="hero"><div><p class="eyebrow">ekşi sözlük, gürültüsü azaltılmış</p><h1>'+(query?"“"+escapeHtml(query)+"”":"Ne konuşuluyor?")+'</h1><p class="intro">'+(query?topics.length+" sonuç gösteriliyor. Başlığa geçmek için bir sonuca dokun.":"Gündemi sakin bir akışta oku. Başlıkları tara, entry’lerde ara ve kaldığın yeri kaybetme.")+'</p></div><div class="dateCard"><span>'+day+'</span><strong>'+weekday+'</strong><small>anonim · salt okunur</small></div></section>'+
+    '<nav class="tabs"><a class="'+(!query&&feedName==="popular"?"active":"")+'" href="?feed=popular">gündem</a><a class="'+(!query&&feedName==="today"?"active":"")+'" href="?feed=today">bugün</a><a class="'+(!query&&feedName==="debe"?"active":"")+'" href="?feed=debe">debe</a></nav>'+
+    '<section class="contentGrid"><div>'+topics.map((t,i)=>topicCard(t,i,query?"arama sonucu":labels[feedName])).join("")+
+    pager(page,total,query?{q:query}:{feed:feedName})+"</div>"+aside()+"</section>";
+  setupChrome();
+}
+async function loadTopic(id,page){
+  let data;
+  if(currentApiBase())data=await apiGet("/v1/topic",{id,page});
+  else data={Id:id,Title:(SAMPLE_DATA.popular.find(x=>x.TopicId===id)?.Title||"örnek başlık"),Entries:SAMPLE_ENTRIES,PageCount:1,PageIndex:1,EntryCounts:{Total:SAMPLE_ENTRIES.length}};
+  const isSaved=saved().some(x=>x.id===Number(data.Id||id));
+  $("#app").innerHTML=header()+
+    '<section class="detailHero"><div><p class="eyebrow">başlık · '+escapeHtml(data.EntryCounts?.Total??"")+' entry</p><h1>'+escapeHtml(data.Title||"")+'</h1></div><button class="saveButton" id="save" data-id="'+Number(data.Id||id)+'" data-title="'+escapeHtml(data.Title||"")+'">'+(isSaved?"✓ listemde":"+ listeme ekle")+'</button></section>'+
+    '<div class="topicTools"><a class="topicBack" href="./">← gündeme dön</a>'+pager(Number(data.PageIndex||page),Number(data.PageCount||1),{topic:id})+'</div>'+
+    '<section class="readingColumn">'+(data.Entries||[]).map(entryCard).join("")+pager(Number(data.PageIndex||page),Number(data.PageCount||1),{topic:id})+"</section>";
+  setupChrome();
+}
+async function loadEntry(id,query){
+  let data;
+  if(currentApiBase())data=await apiGet("/v1/entry",{id});
+  else data={Id:5423457,Title:SAMPLE_DATA.popular[0].Title,Entries:SAMPLE_ENTRIES.slice(0,1)};
+  $("#app").innerHTML=header(query)+
+    '<section class="detailHero"><div><p class="eyebrow">tek entry · #'+id+'</p><h1>'+escapeHtml(data.Title||"")+'</h1></div><a class="saveButton" href="?topic='+Number(data.Id||0)+'">başlığın tamamı →</a></section>'+
+    '<section class="readingColumn">'+(data.Entries||[]).map(entryCard).join("")+"</section>";
+  setupChrome();
+}
+async function loadUser(nick,query){
+  if(!currentApiBase()){
+    $("#app").innerHTML=header(query)+'<section class="profileHero"><span class="avatar">'+escapeHtml(nick.slice(0,1).toLocaleUpperCase("tr"))+'</span><div><p class="eyebrow">yazar profili</p><h1>@'+escapeHtml(nick)+'</h1><p>Canlı API bağlandığında gerçek profil bilgileri burada görünecek.</p></div></section><section class="profileStats"><div><strong>—</strong><span>entry</span></div><div><strong>—</strong><span>takipçi</span></div><div><strong>—</strong><span>takip</span></div><div><strong>—</strong><span>karma</span></div></section><a class="backLink" href="./">← gündeme dön</a>';
+    setupChrome();return;
+  }
+  const data=await apiGet("/v1/user",{nick});
+  const info=data.UserInfo||{},identity=info.UserIdentifier||{},counts=info.EntryCounts||{},karma=info.Karma||{};
+  $("#app").innerHTML=header(query)+'<section class="profileHero"><span class="avatar">'+escapeHtml(nick.slice(0,1).toLocaleUpperCase("tr"))+'</span><div><p class="eyebrow">yazar profili</p><h1>@'+escapeHtml(identity.Nick||nick)+'</h1><p>'+escapeHtml(data.Biograpyh||"biyografi yok")+'</p></div></section><section class="profileStats"><div><strong>'+escapeHtml(counts.Total||0)+'</strong><span>entry</span></div><div><strong>'+escapeHtml(data.FollowerCount||0)+'</strong><span>takipçi</span></div><div><strong>'+escapeHtml(data.FollowingsCount||0)+'</strong><span>takip</span></div><div><strong>'+escapeHtml(karma.Name||"—")+'</strong><span>karma</span></div></section><a class="backLink" href="./">← gündeme dön</a>';
+  setupChrome();
+}
+
+async function render(){
+  qs=new URLSearchParams(location.search);
+  const query=(qs.get("q")||"").trim();
+  const topicId=Math.max(0,Number(qs.get("topic"))||0);
+  const entryParam=Math.max(0,Number(qs.get("entry"))||0);
+  const page=pageValue();
+  const feedName=["popular","today","debe"].includes(qs.get("feed"))?qs.get("feed"):"popular";
+  loadingView();
+  try{
+    if(topicId)return await loadTopic(topicId,page);
+    if(entryParam||query.startsWith("#"))return await loadEntry(entryParam||num(query.slice(1),0),query);
+    if(query.startsWith("@"))return await loadUser(query.slice(1).trim(),query);
+    return await loadHome(query,feedName,page);
+  }catch(error){
+    errorView(error instanceof Error?error.message:"Bilinmeyen bir bağlantı hatası oluştu.");
+  }
+}
 render();
