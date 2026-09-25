@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090a0c">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Worldlight: your cities, their clocks, and live daylight across the world. A MartianGalactic Labs experiment.">
+<title>Worldlight — MartianGalactic Labs</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.mjs"></script>
+</head>
+<body>
+<main>
+<nav aria-label="Site"><a class="home" href="../../">← MartianGalactic Labs</a><span class="wordmark">WORLDLIGHT</span></nav>
+<header><div><h1>World Clock</h1><p>Your places. One planet.</p></div><button id="choose" class="add" aria-label="Choose cities" title="Choose cities">+</button></header>
+<section aria-label="World map with live daylight"><div class="map-frame"><canvas id="map" role="img" aria-label="World map showing selected cities and estimated daylight. City times and daylight states are also listed below."></canvas></div>
+<div class="legend"><span><i class="day"></i>Daylight</span><span><i class="night"></i>Night</span><span><i class="line"></i>Sunrise / sunset</span><span class="live">Live</span></div></section>
+<section id="clocks" class="clocks" aria-label="Selected city clocks" tabindex="0"></section>
+<p id="notice" class="notice" role="status"></p>
+<footer><p>Made for your corner of the world.</p><a class="download" href="WorldlightClock-v1.2-debug.apk" download>Download for Android <span>↗</span></a><small>Android 8+ · v1.2 debug APK · Install manually</small><p class="privacy">Time and daylight are calculated on your device. Your city choices stay in this browser.</p></footer>
+<noscript><p class="notice">Enable JavaScript to see the live world clock.</p></noscript>
+</main>
+<dialog id="picker" aria-labelledby="picker-title"><form id="city-form"><div class="dialog-head"><div><h2 id="picker-title">Your cities</h2><p>Pick the places you want to keep close.</p></div><button type="button" id="close" aria-label="Close city picker">×</button></div><label class="search-label" for="search">Find a city or time zone</label><input id="search" type="search" placeholder="Try Nashville or Central Time" autocomplete="off"><div id="city-list"></div><p id="empty" hidden>No cities match your search.</p><div class="dialog-actions"><span id="count" aria-live="polite"></span><button type="button" id="cancel">Cancel</button><button id="done" type="submit">Done</button></div></form></dialog>
+</body></html>
