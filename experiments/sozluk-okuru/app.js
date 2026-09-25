@@ -21,8 +21,8 @@ const DATA={
 };
 const ENTRIES={
   5423457:[
-    {id:162001,"author":"gezginokur","date":"25 eylül 2026 10:24","fav":18,"comments":3,text":"Bir yerde uzun süre kalınca turist gibi değil, gündelik hayatın ritmiyle bakmaya başlıyorsun. Market, ulaşım, kahve, spor salonu ve yürünebilirlik bir anda manzaradan daha önemli oluyor."},
-    {id:162002,"author":"sessiznotlar","date":"25 eylül 2026 11:07","fav":11,"comments":1,text":"Bence en büyük fark seçenek çokluğu değil; küçük günlük sürtünmelerin ne kadar az olduğu. Bir şehir insana bunu veriyorsa uzun kalmak kolaylaşıyor."}
+    {id:162001,"author":"gezginokur","date":"25 eylül 2026 10:24","fav":18,"comments":3,text:"Bir yerde uzun süre kalınca turist gibi değil, gündelik hayatın ritmiyle bakmaya başlıyorsun. Market, ulaşım, kahve, spor salonu ve yürünebilirlik bir anda manzaradan daha önemli oluyor."},
+    {id:162002,"author":"sessiznotlar","date":"25 eylül 2026 11:07","fav":11,"comments":1,text:"Bence en büyük fark seçenek çokluğu değil; küçük günlük sürtünmelerin ne kadar az olduğu. Bir şehir insana bunu veriyorsa uzun kalmak kolaylaşıyor."}
   ]
 };
 const $=(s)=>document.querySelector(s);
