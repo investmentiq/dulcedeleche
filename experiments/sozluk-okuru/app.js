@@ -72,6 +72,50 @@ function trDate(input){
   if(!input)return"";
   try{return new Intl.DateTimeFormat("tr-TR",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(new Date(input));}catch{return String(input);}
 }
+const ISTANBUL_DAY_FORMATTER=new Intl.DateTimeFormat("en-US",{
+  timeZone:"Europe/Istanbul",year:"numeric",month:"2-digit",day:"2-digit"
+});
+function istanbulDayKey(input){
+  try{
+    const parts=Object.fromEntries(ISTANBUL_DAY_FORMATTER.formatToParts(new Date(input)).map(p=>[p.type,p.value]));
+    return parts.year+"-"+parts.month+"-"+parts.day;
+  }catch{return"";}
+}
+async function locateCurrentDay(id,firstPage){
+  const today=istanbulDayKey(new Date());
+  const total=Math.max(1,Number(firstPage.PageCount||1));
+  const cache=new Map([[Number(firstPage.PageIndex||1),firstPage]]);
+  const getPage=async page=>{
+    if(cache.has(page))return cache.get(page);
+    const data=await apiGet("/v1/topic",{id,page});
+    cache.set(page,data);
+    return data;
+  };
+  let low=1,high=total,candidate=null;
+  while(low<=high){
+    const mid=Math.floor((low+high)/2);
+    const data=await getPage(mid);
+    const entries=data.Entries||[];
+    const lastDay=entries.length?istanbulDayKey(entries[entries.length-1].Created):"";
+    if(lastDay&&lastDay>=today){
+      candidate=mid;
+      high=mid-1;
+    }else{
+      low=mid+1;
+    }
+  }
+  if(candidate===null){
+    const data=await getPage(total);
+    return {data,entryId:0};
+  }
+  for(let page=candidate;page<=Math.min(total,candidate+1);page++){
+    const data=await getPage(page);
+    const entry=(data.Entries||[]).find(item=>istanbulDayKey(item.Created)===today);
+    if(entry)return {data,entryId:Number(entry.Id||0)};
+  }
+  const data=await getPage(total);
+  return {data,entryId:0};
+}
 function linkify(text){
   const safe=escapeHtml(text);
   return safe.replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+)/gi,raw=>{
@@ -171,16 +215,34 @@ async function loadHome(query,feedName,page){
     pager(page,total,query?{q:query}:{feed:feedName})+"</div>"+aside()+"</section>";
   setupChrome();
 }
-async function loadTopic(id,page){
-  let data;
-  if(currentApiBase())data=await apiGet("/v1/topic",{id,page});
-  else data={Id:id,Title:(SAMPLE_DATA.popular.find(x=>x.TopicId===id)?.Title||"örnek başlık"),Entries:SAMPLE_ENTRIES,PageCount:1,PageIndex:1,EntryCounts:{Total:SAMPLE_ENTRIES.length}};
+async function loadTopic(id,page,preferCurrentDay=false){
+  let data,todayEntryId=0;
+  if(currentApiBase()){
+    data=await apiGet("/v1/topic",{id,page});
+    if(preferCurrentDay){
+      const located=await locateCurrentDay(id,data);
+      data=located.data;
+      todayEntryId=located.entryId;
+      const actualPage=Number(data.PageIndex||page);
+      const clean="?topic="+id+"&page="+actualPage+(todayEntryId?"#entry-"+todayEntryId:"");
+      history.replaceState(null,"",clean);
+    }
+  }else{
+    data={Id:id,Title:(SAMPLE_DATA.popular.find(x=>x.TopicId===id)?.Title||"örnek başlık"),Entries:SAMPLE_ENTRIES,PageCount:1,PageIndex:1,EntryCounts:{Total:SAMPLE_ENTRIES.length}};
+  }
+  const actualPage=Number(data.PageIndex||page);
   const isSaved=saved().some(x=>x.id===Number(data.Id||id));
   $("#app").innerHTML=header()+
     '<section class="detailHero"><div><p class="eyebrow">başlık · '+escapeHtml(data.EntryCounts?.Total??"")+' entry</p><h1>'+escapeHtml(data.Title||"")+'</h1></div><button class="saveButton" id="save" data-id="'+Number(data.Id||id)+'" data-title="'+escapeHtml(data.Title||"")+'">'+(isSaved?"✓ listemde":"+ listeme ekle")+'</button></section>'+
-    '<div class="topicTools"><a class="topicBack" href="./">← gündeme dön</a>'+pager(Number(data.PageIndex||page),Number(data.PageCount||1),{topic:id})+'</div>'+
-    '<section class="readingColumn">'+(data.Entries||[]).map(entryCard).join("")+pager(Number(data.PageIndex||page),Number(data.PageCount||1),{topic:id})+"</section>";
+    '<div class="topicTools"><a class="topicBack" href="./">← gündeme dön</a>'+pager(actualPage,Number(data.PageCount||1),{topic:id})+'</div>'+
+    '<section class="readingColumn">'+(data.Entries||[]).map(entryCard).join("")+pager(actualPage,Number(data.PageCount||1),{topic:id})+"</section>";
   setupChrome();
+  if(todayEntryId){
+    requestAnimationFrame(()=>{
+      const target=document.getElementById("entry-"+todayEntryId);
+      if(target)target.scrollIntoView({block:"start"});
+    });
+  }
 }
 async function loadEntry(id,query){
   let data;
@@ -211,7 +273,7 @@ async function render(){
   const feedName=["popular","today","debe"].includes(qs.get("feed"))?qs.get("feed"):"popular";
   loadingView();
   try{
-    if(topicId)return await loadTopic(topicId,page);
+    if(topicId)return await loadTopic(topicId,page,!qs.has("page"));
     if(entryParam||query.startsWith("#"))return await loadEntry(entryParam||num(query.slice(1),0),query);
     if(query.startsWith("@"))return await loadUser(query.slice(1).trim(),query);
     return await loadHome(query,feedName,page);
