@@ -37,7 +37,8 @@ function num(value,fallback=1){
   const n=Number(value);
   return Number.isFinite(n)&&n>0?Math.floor(n):fallback;
 }
-function pageValue(){return Math.min(250,num(qs.get("page"),1));}
+// Keep the requested page; the topic response supplies the actual page count.
+function pageValue(){return num(qs.get("page"),1);}
 function saved(){
   try{return JSON.parse(localStorage.getItem(BOOKMARK_KEY)||"[]");}catch{return [];}
 }

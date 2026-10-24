@@ -138,7 +138,8 @@ async function apiRequest(path, init, retry = true) {
 
 function clampPage(value) {
   const n = Number(value || 1);
-  return Math.min(250, Math.max(1, Number.isFinite(n) ? Math.floor(n) : 1));
+  // Upstream owns the valid range; large topics can have far more than 250 pages.
+  return Math.max(1, Number.isFinite(n) ? Math.floor(n) : 1);
 }
 
 function corsHeaders(request) {
